@@ -1,29 +1,25 @@
-# 怪潮突围 · Monster Rush
+# 怪潮突围 · Monster Rush V2.0
 
-一款无需安装依赖的竖屏科幻生存射击小游戏，使用原生 HTML、CSS、Canvas 2D 与 JavaScript。支持安卓浏览器触控、离线 PWA 和 GitHub Pages 子目录部署。
+第三人称竖屏 3D 怪潮生存射击。用左右滑动沿道路移动；战士会自动锁定并开火。穿越左右强化门选择独立战斗属性，射击门体可为奖励充能；拾取实体补给箱可立即切换五种攻击模式。首领攻击会先标记危险区域，横向移动可以躲避。
 
 ## 本地运行
 
-在仓库根目录启动任意静态 HTTP 服务（Service Worker 需要 HTTP 或 HTTPS）：
+游戏不需要构建工具。仓库根目录运行：
 
 ```sh
 python3 -m http.server 8000
 ```
 
-访问 `http://localhost:8000/`。操作方式：在画面上左右滑动移动战机，武器自动射击；右上角暂停。升级箱会从前方接近，移动拾取即可强化。页面失去焦点时自动暂停。
+访问 `http://localhost:8000/`。Three.js r170 以本地模块形式随仓库发布；音乐与武器音效由 Web Audio API 在玩家点击开始后合成。最高分与两路音量储存在本机。
 
-## GitHub Pages
+## GitHub Pages 与离线安装
 
-`.github/workflows/deploy.yml` 会在 `main` 更新时通过 GitHub 官方 Pages Actions 发布仓库根目录。首次发布需要在仓库 **Settings → Pages → Build and deployment** 中选择 **GitHub Actions**。仓库地址为 `https://mistwood38.github.io/monster-rush-mobile/`。
+`.github/workflows/deploy.yml` 在 `main` 更新时发布静态站点。首次启用 Pages 时在仓库 **Settings → Pages → Build and deployment → GitHub Actions** 选择 GitHub Actions。网页、Three.js、清单和图标均使用相对路径，适配 `/<repository>/` 子目录。Service Worker 会缓存本地脚本及 Three.js 模块，并在版本升级后清除旧缓存。
 
-## PWA 与存档
+## Three.js 许可
 
-`manifest.webmanifest` 提供独立竖屏安装信息，`sw.js` 缓存游戏文件并在版本变化时清理旧缓存。最高分和音效开关保存在本机 `localStorage`。所有画面和简单音效由代码生成，不请求第三方资源。
+随附 `vendor/three/three.module.min.js` 来自 Three.js `0.170.0`（r170），依照 MIT License 发布；许可文本见 `vendor/three/LICENSE`。游戏角色、道路与低多边形场景由项目代码原创程序生成。
 
-## 验证
+## 质量检查
 
-```sh
-node --check game.js
-```
-
-浏览器可通过 360×800 竖屏使用；无头浏览器 smoke check 覆盖启动、移动模拟、暂停/继续、Boss 生成、升级反馈及 Service Worker 注册。
+`node --check game.js` 与 `node --check audio.js` 可检查脚本语法。添加 `?test=1` 后，页面会暴露浏览器内自动化用的测试接口；该模式用于检查战斗属性、武器、奖励门、敌人 AI、Boss 与音频控制，不影响正常游玩。
