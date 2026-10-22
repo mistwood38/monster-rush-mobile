@@ -915,3 +915,24 @@ canvas {
 .boss-hud.shielded .boss-bar i {
   background: linear-gradient(90deg, #4dbde8, #b0f6ff);
 }
+/* Formation HUD keeps the road center and near-field pickups clear. */
+.systems-hud{position:absolute;left:12px;right:12px;bottom:calc(91px + env(safe-area-inset-bottom));pointer-events:none;display:grid;gap:5px;text-shadow:0 1px 3px #10283c}
+#teamStatus{display:flex;gap:5px;align-items:center;font-size:10px;min-height:28px}
+#teamStatus>span{color:#dbf6ff;white-space:nowrap}
+.crew-chip{position:relative;padding:6px 5px 8px;border:1px solid #bcdded44;border-radius:7px;background:#112b40d9;flex:1;min-width:0;overflow:hidden;color:var(--crew)}
+.crew-chip b{font-size:9px;white-space:nowrap}
+.crew-chip i{position:absolute;bottom:2px;left:0;height:3px;background:var(--crew)}
+.support-row{display:flex;justify-content:space-between;font-size:10px;color:#d9ecff}
+#armorStatus{height:0;overflow:hidden;color:#c6c5ff;font-weight:900;font-size:12px;transition:height .2s}
+#armorStatus.active{height:20px;padding:3px 8px;background:#26376add;border-left:3px solid #b2a7ff;border-radius:5px}
+#affixStatus{font-size:9px;color:#c4d9e4;min-height:13px;line-height:1.4}
+#draftPanel{z-index:35;padding:calc(30px + env(safe-area-inset-top)) 22px;overflow-y:auto;justify-content:center;background:linear-gradient(155deg,#112a43f7,#122236f5)}
+#draftChoices{display:grid;gap:12px;width:100%;max-width:350px}
+.draft-card{display:grid;text-align:left;gap:8px;min-height:108px;padding:16px;border-radius:13px;border:1px solid #a3c8ff60;background:linear-gradient(110deg,#29445c,#26334b);color:#f1fbff;box-shadow:0 6px 20px #06162540}
+.draft-card small{color:#83e4e3;font-size:10px;letter-spacing:.08em}.draft-card b{font-size:19px}.draft-card span{font-size:11px;line-height:1.6;color:#d0e0ed}.draft-card:active{border-color:#b0fff3;transform:scale(.99)}
+.haptic-setting{font-size:12px;color:#d1e6ee;margin-bottom:24px;display:flex;gap:9px;align-items:center}.haptic-setting input{width:18px;height:18px;accent-color:#80e1df}
+.collection{font-size:9px;color:#b4cfda;text-align:center;margin:11px 0}
+#runDetail{font-size:10px}.boss-hud{width:160px}.menu-overlay{background:linear-gradient(180deg,#15374f33,transparent 38%,#0e263bcc 72%,#071d30)}
+#pausePanel{overflow-y:auto;padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom))}
+@media(max-height:730px){.systems-hud{bottom:78px}#draftChoices{gap:8px}.draft-card{min-height:86px;padding:12px;gap:5px}#draftPanel h2{font-size:26px;margin-bottom:8px}.collection{margin:5px 0}}
+.menu-overlay{background:linear-gradient(180deg,#0b254ab0,#14385438 42%,#0b2538ef 76%,#071d30),url('./assets/backgrounds/highway_day.webp') center/cover no-repeat}.hero-title{margin-top:10vh}.hero-kicker{color:#eafffd}.menu-top .version{letter-spacing:.1em;white-space:nowrap}.season{font-size:7px}

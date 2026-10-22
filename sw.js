@@ -1,10 +1,31 @@
-const CACHE = "monster-rush-v2.1.0";
+const CACHE = "monster-rush-road-squad-review-1";
 const FILES = [
   "./",
   "./index.html",
   "./style.css",
   "./game.js",
   "./audio.js",
+  "./systems.js",
+  "./config/catalog.js",
+  "./assets/characters/player_soldier_back.webp",
+  "./assets/backgrounds/highway_day.webp",
+  "./assets/gates/fire_rate_plus_20.webp",
+  "./assets/pets/dragon.svg",
+  "./assets/pets/owl.svg",
+  "./assets/pets/drone.svg",
+  "./assets/pets/fairy.svg",
+  "./assets/armors/thunder.svg",
+  "./assets/armors/molten.svg",
+  "./assets/armors/phantom.svg",
+
+  "./assets/enemies/scout.svg",
+  "./assets/enemies/runner.svg",
+  "./assets/enemies/heavy.svg",
+  "./assets/enemies/ranged.svg",
+  "./assets/enemies/charger.svg",
+  "./assets/enemies/elite.svg",
+  "./assets/enemies/boss.svg",
+
   "./manifest.webmanifest",
   "./icons/icon.svg",
   "./icons/icon-192.png",

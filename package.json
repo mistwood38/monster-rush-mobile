@@ -1,11 +1,12 @@
 {
   "name": "monster-rush-mobile",
-  "version": "2.1.0",
+  "version": "3.0.0-review",
   "private": true,
   "scripts": {
-    "test": "node tests/browser.cjs"
+    "test": "node --test tests/systems.test.js && node tests/browser.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
-  }
+  },
+  "type": "module"
 }
