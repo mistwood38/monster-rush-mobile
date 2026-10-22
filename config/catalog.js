@@ -7,7 +7,7 @@ export const RULES = Object.freeze({
   armorDuration: 12,
   bosses: BALANCE.boss_targets_seconds,
   traitTimes: BALANCE.trait_events_seconds,
-  enemyLimit: 32,
+  enemyLimit: 320,
   bulletLimit: 160,
   particleLimit: 64,
 });

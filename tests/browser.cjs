@@ -616,7 +616,7 @@ let browser;
           const boosted = t.combatStats(),
             active = t
               .spriteAudit()
-              .frames.find((a) => a.key.startsWith("armor/"));
+              .frames.find((a) => a.key.startsWith("rig/armor/"));
           t.step(12);
           const ended = t.systems().armor;
           t.step(1);
@@ -1055,12 +1055,12 @@ let browser;
           target,
           width,
           dodged,
-          summons: t.enemyList().filter((e) => e.type === "runner").length,
+          summons: t.enemyList().length,
         };
       });
       assert.equal(r.width, 5.2);
       assert.ok(r.target > 0 && r.dodged);
-      assert.equal(r.summons, 2);
+      assert.equal(r.summons, 18);
       return r;
     },
   );
@@ -1220,7 +1220,7 @@ let browser;
       const r = await evalGame(() => {
         const t = __MR_TEST__;
         t.configure({ shootTimer: 999 });
-        for (let i = 0; i < 40; i++)
+        for (let i = 0; i < 330; i++)
           t.spawnEnemy(
             "heavy",
             ((i % 7) - 3) * 1.2,
@@ -1236,8 +1236,8 @@ let browser;
           hp: t.state().hp,
         };
       });
-      assert.equal(r.before, 32);
-      assert.equal(r.after, 32);
+      assert.equal(r.before, 320);
+      assert.equal(r.after, 320);
       assert.ok(r.retained && r.hp === 100);
       return r;
     },
@@ -1289,7 +1289,7 @@ let browser;
         r.time > 295 && r.seen.drafts >= 3 && r.seen.boss && r.seen.armor,
       );
       assert.ok(
-        r.max.enemies <= 32 &&
+        r.max.enemies <= 320 &&
           r.max.bullets <= 160 &&
           r.max.particles <= 64 &&
           r.max.shots <= 60,

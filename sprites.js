@@ -10,7 +10,7 @@ export class SpriteLibrary {
       new URL(".", new URL(url, location.href)).href,
     );
     await Promise.all(
-      Object.values(library.data.actors).map((def) =>
+      Object.entries(library.data.actors).filter(([key])=>key.startsWith("pet/")).map(([,def]) =>
         library.texture(def.file),
       ),
     );
@@ -154,6 +154,7 @@ export class SpriteLibrary {
   }
   audit() {
     return {
+      ready:Object.entries(this.data.actors).filter(([key])=>key.startsWith("pet/")).every(([,def])=>this.cache.get(def.file)?.texture.image),
       atlases: Object.keys(this.data.actors).length,
       active: this.active.size,
       errors: [...this.errors],

@@ -1,5 +1,5 @@
 importScripts("./v17-cache.js");
-const CACHE = "monster-rush-road-squad-v17-2";
+const CACHE = "monster-rush-horde-rework-1";
 const FILES = [
   "./",
   "./index.html",
@@ -7,6 +7,8 @@ const FILES = [
   "./game.js",
   "./audio.js",
   "./sprites.js",
+  "./actors3d.js",
+  "./horde.js",
   "./sprite-state.mjs",
   "./v17-cache.js",
   "./config/balance-v17.js",

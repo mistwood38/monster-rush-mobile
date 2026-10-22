@@ -16,9 +16,10 @@ paths = {
     'mr/audio': 'audio.js', 'mr/sprites': 'sprites.js',
     'mr/fsm': 'sprite-state.mjs', 'mr/systems': 'systems.js',
     'mr/catalog': 'config/catalog.js', 'mr/balance': 'config/balance-v17.js',
-    'mr/game': 'game.js',
+    'mr/game': 'game.js', 'mr/actors3d':'actors3d.js', 'mr/horde':'horde.js',
 }
 replacements = {
+    './actors3d.js':'mr/actors3d','./horde.js':'mr/horde',
     './vendor/three/three.module.min.js': 'mr/three',
     './audio.js': 'mr/audio', './sprites.js': 'mr/sprites',
     './sprite-state.mjs': 'mr/fsm', './systems.js': 'mr/systems',
