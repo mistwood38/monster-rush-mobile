@@ -645,6 +645,29 @@ let browser;
   await reset();
   await reset();
   await check(
+    "Armor pulse and expiry on the same step do not access cleared equipment",
+    async () => {
+      const r = await evalGame(() => {
+        const t = __MR_TEST__;
+        t.armor("thunder");
+        t.step(0.1);
+        t.runModel().armor.remaining = 0.01;
+        t.runModel().armor.pulse = 0.01;
+        t.step(0.025);
+        return {
+          armor: t.systems().armor,
+          state: t.state().mode,
+          stats: t.combatStats(),
+        };
+      });
+      assert.equal(r.armor, null);
+      assert.equal(r.state, "playing");
+      assert.equal(r.stats.damage, 1);
+      return r;
+    },
+  );
+  await reset();
+  await check(
     "Four ballistic traits change real spread, piercing and enemy HP",
     async () => {
       const r = await evalGame(() => {

@@ -31,6 +31,7 @@ const enemyGrid = new SpatialGrid(2.5),
 let gridDirty = true,
   enemySerial = 0,
   qualityLevel = 0;
+let testQualityLocked = false;
 const telemetry = {
   spawned: 0,
   killed: 0,
@@ -3339,9 +3340,15 @@ function updatePetArmor(dt, result) {
     announce("战甲解除", "原武器与数字门强化保留");
     updateWeaponUi();
   }
-  if (result.armorPulse && armorVisual) {
+  if (result.armorPulse && armorVisual && !result.armorEnded) {
     sprites.trigger(armorVisual, "attack");
-    groundPulse(state.playerX, playerZ, ARMORS[run.armor.kind].color, 1.5, 0.3);
+    groundPulse(
+      state.playerX,
+      playerZ,
+      ARMORS[result.armorPulse].color,
+      1.5,
+      0.3,
+    );
   }
 }
 function openDraft() {
@@ -4176,7 +4183,7 @@ function frame(now) {
     const fps = (frameCount * 1000) / (now - fpsT);
     if (fps < 39) {
       lowFps++;
-      if (lowFps >= 2 && qualityLevel < 2) {
+      if (lowFps >= 2 && qualityLevel < 2 && !testQualityLocked) {
         qualityLevel++;
         renderer.setPixelRatio(
           Math.min(devicePixelRatio || 1, qualityProfile(qualityLevel).dpr),
@@ -4239,7 +4246,8 @@ if (new URLSearchParams(location.search).get("test") === "1")
     },
     hordePack: spawnHordePack,
     hordeStage,
-    setQuality(level) {
+    setQuality(level, locked = false) {
+      testQualityLocked = locked;
       qualityLevel = clamp(level, 0, 2);
       renderer.setPixelRatio(
         Math.min(devicePixelRatio || 1, qualityProfile(qualityLevel).dpr),

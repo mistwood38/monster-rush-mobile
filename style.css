@@ -1154,3 +1154,24 @@ canvas {
   height: 40px;
   object-fit: contain;
 }
+
+/* Compact reward feedback shares the HUD band; keep the incoming road clear. */
+.upgrade-toast {
+  top: calc(202px + env(safe-area-inset-top));
+  left: auto;
+  right: 14px;
+  width: calc(50% - 24px);
+  max-width: 180px;
+  padding: 8px 6px;
+  border: 1px solid #91e5df60;
+  border-radius: 10px;
+  background: #15364be8;
+  font-size: 13px;
+  line-height: 1.3;
+  box-sizing: border-box;
+}
+.upgrade-toast small {
+  margin-top: 4px;
+  font-size: 9px;
+  letter-spacing: 0;
+}
