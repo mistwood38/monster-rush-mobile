@@ -1,7 +1,18 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { BattleAudio } from "./audio.js";
 import { SpriteLibrary } from "./sprites.js";
-const sprites = await SpriteLibrary.load("./assets/v17/catalog.json");
+const sprites = await SpriteLibrary.load("./assets/v17/catalog.json").catch(
+  (error) => {
+    const button = document.querySelector("#start");
+    button.disabled = false;
+    button.removeAttribute("aria-busy");
+    button.querySelector("span").textContent = "重新装载";
+    button.onclick = () => location.reload();
+    document.querySelector("#menu .menu-desc span").textContent =
+      "战场资源暂未读取完成，请重试。";
+    throw error;
+  },
+);
 import { RunSystems } from "./systems.js";
 import { RULES, ROLES, PETS, ARMORS, AFFIXES } from "./config/catalog.js";
 const run = new RunSystems();
@@ -160,6 +171,8 @@ function basic(color, opacity = 1, depthWrite = true) {
   });
 }
 function mesh(geo, material, parent, pos = [0, 0, 0], scale = null) {
+  if (geo.type === "PlaneGeometry" && material.side === THREE.DoubleSide)
+    material.forceSinglePass = true;
   const m = new THREE.Mesh(geo, material);
   m.position.set(...pos);
   if (scale) m.scale.set(...scale);
@@ -231,39 +244,170 @@ function init() {
       "此浏览器未能启动 WebGL，请更新 Chrome 后重试。";
   }
 }
-function makeRoadTexture(){
-  const texture=sprites.staticTexture('backgrounds/road_surface_seamless');texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(1,3);texture.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());return texture;
+function makeRoadTexture() {
+  const texture = sprites.staticTexture("backgrounds/road_surface_seamless");
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(1, 3);
+  texture.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+  return texture;
 }
-function buildWorld(){
-  const ground=mesh(new THREE.PlaneGeometry(110,180),mat('park','#79a091',1),scene,[0,-.2,-35]);ground.rotation.x=-Math.PI/2;
-  roadTexture=makeRoadTexture();roadMaterial=new THREE.MeshStandardMaterial({map:roadTexture,roughness:1,metalness:0});
-  worldObjects.roadSegments=[];
-  for(let i=0;i<3;i++){
-    const road=mesh(new THREE.PlaneGeometry(12.4,42),roadMaterial,scene,[0,-.105,-79+i*42]);road.rotation.x=-Math.PI/2;road.receiveShadow=true;worldObjects.roadSegments.push(road);
+function buildWorld() {
+  const ground = mesh(
+    new THREE.PlaneGeometry(110, 180),
+    mat("park", "#79a091", 1),
+    scene,
+    [0, -0.2, -35],
+  );
+  ground.rotation.x = -Math.PI / 2;
+  roadTexture = makeRoadTexture();
+  roadMaterial = new THREE.MeshStandardMaterial({
+    map: roadTexture,
+    roughness: 1,
+    metalness: 0,
+  });
+  worldObjects.roadSegments = [];
+  for (let i = 0; i < 3; i++) {
+    const road = mesh(new THREE.PlaneGeometry(12.4, 42), roadMaterial, scene, [
+      0,
+      -0.105,
+      -79 + i * 42,
+    ]);
+    road.rotation.x = -Math.PI / 2;
+    road.receiveShadow = true;
+    worldObjects.roadSegments.push(road);
   }
-  for(const side of [-1,1]){
-    addBox(scene,[side*6.38,.08,-36],[.24,.3,126],'#b5c8cc');addBox(scene,[side*6.44,.38,-36],[.12,.16,126],'#73d3e1');
+  for (const side of [-1, 1]) {
+    addBox(scene, [side * 6.38, 0.08, -36], [0.24, 0.3, 126], "#b5c8cc");
+    addBox(scene, [side * 6.44, 0.38, -36], [0.12, 0.16, 126], "#73d3e1");
   }
   // Real world-space skyline: source side strips contain baked perspective and
   // would float above the road when mapped onto upright planes.
-  const buildings=new THREE.InstancedMesh(G.cube,mat('city','#b8d5e4',.8,.12),48);
-  const crowns=new THREE.InstancedMesh(G.cube,mat('cityGlass','#4b8eb6',.38,.3,.12),48);
-  const windows=new THREE.InstancedMesh(G.cube,mat('cityWindows','#83dfe2',.4,.15,.3),48*6);windows.frustumCulled=false;scene.add(windows);
-  const dummy=new THREE.Object3D();worldObjects.skyline=[];
-  for(let i=0;i<48;i++){
-    const side=i%2?1:-1,height=4+(i*13%11),z=18-Math.floor(i/2)*5.8;
-    worldObjects.skyline.push({x:side*(10+(i%4)*2.6),z,height,width:2.6+(i%3)*.4});
+  const buildings = new THREE.InstancedMesh(
+    G.cube,
+    mat("city", "#b8d5e4", 0.8, 0.12),
+    48,
+  );
+  const crowns = new THREE.InstancedMesh(
+    G.cube,
+    mat("cityGlass", "#4b8eb6", 0.38, 0.3, 0.12),
+    48,
+  );
+  const windows = new THREE.InstancedMesh(
+    G.cube,
+    mat("cityWindows", "#83dfe2", 0.4, 0.15, 0.3),
+    48 * 6,
+  );
+  windows.frustumCulled = false;
+  scene.add(windows);
+  const dummy = new THREE.Object3D();
+  worldObjects.skyline = [];
+  for (let i = 0; i < 48; i++) {
+    const side = i % 2 ? 1 : -1,
+      height = 4 + ((i * 13) % 11),
+      z = 18 - Math.floor(i / 2) * 5.8;
+    worldObjects.skyline.push({
+      x: side * (10 + (i % 4) * 2.6),
+      z,
+      height,
+      width: 2.6 + (i % 3) * 0.4,
+    });
   }
-  buildings.frustumCulled=crowns.frustumCulled=false;scene.add(buildings,crowns);worldObjects.cityMeshes={buildings,crowns,windows,dummy};
-  const markings=new THREE.InstancedMesh(G.cube,mat('lane','#d7e9d9',1),32);markings.frustumCulled=false;scene.add(markings);worldObjects.markings=markings;
+  buildings.frustumCulled = crowns.frustumCulled = false;
+  scene.add(buildings, crowns);
+  worldObjects.cityMeshes = { buildings, crowns, windows, dummy };
+  const markings = new THREE.InstancedMesh(
+    G.cube,
+    mat("lane", "#d7e9d9", 1),
+    32,
+  );
+  markings.frustumCulled = false;
+  scene.add(markings);
+  worldObjects.markings = markings;
 
-  worldObjects.decor=[];
-  const choices=['props/abandoned_car_topdown','props/traffic_cone','props/road_debris_cluster','props/road_barrier'];
-  for(let i=0;i<24;i++){
-    const key=choices[i%choices.length],root=new THREE.Group(),tex=sprites.staticTexture(key);
-    const item=mesh(new THREE.PlaneGeometry(i%4===0?2.7:1.2,i%4===0?3:1.6),new THREE.MeshBasicMaterial({map:tex,transparent:true,alphaTest:.05,side:THREE.DoubleSide}),root,[0,.4,0]);
-    item.rotation.x=-Math.PI/2;const side=i%2?1:-1;const z=15-Math.floor(i/2)*9;root.position.set(side*(7.3+(i%3)*.6),0,z);scene.add(root);worldObjects.decor.push({root,z});
+  worldObjects.decor = [];
+  const choices = [
+    "props/abandoned_car_topdown",
+    "props/traffic_cone",
+    "props/road_debris_cluster",
+    "props/road_barrier",
+  ];
+  worldObjects.decorBatches = choices.map((key) => {
+    const batch = new THREE.InstancedMesh(
+      G.plane,
+      new THREE.MeshBasicMaterial({
+        map: sprites.staticTexture(key),
+        transparent: true,
+        alphaTest: 0.05,
+        side: THREE.DoubleSide,
+        forceSinglePass: true,
+      }),
+      6,
+    );
+    batch.frustumCulled = false;
+    scene.add(batch);
+    return batch;
+  });
+  for (let i = 0; i < 24; i++) {
+    const root = new THREE.Object3D(),
+      side = i % 2 ? 1 : -1,
+      z = 15 - Math.floor(i / 2) * 9;
+    root.position.set(side * (7.3 + (i % 3) * 0.6), 0, z);
+    worldObjects.decor.push({
+      root,
+      z,
+      batch: i % 4,
+      index: Math.floor(i / 4),
+    });
   }
+  const overlay = {
+    dummy: new THREE.Object3D(),
+    normal: new THREE.Vector3(0, 0, 1).applyQuaternion(camera.quaternion),
+  };
+  for (const [key, geometry, material] of [
+    ["back", G.plane, basic("#1d1718", 0.92, false)],
+    ["fill", G.plane, basic("#ffc270", 0.96, false)],
+    ["shadow", new THREE.CircleGeometry(1, 16), basic("#050b0d", 0.22, false)],
+  ]) {
+    material.forceSinglePass = true;
+    const batch = new THREE.InstancedMesh(geometry, material, RULES.enemyLimit);
+    batch.frustumCulled = false;
+    batch.count = 0;
+    scene.add(batch);
+    overlay[key] = batch;
+  }
+  worldObjects.enemyOverlay = overlay;
+}
+function syncEnemyOverlays() {
+  const o = worldObjects.enemyOverlay;
+  if (!o) return;
+  const d = o.dummy;
+  let bars = 0,
+    shadows = 0;
+  for (const e of state.threats) {
+    const scale = e.group.scale.x;
+    d.quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+    d.position.set(e.x, -0.08, e.z);
+    d.scale.set(0.55 * scale, 0.38 * scale, 1);
+    d.updateMatrix();
+    o.shadow.setMatrixAt(shadows++, d.matrix);
+    if (e.dead) continue;
+    const hp = clamp(e.hp / e.maxHp, 0, 1);
+    d.quaternion.copy(camera.quaternion);
+    d.position.set(e.x, e.group.position.y + 2.35 * scale, e.z);
+    d.scale.set(0.9 * scale, 0.095 * scale, 1);
+    d.updateMatrix();
+    o.back.setMatrixAt(bars, d.matrix);
+    d.position.x -= (1 - hp) * 0.44 * scale;
+    d.position.addScaledVector(o.normal, 0.012);
+    d.scale.set(0.88 * scale * Math.max(0.001, hp), 0.06 * scale, 1);
+    d.updateMatrix();
+    o.fill.setMatrixAt(bars, d.matrix);
+    bars++;
+  }
+  o.back.count = o.fill.count = bars;
+  o.shadow.count = shadows;
+  for (const key of ["back", "fill", "shadow"])
+    o[key].instanceMatrix.needsUpdate = true;
 }
 function setInstance(meshObject, id, pos, scale, rotationY = 0) {
   const d = worldObjects.instances?.dummy || new THREE.Object3D();
@@ -460,17 +604,45 @@ function armorGeometry() {
   return G.armor;
 }
 const enemyTextures = {};
-function createSoldier(kind='player'){
- if(kind==='player')return createAssetSoldier();
- const type={scout:'grunt_slime',runner:'swift_slime',heavy:'armored_beetle',ranged:'ranged_spider',charger:'armored_beetle',elite:'elite_mutant'}[kind];
- return sprites.actor(kind==='boss'?'boss':'enemy/'+type,camera,kind==='boss'?5.3:2.25);
+function createSoldier(kind = "player") {
+  if (kind === "player") return createAssetSoldier();
+  const type = {
+    scout: "grunt_slime",
+    runner: "swift_slime",
+    heavy: "armored_beetle",
+    ranged: "ranged_spider",
+    charger: "armored_beetle",
+    elite: "elite_mutant",
+  }[kind];
+  return sprites.actor(
+    kind === "boss" ? "boss" : "enemy/" + type,
+    camera,
+    kind === "boss" ? 5.3 : 2.25,
+  );
 }
-function buildGun(type){
- const group=new THREE.Group(),id={rifle:'assault_rifle',machine:'gatling',shotgun:'shotgun',plasma:'plasma_cannon',laser:'laser_emitter_variant'}[type];
- if(!id)return group;
- const texture=sprites.staticTexture('weapons/'+id),material=new THREE.MeshBasicMaterial({map:texture,transparent:true,alphaTest:.045,side:THREE.DoubleSide});
- const plane=mesh(new THREE.PlaneGeometry(1.17,.7),material,group);plane.quaternion.copy(camera.quaternion);plane.rotateZ(.64);plane.position.set(.02,.05,.08);
- group.userData={weaponType:type,disposables:[material]};return group;
+function buildGun(type) {
+  const group = new THREE.Group(),
+    id = {
+      rifle: "assault_rifle",
+      machine: "gatling",
+      shotgun: "shotgun",
+      plasma: "plasma_cannon",
+      laser: "laser_emitter_variant",
+    }[type];
+  if (!id) return group;
+  const texture = sprites.staticTexture("weapons/" + id),
+    material = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      alphaTest: 0.045,
+      side: THREE.DoubleSide,
+    });
+  const plane = mesh(new THREE.PlaneGeometry(1.17, 0.7), material, group);
+  plane.quaternion.copy(camera.quaternion);
+  plane.rotateZ(0.64);
+  plane.position.set(0.02, 0.05, 0.08);
+  group.userData = { weaponType: type, disposables: [material] };
+  return group;
 }
 function setWeapon(type, quiet = false) {
   const valid = ["rifle", "machine", "shotgun", "plasma", "laser"];
@@ -481,7 +653,31 @@ function setWeapon(type, quiet = false) {
   let visual = weaponModels[type];
   if (!visual) {
     const root = buildGun(type),
-      flash=mesh(new THREE.PlaneGeometry(type==='shotgun'?1.35:.82,type==='plasma'?1.25:.82),new THREE.MeshBasicMaterial({map:sprites.staticTexture('vfx/'+({rifle:'assault',machine:'gatling',shotgun:'shotgun',plasma:'plasma',laser:'laser'}[type])+'_muzzle'),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}),root,[.1,.15,-.75]);
+      flash = mesh(
+        new THREE.PlaneGeometry(
+          type === "shotgun" ? 1.35 : 0.82,
+          type === "plasma" ? 1.25 : 0.82,
+        ),
+        new THREE.MeshBasicMaterial({
+          map: sprites.staticTexture(
+            "vfx/" +
+              {
+                rifle: "assault",
+                machine: "gatling",
+                shotgun: "shotgun",
+                plasma: "plasma",
+                laser: "laser",
+              }[type] +
+              "_muzzle",
+          ),
+          transparent: true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+          side: THREE.DoubleSide,
+        }),
+        root,
+        [0.1, 0.15, -0.75],
+      );
     flash.quaternion.copy(camera.quaternion);
     flash.visible = false;
     visual = weaponModels[type] = { root, muzzle: flash };
@@ -565,7 +761,9 @@ const weaponInfo = {
     kind: "laser",
   },
 };
-function createAssetSoldier(role='hero'){return sprites.actor('actor/'+role,camera,3.1);}
+function createAssetSoldier(role = "hero") {
+  return sprites.actor("actor/" + role, camera, 3.1);
+}
 function buildPlayer() {
   playerRig = createSoldier("player");
   scene.add(playerRig);
@@ -641,31 +839,219 @@ function labelSprite(lines, color = "#b7ffff") {
   sprite.renderOrder = 5;
   return { sprite, canvas: c, texture: tex, ctx: x };
 }
-const gateDefs=[
- [{type:'lanes',amount:1,value:'弹道 +1',name:'扩展覆盖',color:'#74f4ed'},{type:'damage',amount:.15,value:'伤害 +15%',name:'弹芯强化',color:'#ffa9a4'}],
- [{type:'rate',amount:.2,value:'射速 +20%',name:'高速供弹',color:'#ffd19c'},{type:'pellets',amount:1,value:'弹丸 +1',name:'复式弹链',color:'#a1c8ff'}],
- [{type:'speed',amount:.3,value:'弹速 +30%',name:'磁轨推进',color:'#83d6ff'},{type:'damage',amount:.25,value:'伤害 +25%',name:'强化弹芯',color:'#ffafac'}],
+const gateDefs = [
+  [
+    {
+      type: "lanes",
+      amount: 1,
+      value: "弹道 +1",
+      name: "扩展覆盖",
+      color: "#74f4ed",
+    },
+    {
+      type: "damage",
+      amount: 0.15,
+      value: "伤害 +15%",
+      name: "弹芯强化",
+      color: "#ffa9a4",
+    },
+  ],
+  [
+    {
+      type: "rate",
+      amount: 0.2,
+      value: "射速 +20%",
+      name: "高速供弹",
+      color: "#ffd19c",
+    },
+    {
+      type: "pellets",
+      amount: 1,
+      value: "弹丸 +1",
+      name: "复式弹链",
+      color: "#a1c8ff",
+    },
+  ],
+  [
+    {
+      type: "speed",
+      amount: 0.3,
+      value: "弹速 +30%",
+      name: "磁轨推进",
+      color: "#83d6ff",
+    },
+    {
+      type: "damage",
+      amount: 0.25,
+      value: "伤害 +25%",
+      name: "强化弹芯",
+      color: "#ffafac",
+    },
+  ],
 ];
-function buildGate(reward,x,z){
- if((reward.type==='recruit'&&run.team.length>=4)||(reward.type==='promote'&&!run.canPromote(reward.role))||(reward.type==='team'&&run.teamPower>=.3))reward={type:'regroup',amount:15,value:'维修 +15',name:'小队维修',color:'#8defce'};
- const limits={lanes:['lanes',3],pellets:['pellets',3],rate:['fireRate',2],speed:['bulletSpeed',2],damage:['damage',2.2]};
- if(limits[reward.type]&&state.stats[limits[reward.type][0]]>=limits[reward.type][1]-1e-6)reward={type:'repair',amount:12,value:'装甲 +12',name:'维修协议',color:'#8defce'};
- const group=new THREE.Group();group.position.set(x,0,z);scene.add(group);
- const key={lanes:'ballistics',pellets:'bullets',rate:'fire_rate',speed:'bullet_speed',damage:'damage',recruit:'recruit',promote:'promote',team:'team_fire_rate',regroup:'team_repair',repair:'heal'}[reward.type]||'damage';
- const frame=mesh(new THREE.PlaneGeometry(3.5,4.38),new THREE.MeshBasicMaterial({map:sprites.staticTexture('gates/gate_'+key),transparent:true,alphaTest:.025,side:THREE.DoubleSide,depthWrite:false}),group,[0,1.9,0]);frame.quaternion.copy(camera.quaternion);
- const scan=mesh(new THREE.PlaneGeometry(2.75,.035),new THREE.MeshBasicMaterial({color:reward.color,transparent:true,opacity:.7,depthWrite:false}),group,[0,1.2,.1]);
- const label=labelSprite({value:reward.value,name:reward.name,hint:['recruit','promote','team','regroup'].includes(reward.type)?'靠近此路线 · 二选一':'射击充能 · 上限16'},reward.color);label.sprite.position.set(0,2.3,.2);group.add(label.sprite);
- const light=new THREE.Object3D();light.intensity=0;group.add(light);
- state.gates.push({id:++gateSerial,pairId:null,group,reward:{...reward},charge:0,x,z,light,label,scan,phase:rand(0,6),resolved:false});
+function buildGate(reward, x, z) {
+  if (
+    (reward.type === "recruit" && run.team.length >= 4) ||
+    (reward.type === "promote" && !run.canPromote(reward.role)) ||
+    (reward.type === "team" && run.teamPower >= 0.3)
+  )
+    reward = {
+      type: "regroup",
+      amount: 15,
+      value: "维修 +15",
+      name: "小队维修",
+      color: "#8defce",
+    };
+  const limits = {
+    lanes: ["lanes", 3],
+    pellets: ["pellets", 3],
+    rate: ["fireRate", 2],
+    speed: ["bulletSpeed", 2],
+    damage: ["damage", 2.2],
+  };
+  if (
+    limits[reward.type] &&
+    state.stats[limits[reward.type][0]] >= limits[reward.type][1] - 1e-6
+  )
+    reward = {
+      type: "repair",
+      amount: 12,
+      value: "装甲 +12",
+      name: "维修协议",
+      color: "#8defce",
+    };
+  const group = new THREE.Group();
+  group.position.set(x, 0, z);
+  scene.add(group);
+  const key =
+    {
+      lanes: "ballistics",
+      pellets: "bullets",
+      rate: "fire_rate",
+      speed: "bullet_speed",
+      damage: "damage",
+      recruit: "recruit",
+      promote: "promote",
+      team: "team_fire_rate",
+      regroup: "team_repair",
+      repair: "heal",
+    }[reward.type] || "damage";
+  const frame = mesh(
+    new THREE.PlaneGeometry(3.5, 4.38),
+    new THREE.MeshBasicMaterial({
+      map: sprites.staticTexture("gates/gate_" + key),
+      transparent: true,
+      alphaTest: 0.025,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    }),
+    group,
+    [0, 1.9, 0],
+  );
+  frame.quaternion.copy(camera.quaternion);
+  const scan = mesh(
+    new THREE.PlaneGeometry(2.75, 0.035),
+    new THREE.MeshBasicMaterial({
+      color: reward.color,
+      transparent: true,
+      opacity: 0.7,
+      depthWrite: false,
+    }),
+    group,
+    [0, 1.2, 0.1],
+  );
+  const label = labelSprite(
+    {
+      value: reward.value,
+      name: reward.name,
+      hint: ["recruit", "promote", "team", "regroup"].includes(reward.type)
+        ? "靠近此路线 · 二选一"
+        : "射击充能 · 上限16",
+    },
+    reward.color,
+  );
+  label.sprite.position.set(0, 2.3, 0.2);
+  group.add(label.sprite);
+  const light = new THREE.Object3D();
+  light.intensity = 0;
+  group.add(light);
+  state.gates.push({
+    id: ++gateSerial,
+    pairId: null,
+    group,
+    reward: { ...reward },
+    charge: 0,
+    x,
+    z,
+    light,
+    label,
+    scan,
+    phase: rand(0, 6),
+    resolved: false,
+  });
 }
-function spawnGateEvent(){
- const systemPairs=[
- [{type:'recruit',role:'assault',amount:1,value:'队员 +1',name:'突击招募',color:'#8ff3df'},gateDefs[0][1]],
- [{type:'promote',role:'heavy',amount:1,value:'晋升 +1',name:'重火力路线',color:'#ffd58f'},{type:'promote',role:'guard',amount:1,value:'晋升 +1',name:'护卫路线',color:'#9beac7'}],
- [{type:'team',amount:.1,value:'全队射速 +10%',name:'协同供弹',color:'#a7beff'},{type:'promote',role:'assault',amount:1,value:'晋升 +1',name:'突击精锐',color:'#8ddff1'}],
- ];
- const index=state.gateSequence,pair=index===0?systemPairs[0]:index%3===1?systemPairs[Math.floor(index/3)%3]:gateDefs[index%3];const pairId=++state.gateSequence;
- pair.forEach((reward,i)=>{buildGate(reward,i===0?-2.45:2.45,-34);state.gates.at(-1).pairId=pairId;});state.gateTimer=10.5;
+function spawnGateEvent() {
+  const systemPairs = [
+    [
+      {
+        type: "recruit",
+        role: "assault",
+        amount: 1,
+        value: "队员 +1",
+        name: "突击招募",
+        color: "#8ff3df",
+      },
+      gateDefs[0][1],
+    ],
+    [
+      {
+        type: "promote",
+        role: "heavy",
+        amount: 1,
+        value: "晋升 +1",
+        name: "重火力路线",
+        color: "#ffd58f",
+      },
+      {
+        type: "promote",
+        role: "guard",
+        amount: 1,
+        value: "晋升 +1",
+        name: "护卫路线",
+        color: "#9beac7",
+      },
+    ],
+    [
+      {
+        type: "team",
+        amount: 0.1,
+        value: "全队射速 +10%",
+        name: "协同供弹",
+        color: "#a7beff",
+      },
+      {
+        type: "promote",
+        role: "assault",
+        amount: 1,
+        value: "晋升 +1",
+        name: "突击精锐",
+        color: "#8ddff1",
+      },
+    ],
+  ];
+  const index = state.gateSequence,
+    pair =
+      index === 0
+        ? systemPairs[0]
+        : index % 3 === 1
+          ? systemPairs[Math.floor(index / 3) % 3]
+          : gateDefs[index % 3];
+  const pairId = ++state.gateSequence;
+  pair.forEach((reward, i) => {
+    buildGate(reward, i === 0 ? -2.45 : 2.45, -34);
+    state.gates.at(-1).pairId = pairId;
+  });
+  state.gateTimer = 10.5;
 }
 
 function makeCrateTexture(type) {
@@ -709,29 +1095,70 @@ function makeCrateTexture(type) {
     }),
   );
 }
-function spawnCrate(type,x=rand(-3.7,3.7),z=-29){
- if(state.crates.length>=3||!weaponInfo[type])return;
- const group=new THREE.Group();group.position.set(x,.1,z);scene.add(group);
- const rank=['rifle','machine','shotgun','plasma','laser'].indexOf(type),key=type==='medkit'?'pickup_heal_kit':rank>=3?'pickup_advanced_weapon':rank>=1?'pickup_rare_weapon':'pickup_common_weapon';
- const body=mesh(new THREE.PlaneGeometry(1.65,1.65),new THREE.MeshBasicMaterial({map:sprites.staticTexture('props/'+key),transparent:true,alphaTest:.05,side:THREE.DoubleSide}),group,[0,.5,0]);body.quaternion.copy(camera.quaternion);
- const sprite=makeCrateTexture(type);sprite.position.set(0,1.8,0);sprite.scale.set(3,1.52,1);group.add(sprite);
- if(type!=='medkit'){const display=buildGun(type);display.position.set(0,.9,.1);group.add(display);}
- const light=new THREE.Object3D();light.intensity=0;group.add(light);
- state.crates.push({group,type,x,z,spin:0,light,grade:rank>=3?'high':'normal',opened:false,armorRolled:false});
+function spawnCrate(type, x = rand(-3.7, 3.7), z = -29) {
+  if (state.crates.length >= 3 || !weaponInfo[type]) return;
+  const group = new THREE.Group();
+  group.position.set(x, 0.1, z);
+  scene.add(group);
+  const rank = ["rifle", "machine", "shotgun", "plasma", "laser"].indexOf(type),
+    key =
+      type === "medkit"
+        ? "pickup_heal_kit"
+        : rank >= 3
+          ? "pickup_advanced_weapon"
+          : rank >= 1
+            ? "pickup_rare_weapon"
+            : "pickup_common_weapon";
+  const body = mesh(
+    new THREE.PlaneGeometry(1.65, 1.65),
+    new THREE.MeshBasicMaterial({
+      map: sprites.staticTexture("props/" + key),
+      transparent: true,
+      alphaTest: 0.05,
+      side: THREE.DoubleSide,
+    }),
+    group,
+    [0, 0.5, 0],
+  );
+  body.quaternion.copy(camera.quaternion);
+  const sprite = makeCrateTexture(type);
+  sprite.position.set(0, 1.8, 0);
+  sprite.scale.set(3, 1.52, 1);
+  group.add(sprite);
+  if (type !== "medkit") {
+    const display = buildGun(type);
+    display.position.set(0, 0.9, 0.1);
+    group.add(display);
+  }
+  const light = new THREE.Object3D();
+  light.intensity = 0;
+  group.add(light);
+  state.crates.push({
+    group,
+    type,
+    x,
+    z,
+    spin: 0,
+    light,
+    grade: rank >= 3 ? "high" : "normal",
+    opened: false,
+    armorRolled: false,
+  });
 }
 
 function acquireGate(g) {
   const special = g.reward.type;
   if (["recruit", "team", "promote", "regroup"].includes(special)) {
     if (special === "recruit") run.recruit("assault");
-    if (special === "team") run.teamPower = Math.min(.3, run.teamPower+.1);
+    if (special === "team") run.teamPower = Math.min(0.3, run.teamPower + 0.1);
     if (special === "regroup") {
       state.hp = Math.min(run.maxHp, state.hp + 15);
       run.team.forEach((m) => (m.hp = Math.min(m.maxHp, m.hp + 15)));
     }
     if (special === "promote") {
       if (!run.team.length) run.recruit("assault");
-      else if(!run.promote(g.reward.role))run.team.forEach(m=>m.hp=Math.min(m.maxHp,m.hp+15));
+      else if (!run.promote(g.reward.role))
+        run.team.forEach((m) => (m.hp = Math.min(m.maxHp, m.hp + 15)));
     }
     announce(g.reward.value, "队员本局持续存在 · 职业武器保留");
     audio.pickup();
@@ -754,10 +1181,10 @@ function acquireGate(g) {
   const s = state.stats;
   switch (g.reward.type) {
     case "lanes":
-      s.lanes = Math.min(3, s.lanes + Math.min(2,g.reward.amount));
+      s.lanes = Math.min(3, s.lanes + Math.min(2, g.reward.amount));
       break;
     case "pellets":
-      s.pellets = Math.min(3, s.pellets + Math.min(2,g.reward.amount));
+      s.pellets = Math.min(3, s.pellets + Math.min(2, g.reward.amount));
       break;
     case "rate":
       s.fireRate = Math.min(2, s.fireRate * (1 + g.reward.amount));
@@ -798,7 +1225,9 @@ function acquireGate(g) {
 function disposeGroup(g) {
   sprites.release(g);
   scene.remove(g);
-  g.traverse(o=>{for(const resource of o.userData.disposables||[])resource.dispose();});
+  g.traverse((o) => {
+    for (const resource of o.userData.disposables || []) resource.dispose();
+  });
   g.traverse?.((o) => {
     if (o.geometry && !Object.values(G).includes(o.geometry))
       o.geometry.dispose();
@@ -810,10 +1239,13 @@ function disposeGroup(g) {
 }
 function removeShadow(shadow) {
   scene.remove(shadow);
-  shadow.geometry.dispose();
-  shadow.material.dispose();
+  shadow.geometry?.dispose();
+  shadow.material?.dispose();
 }
-function disposeSoldier(g){disposeGroup(g);g.userData.shieldMaterial?.dispose();}
+function disposeSoldier(g) {
+  disposeGroup(g);
+  g.userData.shieldMaterial?.dispose();
+}
 function spawnEnemy(type = "grunt", x = rand(-4.4, 4.4), z = -46) {
   if (state.threats.length >= RULES.enemyLimit) return;
   const cfg = {
@@ -833,40 +1265,10 @@ function spawnEnemy(type = "grunt", x = rand(-4.4, 4.4), z = -46) {
     if (o.isMesh) o.castShadow = false;
   });
   scene.add(group);
-  const barGroup = new THREE.Group();
-  const back = mesh(
-    G.plane,
-    basic("#1d1718", 0.92),
-    barGroup,
-    [0, 0, 0],
-    [0.9, 0.095, 1],
-  );
-  const fill = mesh(
-    G.plane,
-    basic(type === "elite" ? "#ff6a54" : "#ffc270", 0.96),
-    barGroup,
-    [0, 0, 0.006],
-    [0.88, 0.06, 1],
-  );
-  barGroup.position.y = 2.35;
-  group.add(barGroup);
-  barGroup.quaternion
-    .copy(group.quaternion)
-    .invert()
-    .multiply(camera.quaternion);
-  const shadow = mesh(
-    new THREE.CircleGeometry(0.55 * cfg.scale, 18),
-    new THREE.MeshBasicMaterial({
-      color: "#050b0d",
-      transparent: true,
-      opacity: 0.22,
-      depthWrite: false,
-    }),
-    scene,
-    [x, -0.085, z],
-    [1, 0.7, 1],
-  );
-  shadow.rotation.x = -Math.PI / 2;
+  // Public combat objects stay stable; actual bars/shadows render in three batches.
+  const barGroup = new THREE.Object3D(),
+    fill = new THREE.Object3D(),
+    shadow = new THREE.Object3D();
   state.threats.push({
     type,
     group,
@@ -926,13 +1328,21 @@ function createDamageSprite(
 }
 const particlePool = [];
 // Telegraphs have priority over cosmetic sparks, with one global effect ceiling.
-function registerEffect(effect){
- if(state.effects.length>=RULES.particleLimit){
-  let i=state.effects.findIndex(p=>!p.userData.warning);if(i<0)i=0;
-  const old=state.effects.splice(i,1)[0];scene.remove(old);
-  if(old.userData.v){old.visible=false;particlePool.push(old);}else{if(!Object.values(G).includes(old.geometry))old.geometry.dispose();old.material.dispose();}
- }
- state.effects.push(effect);
+function registerEffect(effect) {
+  if (state.effects.length >= RULES.particleLimit) {
+    let i = state.effects.findIndex((p) => !p.userData.warning);
+    if (i < 0) i = 0;
+    const old = state.effects.splice(i, 1)[0];
+    scene.remove(old);
+    if (old.userData.v) {
+      old.visible = false;
+      particlePool.push(old);
+    } else {
+      if (!Object.values(G).includes(old.geometry)) old.geometry.dispose();
+      old.material.dispose();
+    }
+  }
+  state.effects.push(effect);
 }
 
 function burst3D(x, y, z, color, count = 12) {
@@ -1092,8 +1502,20 @@ function createShot(type, target = aimTarget(), source = null) {
         speed = info.speed * stats.bulletSpeed;
       b.kind = info.kind;
       b.owner = source ? "team" : "player";
-      b.weaponType=type;b.hitTargets=new Set();b.pierce=source?0:(run.armor?.kind==="phantom"?1:run.level("piercing_core")&&Math.random()<(run.level("piercing_core")===2?.3:.2)?1:0);
-      b.x = muzzleX + (lane===0?0:lane===1?-2.1:2.1)*(1+run.value("spread_width","spread_shot"));
+      b.weaponType = type;
+      b.hitTargets = new Set();
+      b.pierce = source
+        ? 0
+        : run.armor?.kind === "phantom"
+          ? 1
+          : run.level("piercing_core") &&
+              Math.random() < (run.level("piercing_core") === 2 ? 0.3 : 0.2)
+            ? 1
+            : 0;
+      b.x =
+        muzzleX +
+        (lane === 0 ? 0 : lane === 1 ? -2.1 : 2.1) *
+          (1 + run.value("spread_width", "spread_shot"));
       b.z = originZ - (type === "shotgun" ? 0 : p * 0.27);
       b.prevX = b.x;
       b.prevZ = b.z;
@@ -1105,7 +1527,7 @@ function createShot(type, target = aimTarget(), source = null) {
         info.damage *
         stats.damage *
         1 *
-        (type === "shotgun" || p === 0 ? 1 : .35);
+        (type === "shotgun" || p === 0 ? 1 : 0.35);
       b.life = 3.2;
       b.color = info.color;
       b.radius = type === "plasma" ? 0.4 : type === "pellet" ? 0.12 : 0.14;
@@ -1201,7 +1623,10 @@ function doLaser() {
     const visual = beam.beams[lane];
     visual.ray.visible = lane < s.lanes;
     if (!visual.ray.visible) continue;
-    const x = muzzleX + (lane===0?0:lane===1?-2.1:2.1)*(1+run.value("spread_width","spread_shot")),
+    const x =
+        muzzleX +
+        (lane === 0 ? 0 : lane === 1 ? -2.1 : 2.1) *
+          (1 + run.value("spread_width", "spread_shot")),
       endX = x + vx * range,
       endZ = originZ + vz * range;
     visual.ray.position.set((x + endX) / 2, 1.27, (originZ + endZ) / 2);
@@ -1213,10 +1638,7 @@ function doLaser() {
     visual.outer.scale.set(width * 2, range, width * 2);
     visual.inner.scale.set(width, range, width);
     const damage =
-      weaponInfo.laser.damage *
-      s.damage *
-      (1 + (s.pellets - 1) * .35) *
-      1;
+      weaponInfo.laser.damage * s.damage * (1 + (s.pellets - 1) * 0.35) * 1;
     for (const e of state.threats)
       if (
         !e.dead &&
@@ -1246,7 +1668,9 @@ function doLaser() {
       )
         chargeGate(gate, 1);
   }
-  for(const c of state.crates)if(c.destructible&&Math.abs(c.x-muzzleX)<1.5)damageSupply(c,weaponInfo.laser.damage*s.damage);
+  for (const c of state.crates)
+    if (c.destructible && Math.abs(c.x - muzzleX) < 1.5)
+      damageSupply(c, weaponInfo.laser.damage * s.damage);
   audio.shoot("laser");
 }
 
@@ -1283,16 +1707,14 @@ function updateGateLabel(g) {
 }
 function fireWeapon() {
   const type = state.weapon;
-  state.shootTimer =
-    weaponInfo[type].interval /
-    combatStats().fireRate;
+  state.shootTimer = weaponInfo[type].interval / combatStats().fireRate;
   if (type === "laser") doLaser();
   else {
     createShot(type, aimTarget());
     audio.shoot(type);
   }
-  sprites.trigger(playerRig,"shoot");
-  if(armorVisual)sprites.trigger(armorVisual,"attack");
+  sprites.trigger(playerRig, "shoot");
+  if (armorVisual) sprites.trigger(armorVisual, "attack");
   muzzleFlash();
   if (type === "shotgun") state.shake = Math.max(state.shake, 0.12);
   else if (type === "plasma") state.shake = Math.max(state.shake, 0.09);
@@ -1300,7 +1722,11 @@ function fireWeapon() {
 function aimTarget() {
   let target = { x: state.playerX + 0.63, z: -45 },
     best = Infinity;
-  for (const e of [...state.threats, ...(state.boss ? [state.boss] : []),...state.crates.filter(c=>c.destructible)]) {
+  for (const e of [
+    ...state.threats,
+    ...(state.boss ? [state.boss] : []),
+    ...state.crates.filter((c) => c.destructible),
+  ]) {
     if (e.dead || e.z >= playerZ || Math.abs(e.x - state.playerX) > 3.1)
       continue;
     const distance = playerZ - e.z;
@@ -1334,7 +1760,8 @@ function processBulletCollisions(b, dt) {
     }
   let target = null,
     nearest = Infinity,
-    isBoss = false, isCrate=false;
+    isBoss = false,
+    isCrate = false;
   for (const e of state.threats) {
     if (e.dead || b.hitTargets?.has(e)) continue;
     const t = segmentHit(
@@ -1370,8 +1797,21 @@ function processBulletCollisions(b, dt) {
       isBoss = true;
     }
   }
-  for(const c of state.crates)if(c.destructible){const t=segmentHit(x0,z0,b.x,b.z,c.x,c.z,1.2,.9);if(t!==null&&t<nearest){nearest=t;target=c;isBoss=false;isCrate=true;}}
-  if(isCrate){damageSupply(target,b.damage);releaseBullet(b);return true;}
+  for (const c of state.crates)
+    if (c.destructible) {
+      const t = segmentHit(x0, z0, b.x, b.z, c.x, c.z, 1.2, 0.9);
+      if (t !== null && t < nearest) {
+        nearest = t;
+        target = c;
+        isBoss = false;
+        isCrate = true;
+      }
+    }
+  if (isCrate) {
+    damageSupply(target, b.damage);
+    releaseBullet(b);
+    return true;
+  }
   if (!target) return false;
   const damage =
     b.damage *
@@ -1385,7 +1825,7 @@ function processBulletCollisions(b, dt) {
   if (b.kind === "plasma") {
     for (const e of state.threats)
       if (!e.dead && Math.hypot(e.x - target.x, e.z - target.z) < 3)
-        damageEnemy(e, damage, true, e===target&&b.owner==="player");
+        damageEnemy(e, damage, true, e === target && b.owner === "player");
     if (
       boss &&
       !boss.dead &&
@@ -1395,25 +1835,51 @@ function processBulletCollisions(b, dt) {
     burst3D(target.x, 1.3, target.z, weaponInfo.plasma.color, 24);
     audio.explosion();
     state.shake = Math.max(state.shake, 0.15);
-  } else if (isBoss) damageBoss(damage,b.owner==='player');
-  else damageEnemy(target,damage,false,b.owner==='player');
-  if(b.pierce>0&&b.kind!=='plasma'&&!isBoss){b.pierce--;b.damage*=run.level('piercing_core')===2?.55:.5;b.hitTargets.add(target);return false;}
+  } else if (isBoss) damageBoss(damage, b.owner === "player");
+  else damageEnemy(target, damage, false, b.owner === "player");
+  if (b.pierce > 0 && b.kind !== "plasma" && !isBoss) {
+    b.pierce--;
+    b.damage *= run.level("piercing_core") === 2 ? 0.55 : 0.5;
+    b.hitTargets.add(target);
+    return false;
+  }
   releaseBullet(b);
   return true;
 }
 
 function damageEnemy(e, dmg, heavy, procs = true) {
   if (e.dead) return;
-  if(procs){
-    const hit=run.directHit(e,dmg);dmg=hit.damage;
-    if(hit.burn){e.burnTime=3;e.burnDamage=4;}
-    if(hit.slow){e.slowTime=2;e.slow=Math.min(hit.slow,(e.slow||0)+.025*(run.team.some(m=>m.role==='heavy')?1.5:1));}
-    if(hit.chain)secondaryDamage(e,dmg*.35,4,hit.chain,'#8edfff');
-    if(hit.explode)secondaryDamage(e,dmg*.45,run.level('explosive_round')===2?2.4:2,4,'#ffc489');
-    if(run.armor?.kind==='molten'&&run.blastCD<=0){run.blastCD=.6;secondaryDamage(e,dmg*.3,1.8,3,'#ffb679');}
+  if (procs) {
+    const hit = run.directHit(e, dmg);
+    dmg = hit.damage;
+    if (hit.burn) {
+      e.burnTime = 3;
+      e.burnDamage = 4;
+    }
+    if (hit.slow) {
+      e.slowTime = 2;
+      e.slow = Math.min(
+        hit.slow,
+        (e.slow || 0) +
+          0.025 * (run.team.some((m) => m.role === "heavy") ? 1.5 : 1),
+      );
+    }
+    if (hit.chain) secondaryDamage(e, dmg * 0.35, 4, hit.chain, "#8edfff");
+    if (hit.explode)
+      secondaryDamage(
+        e,
+        dmg * 0.45,
+        run.level("explosive_round") === 2 ? 2.4 : 2,
+        4,
+        "#ffc489",
+      );
+    if (run.armor?.kind === "molten" && run.blastCD <= 0) {
+      run.blastCD = 0.6;
+      secondaryDamage(e, dmg * 0.3, 1.8, 3, "#ffb679");
+    }
   }
   e.hp -= dmg;
-  sprites.trigger(e.group,"hit");
+  sprites.trigger(e.group, "hit");
   e.stun = 0.11;
   e.flash = 0.09;
   createDamageSprite(
@@ -1429,9 +1895,9 @@ function damageEnemy(e, dmg, heavy, procs = true) {
   state.combo = Math.min(99, state.combo + 1);
   if (e.hp <= 0) {
     e.dead = 0.48;
-    nativeFlash(e.x,e.z,"enemy_impact",2);
+    nativeFlash(e.x, e.z, "enemy_impact", 2);
     e.group.userData.dead = true;
-    sprites.trigger(e.group,"down");
+    sprites.trigger(e.group, "down");
     state.kills++;
     state.hp = Math.min(run.maxHp, state.hp + run.onKill());
     state.score += e.score;
@@ -1474,7 +1940,7 @@ function secondaryDamage(origin, damage, radius, limit, color) {
     }
   }
 }
-function damageBoss(dmg,procs=true) {
+function damageBoss(dmg, procs = true) {
   const b = state.boss;
   if (!b || b.dead) return;
   if (b.shield > 0) {
@@ -1485,12 +1951,30 @@ function damageBoss(dmg,procs=true) {
     }
     return;
   }
-  if(procs){const hit=run.directHit(b,dmg);dmg=hit.damage;if(hit.slow){b.slowTime=2;b.slow=Math.min(.08,hit.slow);}if(hit.burn){b.burnTime=3;b.burnDamage=4;}if(hit.chain)secondaryDamage(b,dmg*.35,5,hit.chain,'#9ce2ff');if(hit.explode)secondaryDamage(b,dmg*.45,2.4,4,'#ffc489');}
+  if (procs) {
+    const hit = run.directHit(b, dmg);
+    dmg = hit.damage;
+    if (hit.slow) {
+      b.slowTime = 2;
+      b.slow = Math.min(0.08, hit.slow);
+    }
+    if (hit.burn) {
+      b.burnTime = 3;
+      b.burnDamage = 4;
+    }
+    if (hit.chain) secondaryDamage(b, dmg * 0.35, 5, hit.chain, "#9ce2ff");
+    if (hit.explode) secondaryDamage(b, dmg * 0.45, 2.4, 4, "#ffc489");
+  }
   const boundary = b.armorPhase < 2 ? (b.maxHp * (2 - b.armorPhase)) / 3 : 0;
   const previousHp = b.hp;
   b.hp = Math.max(boundary, b.hp - dmg);
   b.flash = 0.1;
-  if(!['windup','attack','recover'].includes(b.group.userData.actor.machine.state))sprites.trigger(b.group,"hit");
+  if (
+    !["windup", "attack", "recover"].includes(
+      b.group.userData.actor.machine.state,
+    )
+  )
+    sprites.trigger(b.group, "hit");
   createDamageSprite(Math.round(previousHp - b.hp), "#ffd7a1", b.x, b.z, 4);
   burst3D(b.x, 2.3, b.z, "#ff9a73", 5);
   audio.impact(true);
@@ -1504,7 +1988,7 @@ function damageBoss(dmg,procs=true) {
   }
   if (b.hp <= 0) {
     b.dead = true;
-    sprites.trigger(b.group,"down");
+    sprites.trigger(b.group, "down");
     b.death = 1.35;
     b.shieldMesh.visible = false;
     state.score += 1400 + Math.floor(state.time * 2);
@@ -1518,7 +2002,7 @@ function damageBoss(dmg,procs=true) {
 }
 
 function spawnEnemyShot(enemy) {
-  sprites.trigger(enemy.group,"attack");
+  sprites.trigger(enemy.group, "attack");
   if (state.enemyShots.length >= 60) return;
   const warning = mesh(
     new THREE.RingGeometry(0.16, 0.27, 24),
@@ -1555,7 +2039,7 @@ function buildBoss() {
     group = createSoldier(type);
   group.position.set(0, 0, -30);
   scene.add(group);
-  const hp = 2200 * (1 + Math.min(1.4, Math.max(0,state.time-95)/250));
+  const hp = 2200 * (1 + Math.min(1.4, Math.max(0, state.time - 95) / 250));
   const shieldMaterial = new THREE.MeshBasicMaterial({
     color: "#70dbff",
     wireframe: true,
@@ -1650,7 +2134,9 @@ function spawnInterval(t) {
   return t % 24 >= 20 ? base * 3.8 : base;
 }
 
-function addHeat(amount){state.heat=(state.heat+amount)%10;}
+function addHeat(amount) {
+  state.heat = (state.heat + amount) % 10;
+}
 
 function updateDifficulty(dt) {
   const t = state.time,
@@ -1675,8 +2161,11 @@ function updateDifficulty(dt) {
   state.crateTimer -= dt;
   if (state.crateTimer <= 0 && state.crates.length < 2) {
     const choices = ["machine", "shotgun", "plasma", "laser"],
-      type = choices[Math.min(3, Math.floor(Math.max(0,t-20) / 35))];
-    spawnCrate(type, (Math.floor(Math.max(0,t-20) / 35) % 2 ? -1 : 1) * 2.75);
+      type = choices[Math.min(3, Math.floor(Math.max(0, t - 20) / 35))];
+    spawnCrate(
+      type,
+      (Math.floor(Math.max(0, t - 20) / 35) % 2 ? -1 : 1) * 2.75,
+    );
     state.crateTimer = 22;
   }
   if (t >= state.nextBoss && !state.boss) {
@@ -1689,7 +2178,7 @@ function moveThreats(dt) {
   for (let i = state.threats.length - 1; i >= 0; i--) {
     const e = state.threats[i];
     if (e.dead) {
-      sprites.tick(e.group,dt);
+      sprites.tick(e.group, dt);
       e.dead -= dt;
       e.group.rotation.z += dt * 1.5;
       e.group.position.y = Math.max(-0.35, e.group.position.y - dt * 0.7);
@@ -1701,7 +2190,7 @@ function moveThreats(dt) {
       }
       continue;
     }
-    sprites.tick(e.group,dt);
+    sprites.tick(e.group, dt);
     e.stun = Math.max(0, e.stun - dt);
     e.cooldown = Math.max(0, (e.cooldown || 0) - dt);
     if (e.burnTime > 0) {
@@ -1795,7 +2284,7 @@ function moveThreats(dt) {
       .multiply(camera.quaternion);
     if (dist < 1.25 && Math.abs(e.x - state.playerX) < 0.9) {
       e.cooldown = 0.24;
-      sprites.trigger(e.group,"attack");
+      sprites.trigger(e.group, "attack");
       hurtPlayer(e.damage, 0.8);
       e.z -= 2.1;
       e.x += Math.sign(e.x - state.playerX || 1) * 0.45;
@@ -1807,7 +2296,7 @@ function moveThreats(dt) {
         member.invuln <= 0
       ) {
         e.cooldown = 0.24;
-      sprites.trigger(e.group,"attack");
+        sprites.trigger(e.group, "attack");
         run.hurtMember(member, e.damage);
         e.z -= 0.9;
         burst3D(member.x, 1, member.z, "#ffba98", 8);
@@ -1826,7 +2315,7 @@ function moveThreats(dt) {
 function updateBoss(dt) {
   const b = state.boss;
   if (!b) return;
-  sprites.tick(b.group,dt);
+  sprites.tick(b.group, dt);
   if (b.dead) {
     b.death -= dt;
     b.group.rotation.y += dt * 2;
@@ -1846,19 +2335,26 @@ function updateBoss(dt) {
   $("#bossHud").classList.toggle("shielded", b.shield > 0);
   $("#bossLabel").textContent = b.shield > 0 ? "巨像 · 护盾" : "灾厄巨像";
   b.flash = Math.max(0, b.flash - dt);
-  b.group.userData.body.material.color.set(b.flash>0?"#ffc8cb":"#ffffff");
-  b.slowTime=Math.max(0,(b.slowTime||0)-dt);
-  if(b.burnTime>0){b.burnTime-=dt;b.burnTick=(b.burnTick||0)+dt;if(b.burnTick>=.5){b.burnTick-=.5;damageBoss(b.burnDamage*.5,false);}}
-  b.move += dt*(b.slowTime>0?1-(b.slow||0):1);
+  b.group.userData.body.material.color.set(b.flash > 0 ? "#ffc8cb" : "#ffffff");
+  b.slowTime = Math.max(0, (b.slowTime || 0) - dt);
+  if (b.burnTime > 0) {
+    b.burnTime -= dt;
+    b.burnTick = (b.burnTick || 0) + dt;
+    if (b.burnTick >= 0.5) {
+      b.burnTick -= 0.5;
+      damageBoss(b.burnDamage * 0.5, false);
+    }
+  }
+  b.move += dt * (b.slowTime > 0 ? 1 - (b.slow || 0) : 1);
   b.x = Math.sin(b.move * 0.45) * 3.25;
   b.z = mix(b.z, -18, Math.min(1, dt * 0.5));
   b.group.position.set(b.x, -0.12 + Math.sin(b.move * 1.6) * 0.04, b.z);
-  b.group.rotation.y=0;
+  b.group.rotation.y = 0;
   b.group.userData.legL.rotation.x = Math.sin(b.move * 3) * 0.08;
   b.attack -= dt;
   if (b.attack <= 0 && b.phase === "idle") {
     b.phase = "warn";
-    sprites.trigger(b.group,"windup");
+    sprites.trigger(b.group, "windup");
     b.skillCycle = (b.skillCycle || 0) + 1;
     b.sweep = b.armorPhase === 2 && b.skillCycle % 2 === 0;
     b.warning = b.armorPhase > 0 ? 1.05 : 0.85;
@@ -1897,13 +2393,21 @@ function updateBoss(dt) {
       b.warnMesh.material.opacity = 0.15 + Math.sin(state.time * 35) * 0.12;
     if (b.warning <= 0) {
       b.phase = "idle";
-      sprites.trigger(b.group,"attack");
+      sprites.trigger(b.group, "attack");
       b.warnMesh?.parent?.remove(b.warnMesh);
       b.warnMesh = null;
-      if(b.sweep)spawnBossWave(b);
-      else{
-        for(let i=-(b.armorPhase>0?2:1);i<=(b.armorPhase>0?2:1);i++)spawnBossShot(b,i);
-        if(b.armorPhase>0&&b.skillCycle%3===0){for(const x of [-3.8,3.8])spawnEnemy('runner',x,b.z-3);showCombo('巨像呼援 · 两翼增援接近');}
+      if (b.sweep) spawnBossWave(b);
+      else {
+        for (
+          let i = -(b.armorPhase > 0 ? 2 : 1);
+          i <= (b.armorPhase > 0 ? 2 : 1);
+          i++
+        )
+          spawnBossShot(b, i);
+        if (b.armorPhase > 0 && b.skillCycle % 3 === 0) {
+          for (const x of [-3.8, 3.8]) spawnEnemy("runner", x, b.z - 3);
+          showCombo("巨像呼援 · 两翼增援接近");
+        }
       }
       state.shake = 0.12;
     }
@@ -1912,10 +2416,29 @@ function updateBoss(dt) {
     hurtPlayer(24, 1.1);
   $("#bossBar").style.width = `${Math.max(0, (b.hp / b.maxHp) * 100)}%`;
 }
-function spawnBossWave(b){
- if(state.enemyShots.length>=60)return;
- const wave=mesh(G.cube,mat('shockwave','#f47bcb',.3,.1,1.3),scene,[b.targetX,.35,b.z+1],[5.2,.32,.55]);
- state.enemyShots.push({mesh:wave,x:b.targetX,z:b.z+1,y:.35,vx:0,vz:12,life:4,damage:24,active:true,boss:true,wave:true,width:5.2});
+function spawnBossWave(b) {
+  if (state.enemyShots.length >= 60) return;
+  const wave = mesh(
+    G.cube,
+    mat("shockwave", "#f47bcb", 0.3, 0.1, 1.3),
+    scene,
+    [b.targetX, 0.35, b.z + 1],
+    [5.2, 0.32, 0.55],
+  );
+  state.enemyShots.push({
+    mesh: wave,
+    x: b.targetX,
+    z: b.z + 1,
+    y: 0.35,
+    vx: 0,
+    vz: 12,
+    life: 4,
+    damage: 24,
+    active: true,
+    boss: true,
+    wave: true,
+    width: 5.2,
+  });
 }
 function spawnBossShot(b, i) {
   if (state.enemyShots.length >= 60) return;
@@ -1982,12 +2505,20 @@ function updateShots(dt) {
     s.z += s.vz * dt;
     s.life -= dt;
     s.mesh.position.set(s.x, s.y, s.z);
-    if(!s.wave)s.mesh.rotation.x += dt * 4;
+    if (!s.wave) s.mesh.rotation.x += dt * 4;
     if (
-      segmentHit(oldX, oldZ, s.x, s.z, state.playerX, playerZ, 0.72+(s.width||0)/2, 0.65) !==
-      null
+      segmentHit(
+        oldX,
+        oldZ,
+        s.x,
+        s.z,
+        state.playerX,
+        playerZ,
+        0.72 + (s.width || 0) / 2,
+        0.65,
+      ) !== null
     ) {
-      hurtPlayer(s.damage, 0.8,false,!!s.boss);
+      hurtPlayer(s.damage, 0.8, false, !!s.boss);
       burst3D(s.x, 0.8, s.z, "#ff745b", 9);
       scene.remove(s.mesh);
       state.enemyShots.splice(i, 1);
@@ -1996,10 +2527,19 @@ function updateShots(dt) {
     const member = run.team.find(
       (m) =>
         m.invuln <= 0 &&
-        segmentHit(oldX, oldZ, s.x, s.z, m.x, m.z, 0.6+(s.width||0)/2, 0.65) !== null,
+        segmentHit(
+          oldX,
+          oldZ,
+          s.x,
+          s.z,
+          m.x,
+          m.z,
+          0.6 + (s.width || 0) / 2,
+          0.65,
+        ) !== null,
     );
     if (member) {
-      run.hurtMember(member, s.damage,!!s.boss);
+      run.hurtMember(member, s.damage, !!s.boss);
       burst3D(member.x, 1, member.z, "#ff9f9c", 6);
       scene.remove(s.mesh);
       state.enemyShots.splice(i, 1);
@@ -2011,38 +2551,63 @@ function updateShots(dt) {
     }
   }
 }
-function hurtPlayer(amount, cooldown = 0.8, breach = false,bossSource=false) {
+function hurtPlayer(
+  amount,
+  cooldown = 0.8,
+  breach = false,
+  bossSource = false,
+) {
   if ((!breach && state.invuln > 0) || state.mode !== "playing") return;
-  sprites.trigger(playerRig,"hit");
+  sprites.trigger(playerRig, "hit");
   const guards = 0;
-  state.hp = Math.max(
-    0,
-    state.hp - run.absorb(amount,bossSource),
-  );
+  state.hp = Math.max(0, state.hp - run.absorb(amount, bossSource));
   app.classList.remove("hurt");
   void app.offsetWidth;
   app.classList.add("hurt");
   state.invuln = cooldown;
   state.shake = Math.max(state.shake, 0.17);
-  const reaction=run.onPlayerHurt(state.hp);state.hp=Math.min(run.maxHp,state.hp+reaction.heal);
-  if(reaction.pulse){for(const e of state.threats)if(!e.dead&&Math.hypot(e.x-state.playerX,e.z-playerZ)<6){e.z-=2;e.stun=.3;}burst3D(state.playerX,1,playerZ,'#87dcff',18);}
+  const reaction = run.onPlayerHurt(state.hp);
+  state.hp = Math.min(run.maxHp, state.hp + reaction.heal);
+  if (reaction.pulse) {
+    for (const e of state.threats)
+      if (!e.dead && Math.hypot(e.x - state.playerX, e.z - playerZ) < 6) {
+        e.z -= 2;
+        e.stun = 0.3;
+      }
+    burst3D(state.playerX, 1, playerZ, "#87dcff", 18);
+  }
   audio.impact(true);
   vibrate(26);
   burst3D(state.playerX, 0.8, playerZ, "#ff685e", 12);
-  $("#healthBar").style.width = state.hp/run.maxHp*100 + "%";
+  $("#healthBar").style.width = (state.hp / run.maxHp) * 100 + "%";
   $("#healthText").textContent = Math.ceil(state.hp);
-  $("#maxHealth").textContent=run.maxHp;
+  $("#maxHealth").textContent = run.maxHp;
   if (state.hp <= 0) endGame();
 }
-function maybeArmorDrop(c){
- if(c.armorRolled||c.grade!=='high')return;
- c.armorRolled=true;const kind=run.rollArmor(state.time);
- if(kind)spawnRoadReward('armor',c.x,c.z-3,kind);
+function maybeArmorDrop(c) {
+  if (c.armorRolled || c.grade !== "high") return;
+  c.armorRolled = true;
+  const kind = run.rollArmor(state.time);
+  if (kind) spawnRoadReward("armor", c.x, c.z - 3, kind);
 }
-function damageSupply(c,damage){
- if(!c.destructible||c.hp<=0)return;
- c.hp=Math.max(0,c.hp-damage);createDamageSprite(Math.ceil(damage),'#ffe4aa',c.x,c.z,2);
- if(c.hp===0){c.destructible=false;c.opened=true;if(c.group.userData.locked){const l=c.group.userData.locked;l.material.map.dispose();l.material.dispose();l.removeFromParent();c.group.userData.locked=null;}maybeArmorDrop(c);announce('运输车已击破','靠近领取武器补给');burst3D(c.x,1,c.z,'#ffc58d',16);}
+function damageSupply(c, damage) {
+  if (!c.destructible || c.hp <= 0) return;
+  c.hp = Math.max(0, c.hp - damage);
+  createDamageSprite(Math.ceil(damage), "#ffe4aa", c.x, c.z, 2);
+  if (c.hp === 0) {
+    c.destructible = false;
+    c.opened = true;
+    if (c.group.userData.locked) {
+      const l = c.group.userData.locked;
+      l.material.map.dispose();
+      l.material.dispose();
+      l.removeFromParent();
+      c.group.userData.locked = null;
+    }
+    maybeArmorDrop(c);
+    announce("运输车已击破", "靠近领取武器补给");
+    burst3D(c.x, 1, c.z, "#ffc58d", 16);
+  }
 }
 function updateGatesCrates(dt) {
   for (const g of state.gates) {
@@ -2090,7 +2655,8 @@ function updateGatesCrates(dt) {
     c.group.rotation.y = Math.sin(c.spin) * 0.07;
     c.group.position.y = 0.42 + Math.sin(c.spin * 2) * 0.09;
     if (
-      !c.destructible && previousZ <= playerZ + 1.6 &&
+      !c.destructible &&
+      previousZ <= playerZ + 1.6 &&
       c.z >= playerZ - 1.7 &&
       Math.abs(c.x - state.playerX) < 1.55 + run.level("magnet") * 0.2
     ) {
@@ -2155,26 +2721,78 @@ function energyLink(x, z, tx, tz, color = "#a7a3ff") {
   scene.add(line);
   registerEffect(line);
 }
-function updateTeam(dt){
- const slots=[[-1.25,-.65],[1.25,-.65],[-2.35,-1.8],[2.35,-1.8]];
- for(const [id,v] of teamVisuals)if(!run.team.some(m=>m.id===id)){
-   sprites.trigger(v,'down');v.userData.retire=(v.userData.retire||.55)-dt;sprites.tick(v,dt);v.userData.body.material.opacity=Math.max(0,v.userData.retire/.55);
-   if(v.userData.retire<=0){disposeGroup(v);teamVisuals.delete(id);showCombo('队员阵亡 · 寻找救援');}
- }
- run.team.forEach((m,i)=>{
-   let v=teamVisuals.get(m.id);
-   if(v&&v.userData.role!==m.role){disposeGroup(v);teamVisuals.delete(m.id);v=null;}
-   if(!v){v=createAssetSoldier(m.role==='guard'?'guardian':m.role);v.userData.role=m.role;v.scale.setScalar(.76);v.userData.gun.add(buildGun(ROLES[m.role].weapon));scene.add(v);teamVisuals.set(m.id,v);m.x=clamp(state.playerX+slots[i][0],-4.55,4.55);m.z=playerZ+slots[i][1];}
-   m.x=mix(m.x,clamp(state.playerX+slots[i][0],-4.55,4.55),Math.min(1,dt*8));m.z=mix(m.z,playerZ+slots[i][1],Math.min(1,dt*8));
-   v.position.set(m.x,-.08+Math.sin(state.time*10+i)*.015,m.z);v.rotation.z=clamp((state.targetX-state.playerX)*-.03,-.06,.06);
-   if(m.invuln>0)sprites.trigger(v,'hit');v.userData.body.material.color.set(m.level===3?'#e7f3ff':'#ffffff');sprites.tick(v,dt);
-   m.fire-=dt;
-   if(m.fire<=0){
-     const role=ROLES[m.role],target=[...state.threats,...(state.boss?[state.boss]:[])].filter(e=>!e.dead&&e.z<m.z&&Math.abs(e.x-m.x)<5).sort((a,b)=>b.z-a.z)[0];
-     if(target){const info=weaponInfo[role.weapon],base=role.dps[m.level-1]*role.interval;createShot(role.weapon,target,{x:m.x,z:m.z,stats:{lanes:1,pellets:1,fireRate:1,bulletSpeed:1,damage:base/info.damage*run.teamDamage(m,state.stats)}});sprites.trigger(v,'shoot');}
-     m.fire=role.interval/run.teamRate(state.stats);
-   }
- });
+function updateTeam(dt) {
+  const slots = [
+    [-1.25, -0.65],
+    [1.25, -0.65],
+    [-2.35, -1.8],
+    [2.35, -1.8],
+  ];
+  for (const [id, v] of teamVisuals)
+    if (!run.team.some((m) => m.id === id)) {
+      sprites.trigger(v, "down");
+      v.userData.retire = (v.userData.retire || 0.55) - dt;
+      sprites.tick(v, dt);
+      v.userData.body.material.opacity = Math.max(0, v.userData.retire / 0.55);
+      if (v.userData.retire <= 0) {
+        disposeGroup(v);
+        teamVisuals.delete(id);
+        showCombo("队员阵亡 · 寻找救援");
+      }
+    }
+  run.team.forEach((m, i) => {
+    let v = teamVisuals.get(m.id);
+    if (v && v.userData.role !== m.role) {
+      disposeGroup(v);
+      teamVisuals.delete(m.id);
+      v = null;
+    }
+    if (!v) {
+      v = createAssetSoldier(m.role === "guard" ? "guardian" : m.role);
+      v.userData.role = m.role;
+      v.scale.setScalar(0.76);
+      v.userData.gun.add(buildGun(ROLES[m.role].weapon));
+      scene.add(v);
+      teamVisuals.set(m.id, v);
+      m.x = clamp(state.playerX + slots[i][0], -4.55, 4.55);
+      m.z = playerZ + slots[i][1];
+    }
+    m.x = mix(
+      m.x,
+      clamp(state.playerX + slots[i][0], -4.55, 4.55),
+      Math.min(1, dt * 8),
+    );
+    m.z = mix(m.z, playerZ + slots[i][1], Math.min(1, dt * 8));
+    v.position.set(m.x, -0.08 + Math.sin(state.time * 10 + i) * 0.015, m.z);
+    v.rotation.z = clamp((state.targetX - state.playerX) * -0.03, -0.06, 0.06);
+    if (m.invuln > 0) sprites.trigger(v, "hit");
+    v.userData.body.material.color.set(m.level === 3 ? "#e7f3ff" : "#ffffff");
+    sprites.tick(v, dt);
+    m.fire -= dt;
+    if (m.fire <= 0) {
+      const role = ROLES[m.role],
+        target = [...state.threats, ...(state.boss ? [state.boss] : [])]
+          .filter((e) => !e.dead && e.z < m.z && Math.abs(e.x - m.x) < 5)
+          .sort((a, b) => b.z - a.z)[0];
+      if (target) {
+        const info = weaponInfo[role.weapon],
+          base = role.dps[m.level - 1] * role.interval;
+        createShot(role.weapon, target, {
+          x: m.x,
+          z: m.z,
+          stats: {
+            lanes: 1,
+            pellets: 1,
+            fireRate: 1,
+            bulletSpeed: 1,
+            damage: (base / info.damage) * run.teamDamage(m, state.stats),
+          },
+        });
+        sprites.trigger(v, "shoot");
+      }
+      m.fire = role.interval / run.teamRate(state.stats);
+    }
+  });
 }
 function spawnRoadReward(kind, x = rand(-3.5, 3.5), z = -30, value = null) {
   if (state.crates.length >= 3) return null;
@@ -2205,8 +2823,19 @@ function spawnRoadReward(kind, x = rand(-3.5, 3.5), z = -30, value = null) {
   spawnCrate("medkit", x, z);
   const c = state.crates.at(-1);
   c.system = { kind, value };
-  const pickup=c.group.children.find(o=>o.isMesh);
-  if(pickup){if(kind==='truck')pickup.visible=false;else pickup.material.map=sprites.staticTexture('props/'+({rescue:'pickup_team_rescue',pet:'pickup_pet_chip',armor:'pickup_armor_core'}[kind]));}
+  const pickup = c.group.children.find((o) => o.isMesh);
+  if (pickup) {
+    if (kind === "truck") pickup.visible = false;
+    else
+      pickup.material.map = sprites.staticTexture(
+        "props/" +
+          {
+            rescue: "pickup_team_rescue",
+            pet: "pickup_pet_chip",
+            armor: "pickup_armor_core",
+          }[kind],
+      );
+  }
   c.group.children
     .filter((o) => o.isSprite)
     .forEach((o) => {
@@ -2230,9 +2859,12 @@ function spawnRoadReward(kind, x = rand(-3.5, 3.5), z = -30, value = null) {
   label.sprite.position.y = 2.5;
   label.sprite.scale.set(3, 2.05, 1);
   c.group.add(label.sprite);
-  if(kind==='truck'){
-    c.destructible=true;c.hp=100+Math.min(120,state.time);c.maxHp=c.hp;c.grade='high';
-    c.group.userData.locked=label.sprite;
+  if (kind === "truck") {
+    c.destructible = true;
+    c.hp = 100 + Math.min(120, state.time);
+    c.maxHp = c.hp;
+    c.grade = "high";
+    c.group.userData.locked = label.sprite;
   }
   if (kind === "truck") {
     addBox(c.group, [0, -0.08, 0], [1.7, 0.65, 1.65], "#69859d");
@@ -2272,8 +2904,11 @@ function collectRoadReward(c) {
     );
   }
   if (kind === "armor") {
-    const activated=run.activateArmor(value);
-    if(!activated){announce("战甲重复补给","战地维修 +15 · 不叠加时长");return;}
+    const activated = run.activateArmor(value);
+    if (!activated) {
+      announce("战甲重复补给", "战地维修 +15 · 不叠加时长");
+      return;
+    }
     announce(
       ARMORS[value].name + " · 变身",
       "持续12秒 · " + ARMORS[value].description,
@@ -2293,25 +2928,89 @@ function collectRoadReward(c) {
   updateWeaponUi();
   updateSystemsHud();
 }
-function updatePetArmor(dt,result){
- if(run.pet){
-   const p=run.pet,key='pet/'+({dragon:'fire_dragon',owl:'electromagnetic_owl',drone:'shield_drone',fairy:'life_sprite'}[p.kind])+'/'+p.level;
-   if(!petVisual||petVisual.userData.assetKey!==key){if(petVisual)disposeGroup(petVisual);petVisual=sprites.actor(key,camera,1.08);petVisual.userData.assetKey=key;scene.add(petVisual);}
-   petVisual.position.set(clamp(state.playerX-1.25,-5.3,5.3),1.65+Math.sin(state.time*3)*.1,playerZ-.3);
-   if(result.pet){nativeFlash(state.playerX,playerZ,({dragon:'fire_burst_02',owl:'electric_chain_02',drone:'shield_pulse_01',fairy:'heal_pulse_01'}[result.pet]),3);sprites.trigger(petVisual,'cast');const t=run.team.find(m=>m.id===run.petTarget);burst3D(t?.x??state.playerX,1.4,t?.z??playerZ,PETS[p.kind].color,12);audio.pet?.(p.kind);}
-   sprites.tick(petVisual,dt);
- }
- if(run.armor||run.armorFade>0){
-   const kind=run.armor?.kind||armorVisual?.userData.kind;
-   if(kind&&(!armorVisual||armorVisual.userData.kind!==kind)){if(armorVisual)disposeGroup(armorVisual);armorVisual=sprites.actor('armor/'+ARMORS[kind].asset,camera,3.75);armorVisual.userData.kind=kind;sprites.trigger(armorVisual,'activate');scene.add(armorVisual);}
-   if(armorVisual){armorVisual.position.set(state.playerX,-.06,playerZ+.07);sprites.tick(armorVisual,dt);armorVisual.userData.body.material.opacity=run.armor?1:Math.max(0,run.armorFade/.8);playerRig.userData.body.visible=false;}
- }else{if(armorVisual){disposeGroup(armorVisual);armorVisual=null;}playerRig.userData.body.visible=true;}
- if(result.armorEnded){sprites.trigger(armorVisual,'deactivate');announce('战甲解除','原武器与数字门强化保留');updateWeaponUi();}
- if(result.armorPulse&&armorVisual)sprites.trigger(armorVisual,'attack');
+function updatePetArmor(dt, result) {
+  if (run.pet) {
+    const p = run.pet,
+      key =
+        "pet/" +
+        {
+          dragon: "fire_dragon",
+          owl: "electromagnetic_owl",
+          drone: "shield_drone",
+          fairy: "life_sprite",
+        }[p.kind] +
+        "/" +
+        p.level;
+    if (!petVisual || petVisual.userData.assetKey !== key) {
+      if (petVisual) disposeGroup(petVisual);
+      petVisual = sprites.actor(key, camera, 1.08);
+      petVisual.userData.assetKey = key;
+      scene.add(petVisual);
+    }
+    petVisual.position.set(
+      clamp(state.playerX - 1.25, -5.3, 5.3),
+      1.65 + Math.sin(state.time * 3) * 0.1,
+      playerZ - 0.3,
+    );
+    if (result.pet) {
+      nativeFlash(
+        state.playerX,
+        playerZ,
+        {
+          dragon: "fire_burst_02",
+          owl: "electric_chain_02",
+          drone: "shield_pulse_01",
+          fairy: "heal_pulse_01",
+        }[result.pet],
+        3,
+      );
+      sprites.trigger(petVisual, "cast");
+      const t = run.team.find((m) => m.id === run.petTarget);
+      burst3D(
+        t?.x ?? state.playerX,
+        1.4,
+        t?.z ?? playerZ,
+        PETS[p.kind].color,
+        12,
+      );
+      audio.pet?.(p.kind);
+    }
+    sprites.tick(petVisual, dt);
+  }
+  if (run.armor || run.armorFade > 0) {
+    const kind = run.armor?.kind || armorVisual?.userData.kind;
+    if (kind && (!armorVisual || armorVisual.userData.kind !== kind)) {
+      if (armorVisual) disposeGroup(armorVisual);
+      armorVisual = sprites.actor("armor/" + ARMORS[kind].asset, camera, 3.75);
+      armorVisual.userData.kind = kind;
+      sprites.trigger(armorVisual, "activate");
+      scene.add(armorVisual);
+    }
+    if (armorVisual) {
+      armorVisual.position.set(state.playerX, -0.06, playerZ + 0.07);
+      sprites.tick(armorVisual, dt);
+      armorVisual.userData.body.material.opacity = run.armor
+        ? 1
+        : Math.max(0, run.armorFade / 0.8);
+      playerRig.userData.body.visible = false;
+    }
+  } else {
+    if (armorVisual) {
+      disposeGroup(armorVisual);
+      armorVisual = null;
+    }
+    playerRig.userData.body.visible = true;
+  }
+  if (result.armorEnded) {
+    sprites.trigger(armorVisual, "deactivate");
+    announce("战甲解除", "原武器与数字门强化保留");
+    updateWeaponUi();
+  }
+  if (result.armorPulse && armorVisual) sprites.trigger(armorVisual, "attack");
 }
 function openDraft() {
   if (state.mode !== "playing") return;
-  run.rollOffers(Math.random,{weapon:state.weapon});
+  run.rollOffers(Math.random, { weapon: state.weapon });
   state.mode = "draft";
   activeTouches = 0;
   audio.pause();
@@ -2364,26 +3063,68 @@ function finishDraft() {
   audio.resume().catch(() => {});
   if (document.hidden) pauseRun();
 }
-function updateRunSystems(dt){
- run.playerX=state.playerX;
- const near=state.threats.some(e=>!e.dead&&e.z>-28)||!!state.boss;
- const result=run.tick(dt,{hp:state.hp,enemiesNearby:near});state.hp=clamp(state.hp+result.heal,0,run.maxHp);
- updateTeam(dt);updatePetArmor(dt,result);
- if(state.time>=run.nextDraft&&!state.boss&&state.gates.every(g=>g.resolved||g.z<-10)){
-   run.draftIndex++;run.nextDraft=RULES.traitTimes[run.draftIndex]??(state.time+80);openDraft();return;
- }
- run.eventTimer-=dt;
- if(run.breachRescue>0&&run.breachRescue<.1&&state.crates.length<3){spawnRoadReward('rescue',state.playerX>0?-2.6:2.6,-29,'assault');run.breachRescue=0;}
- if(run.eventTimer<=0&&state.crates.length<2){
-   const i=run.eventIndex++,x=(i%2?1:-1)*2.6,n=Math.floor(i/3);run.eventTimer=25;
-   if(i%3===0){
-     const choices=Object.keys(PETS),kind=choices[(Math.floor(Math.random()*choices.length)+n)%4];
-     const first=spawnRoadReward('pet',x,-30,kind),second=spawnRoadReward('pet',-x,-30,run.pet?.kind||choices[(choices.indexOf(kind)+1)%4]);
-     if(first&&second)first.choiceId=second.choiceId='pet-'+i;run.event='伙伴信标 · 二选一';
-   }else if(i%3===1){spawnRoadReward('truck',x,-31,['machine','shotgun','plasma','laser'][Math.min(3,n)]);run.event='击破武装运输车';}
-   else{spawnEnemy('elite',x,-33);const e=state.threats.at(-1);if(e){e.bounty=true;}spawnRoadReward('rescue',-x,-32,'assault');run.event='悬赏精英 · 队员救援';}
-   showCombo(run.event);
- }
+function updateRunSystems(dt) {
+  run.playerX = state.playerX;
+  const near = state.threats.some((e) => !e.dead && e.z > -28) || !!state.boss;
+  const result = run.tick(dt, { hp: state.hp, enemiesNearby: near });
+  state.hp = clamp(state.hp + result.heal, 0, run.maxHp);
+  updateTeam(dt);
+  updatePetArmor(dt, result);
+  if (
+    state.time >= run.nextDraft &&
+    !state.boss &&
+    state.gates.every((g) => g.resolved || g.z < -10)
+  ) {
+    run.draftIndex++;
+    run.nextDraft = RULES.traitTimes[run.draftIndex] ?? state.time + 80;
+    openDraft();
+    return;
+  }
+  run.eventTimer -= dt;
+  if (
+    run.breachRescue > 0 &&
+    run.breachRescue < 0.1 &&
+    state.crates.length < 3
+  ) {
+    spawnRoadReward("rescue", state.playerX > 0 ? -2.6 : 2.6, -29, "assault");
+    run.breachRescue = 0;
+  }
+  if (run.eventTimer <= 0 && state.crates.length < 2) {
+    const i = run.eventIndex++,
+      x = (i % 2 ? 1 : -1) * 2.6,
+      n = Math.floor(i / 3);
+    run.eventTimer = 25;
+    if (i % 3 === 0) {
+      const choices = Object.keys(PETS),
+        kind = choices[(Math.floor(Math.random() * choices.length) + n) % 4];
+      const first = spawnRoadReward("pet", x, -30, kind),
+        second = spawnRoadReward(
+          "pet",
+          -x,
+          -30,
+          run.pet?.kind || choices[(choices.indexOf(kind) + 1) % 4],
+        );
+      if (first && second) first.choiceId = second.choiceId = "pet-" + i;
+      run.event = "伙伴信标 · 二选一";
+    } else if (i % 3 === 1) {
+      spawnRoadReward(
+        "truck",
+        x,
+        -31,
+        ["machine", "shotgun", "plasma", "laser"][Math.min(3, n)],
+      );
+      run.event = "击破武装运输车";
+    } else {
+      spawnEnemy("elite", x, -33);
+      const e = state.threats.at(-1);
+      if (e) {
+        e.bounty = true;
+      }
+      spawnRoadReward("rescue", -x, -32, "assault");
+      run.event = "悬赏精英 · 队员救援";
+    }
+    showCombo(run.event);
+  }
 }
 function updateSystemsHud() {
   $("#teamStatus").innerHTML =
@@ -2405,7 +3146,14 @@ function updateSystemsHud() {
       ? "战甲解除"
       : "";
   $("#armorStatus").classList.toggle("active", !!run.armor);
-  $('#affixStatus').innerHTML=run.affixes.length?run.affixes.map(a=>{const d=AFFIXES.find(d=>d.id===a.id);return `<span class="trait-chip"><img src="${d.icon}" alt="">${d.name} ${a.level}</span>`;}).join(''):'战术词条 · 43秒首次选择';
+  $("#affixStatus").innerHTML = run.affixes.length
+    ? run.affixes
+        .map((a) => {
+          const d = AFFIXES.find((d) => d.id === a.id);
+          return `<span class="trait-chip"><img src="${d.icon}" alt="">${d.name} ${a.level}</span>`;
+        })
+        .join("")
+    : "战术词条 · 43秒首次选择";
   $("#runDetail").textContent =
     `救援 ${run.totals.recruits} · 阵亡 ${run.totals.fallen} · 突破防线 ${run.totals.breaches}`;
   $("#collectionText").textContent =
@@ -2415,15 +3163,39 @@ function updateSystemsHud() {
 function worldSpeed() {
   return 6.3 + Math.min(2.7, state.time * 0.018);
 }
-function nativeFlash(x,z,key,size=1.8){
- if(state.effects.length>=RULES.particleLimit)return;
- const f=mesh(G.plane,new THREE.MeshBasicMaterial({map:sprites.staticTexture('vfx/'+key),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}),scene,[x,1.25,z],[size,size,1]);f.quaternion.copy(camera.quaternion);f.userData={native:true,life:.22,max:.22};registerEffect(f);
+function nativeFlash(x, z, key, size = 1.8) {
+  if (state.effects.length >= RULES.particleLimit) return;
+  const f = mesh(
+    G.plane,
+    new THREE.MeshBasicMaterial({
+      map: sprites.staticTexture("vfx/" + key),
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide,
+    }),
+    scene,
+    [x, 1.25, z],
+    [size, size, 1],
+  );
+  f.quaternion.copy(camera.quaternion);
+  f.userData = { native: true, life: 0.22, max: 0.22 };
+  registerEffect(f);
 }
 function updateEffects(dt) {
   for (let i = state.effects.length - 1; i >= 0; i--) {
     const p = state.effects[i];
     p.userData.life -= dt;
-    if(p.userData.native){p.material.opacity=Math.max(0,p.userData.life/p.userData.max);p.scale.multiplyScalar(1+dt);if(p.userData.life<=0){scene.remove(p);p.material.dispose();state.effects.splice(i,1);}continue;}
+    if (p.userData.native) {
+      p.material.opacity = Math.max(0, p.userData.life / p.userData.max);
+      p.scale.multiplyScalar(1 + dt);
+      if (p.userData.life <= 0) {
+        scene.remove(p);
+        p.material.dispose();
+        state.effects.splice(i, 1);
+      }
+      continue;
+    }
     if (p.userData.warning) {
       p.material.opacity = Math.max(0, p.userData.life * 1.1);
       if (p.userData.life <= 0) {
@@ -2459,20 +3231,66 @@ function updateEffects(dt) {
     }
   }
 }
-function updateDecor(dt){
- worldTime+=dt;if(roadTexture)roadTexture.offset.y=(roadTexture.offset.y+worldSpeed()*dt/14)%1;
- for(const d of worldObjects.decor||[]){d.z+=worldSpeed()*dt;if(d.z>22)d.z-=118;d.root.position.z=d.z;}
- const city=worldObjects.cityMeshes;
- if(city){
-  for(let i=0;i<worldObjects.skyline.length;i++){
-   const b=worldObjects.skyline[i];b.z+=worldSpeed()*dt*.7;if(b.z>24)b.z-=139.2;
-   city.dummy.position.set(b.x,b.height/2-.3,b.z);city.dummy.scale.set(b.width,b.height,3.9);city.dummy.updateMatrix();city.buildings.setMatrixAt(i,city.dummy.matrix);
-   city.dummy.position.y=b.height*.64;city.dummy.scale.set(b.width+.04,b.height*.48,3.94);city.dummy.updateMatrix();city.crowns.setMatrixAt(i,city.dummy.matrix);
-   for(let w=0;w<6;w++){city.dummy.position.set(b.x+(w%3-1)*b.width*.26,b.height*(.42+Math.floor(w/3)*.26),b.z+2);city.dummy.scale.set(b.width*.17,b.height*.12,.04);city.dummy.updateMatrix();city.windows.setMatrixAt(i*6+w,city.dummy.matrix);}
+function updateDecor(dt) {
+  worldTime += dt;
+  if (roadTexture)
+    roadTexture.offset.y =
+      (roadTexture.offset.y + (worldSpeed() * dt) / 14) % 1;
+  for (const d of worldObjects.decor || []) {
+    d.z += worldSpeed() * dt;
+    if (d.z > 22) d.z -= 118;
+    d.root.position.z = d.z;
+    const dummy = worldObjects.cityMeshes.dummy;
+    dummy.position.set(d.root.position.x, 0.4, d.z);
+    dummy.quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+    dummy.scale.set(d.batch === 0 ? 2.7 : 1.2, d.batch === 0 ? 3 : 1.6, 1);
+    dummy.updateMatrix();
+    worldObjects.decorBatches[d.batch].setMatrixAt(d.index, dummy.matrix);
   }
-  city.buildings.instanceMatrix.needsUpdate=city.crowns.instanceMatrix.needsUpdate=city.windows.instanceMatrix.needsUpdate=true;
-  for(let i=0;i<32;i++){city.dummy.position.set(i%2?2.06:-2.06,-.085,20-Math.floor(i/2)*8+(worldTime*worldSpeed()%8));city.dummy.scale.set(.075,.018,2.6);city.dummy.updateMatrix();worldObjects.markings.setMatrixAt(i,city.dummy.matrix);}worldObjects.markings.instanceMatrix.needsUpdate=true;
- }
+  for (const batch of worldObjects.decorBatches || [])
+    batch.instanceMatrix.needsUpdate = true;
+  const city = worldObjects.cityMeshes;
+  if (city) {
+    city.dummy.quaternion.identity();
+    for (let i = 0; i < worldObjects.skyline.length; i++) {
+      const b = worldObjects.skyline[i];
+      b.z += worldSpeed() * dt * 0.7;
+      if (b.z > 24) b.z -= 139.2;
+      city.dummy.position.set(b.x, b.height / 2 - 0.3, b.z);
+      city.dummy.scale.set(b.width, b.height, 3.9);
+      city.dummy.updateMatrix();
+      city.buildings.setMatrixAt(i, city.dummy.matrix);
+      city.dummy.position.y = b.height * 0.64;
+      city.dummy.scale.set(b.width + 0.04, b.height * 0.48, 3.94);
+      city.dummy.updateMatrix();
+      city.crowns.setMatrixAt(i, city.dummy.matrix);
+      for (let w = 0; w < 6; w++) {
+        city.dummy.position.set(
+          b.x + ((w % 3) - 1) * b.width * 0.26,
+          b.height * (0.42 + Math.floor(w / 3) * 0.26),
+          b.z + 2,
+        );
+        city.dummy.scale.set(b.width * 0.17, b.height * 0.12, 0.04);
+        city.dummy.updateMatrix();
+        city.windows.setMatrixAt(i * 6 + w, city.dummy.matrix);
+      }
+    }
+    city.buildings.instanceMatrix.needsUpdate =
+      city.crowns.instanceMatrix.needsUpdate =
+      city.windows.instanceMatrix.needsUpdate =
+        true;
+    for (let i = 0; i < 32; i++) {
+      city.dummy.position.set(
+        i % 2 ? 2.06 : -2.06,
+        -0.085,
+        20 - Math.floor(i / 2) * 8 + ((worldTime * worldSpeed()) % 8),
+      );
+      city.dummy.scale.set(0.075, 0.018, 2.6);
+      city.dummy.updateMatrix();
+      worldObjects.markings.setMatrixAt(i, city.dummy.matrix);
+    }
+    worldObjects.markings.instanceMatrix.needsUpdate = true;
+  }
 }
 function updateGame(dt) {
   if (state.mode !== "playing") return;
@@ -2519,7 +3337,7 @@ function updateGame(dt) {
   state.shootTimer <= 0 && fireWeapon();
   updateRunSystems(dt);
   if (state.mode !== "playing") return;
-  sprites.tick(playerRig,dt);
+  sprites.tick(playerRig, dt);
   updateDifficulty(dt);
   moveThreats(dt);
   if (state.mode !== "playing") return;
@@ -2530,13 +3348,7 @@ function updateGame(dt) {
   updateEffects(dt);
   updateDecor(dt);
   state.score = Math.max(0, state.score + dt * 1.15);
-  state.hp = clamp(state.hp,0,run.maxHp);
-  if (state.threats.length > 24) {
-    for (const e of state.threats.splice(0, state.threats.length - 24)) {
-      disposeSoldier(e.group);
-      removeShadow(e.shadow);
-    }
-  }
+  state.hp = clamp(state.hp, 0, run.maxHp);
   if (state.time - state.lastHud > 0.1) {
     state.lastHud = state.time;
     updateHud();
@@ -2565,9 +3377,9 @@ function updateHud() {
     secs = String(Math.floor(state.time % 60)).padStart(2, "0");
   $("#clock").textContent = `${mins}:${secs}`;
   $("#score").textContent = String(Math.floor(state.score)).padStart(4, "0");
-  $("#healthBar").style.width = state.hp/run.maxHp*100 + "%";
+  $("#healthBar").style.width = (state.hp / run.maxHp) * 100 + "%";
   $("#healthText").textContent = Math.ceil(state.hp);
-  $("#maxHealth").textContent=run.maxHp;
+  $("#maxHealth").textContent = run.maxHp;
   let label =
     state.time < 15
       ? "曙光前线 · 初始接触"
@@ -2634,9 +3446,9 @@ function showCombo(text) {
 function endGame() {
   if (state.mode !== "playing") return;
   state.mode = "ended";
-  sprites.trigger(playerRig,"down");
+  sprites.trigger(playerRig, "down");
   burst3D(state.playerX, 1.1, playerZ, "#b3e9ff", 28);
-  playerRig.rotation.z=0;
+  playerRig.rotation.z = 0;
   const runs = +saved.get("mr-runs", "0") + 1;
   saved.set("mr-runs", runs);
   let collection = [];
@@ -2684,7 +3496,10 @@ function clearDynamic() {
   for (const s of state.enemyShots) if (s.mesh) scene.remove(s.mesh);
   for (const p of state.effects) {
     scene.remove(p);
-    if(p.userData.native){p.material.dispose();continue;}
+    if (p.userData.native) {
+      p.material.dispose();
+      continue;
+    }
     if (p.userData.warning) {
       p.geometry.dispose();
       p.material.dispose();
@@ -2765,7 +3580,9 @@ function resetRun() {
   camera.position.x = 0;
   camera.lookAt(0, 1.2, -15);
   playerRig.visible = true;
-  playerRig.userData.body.visible=true;playerRig.userData.body.material.opacity=1;playerRig.userData.actor.machine.reset("run");
+  playerRig.userData.body.visible = true;
+  playerRig.userData.body.material.opacity = 1;
+  playerRig.userData.actor.machine.reset("run");
   setWeapon("rifle", true);
   updateWeaponUi();
   updateHud();
@@ -2813,7 +3630,9 @@ function setModeMenu() {
   audio.pause();
 }
 function setupUi() {
-  $("#start").disabled=false;
+  $("#start").disabled = false;
+  $("#start").removeAttribute("aria-busy");
+  $("#start span").textContent = "开始突围";
   const persist = (id, key, otherIds) => {
     const slider = $(id),
       v = +saved.get(key, key === "mr2-music" ? ".55" : ".75") * 100;
@@ -2929,8 +3748,14 @@ function frame(now) {
   if (state.mode === "playing" && !testFrozen) updateGame(dt);
   else if (playerRig) {
     playerRig.position.y = -0.1 + Math.sin(now * 0.0011) * 0.012;
-    if (state.mode === "menu") {updateDecor(dt * 0.18);sprites.tick(playerRig,dt);}
-    if(state.mode==="ended"){sprites.tick(playerRig,dt);updateEffects(dt);}
+    if (state.mode === "menu") {
+      updateDecor(dt * 0.18);
+      sprites.tick(playerRig, dt);
+    }
+    if (state.mode === "ended") {
+      sprites.tick(playerRig, dt);
+      updateEffects(dt);
+    }
   }
   const shake = state.shake,
     baseX = camera.position.x,
@@ -2948,6 +3773,7 @@ function frame(now) {
       `translate(${((p.x + 1) * W) / 2}px,${((1 - p.y) * H) / 2}px)`;
   }
   syncBulletInstances();
+  syncEnemyOverlays();
   renderer.render(scene, camera);
   camera.position.x = baseX;
   camera.position.y = baseY;
@@ -2968,9 +3794,13 @@ addEventListener("resize", resize, { passive: true });
 if ("ResizeObserver" in window) new ResizeObserver(() => resize()).observe(app);
 document.addEventListener("contextmenu", (e) => e.preventDefault());
 init();
-if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
- const register=()=>navigator.serviceWorker.register('./sw.js').catch(e=>console.warn('离线缓存未就绪',e.message));
- if(document.readyState==='complete')register();else addEventListener('load',register,{once:true});
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  const register = () =>
+    navigator.serviceWorker
+      .register("./sw.js")
+      .catch((e) => console.warn("离线缓存未就绪", e.message));
+  if (document.readyState === "complete") register();
+  else addEventListener("load", register, { once: true });
 }
 if (new URLSearchParams(location.search).get("test") === "1")
   window.__MR_TEST__ = {
@@ -2990,9 +3820,9 @@ if (new URLSearchParams(location.search).get("test") === "1")
     choose: chooseAffix,
     roadReward: spawnRoadReward,
     runModel: () => run,
-    spriteAudit:()=>sprites.audit(),
-    getPlayer:()=>playerRig,
-    spriteTrigger:(state)=>sprites.trigger(playerRig,state),
+    spriteAudit: () => sprites.audit(),
+    getPlayer: () => playerRig,
+    spriteTrigger: (state) => sprites.trigger(playerRig, state),
     combatStats,
     formationBounds() {
       return [playerRig, ...teamVisuals.values()].map((rig) => {
@@ -3025,7 +3855,10 @@ if (new URLSearchParams(location.search).get("test") === "1")
       const p = new THREE.Vector3(x, y, z).project(camera);
       return { x: ((p.x + 1) * W) / 2, y: ((1 - p.y) * H) / 2 };
     },
-    artStatus:()=>({errors:sprites.errors,loaded:sprites.audit().loaded>=25}),
+    artStatus: () => ({
+      errors: sprites.errors,
+      loaded: sprites.audit().loaded >= 25,
+    }),
     roadOffset: () => roadTexture.offset.y,
     updateRunSystems,
 
@@ -3168,9 +4001,7 @@ if (new URLSearchParams(location.search).get("test") === "1")
         totalDamage: active.reduce((a, b) => a + b.damage, 0),
         weapon: state.weapon,
         interval:
-          weaponInfo[state.weapon].interval /
-          combatStats().fireRate /
-          1,
+          weaponInfo[state.weapon].interval / combatStats().fireRate / 1,
         lanes: state.stats.lanes,
         pellets: state.stats.pellets,
         damageMultiplier: state.stats.damage,

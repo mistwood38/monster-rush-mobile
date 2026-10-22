@@ -1106,6 +1106,51 @@ canvas {
   font-size: 7px;
 }
 /* V1.7 battle art: the menu is a view into the same live world. */
-.menu-overlay{background:linear-gradient(180deg,#0e33576b,transparent 38%,#112c46bd 72%,#071d30f2)}
-.overdrive-meter{display:none}.systems-hud{bottom:calc(38px + env(safe-area-inset-bottom))}
-#affixStatus{display:flex;gap:5px;min-height:28px;align-items:center}.trait-chip{display:flex;align-items:center;gap:3px;padding:3px 5px;background:#102c44e8;border:1px solid #b2d1e32b;border-radius:6px;font-size:9px}.trait-chip img{width:22px;height:22px;object-fit:contain}.draft-card{position:relative;padding-left:68px}.draft-card img{position:absolute;left:14px;top:34px;width:40px;height:40px;object-fit:contain}
+.menu-overlay {
+  background: linear-gradient(
+    180deg,
+    #0e33576b,
+    transparent 38%,
+    #112c46bd 72%,
+    #071d30f2
+  );
+}
+.overdrive-meter {
+  display: none;
+}
+.systems-hud {
+  bottom: calc(38px + env(safe-area-inset-bottom));
+}
+#affixStatus {
+  display: flex;
+  gap: 5px;
+  min-height: 28px;
+  align-items: center;
+}
+.trait-chip {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 5px;
+  background: #102c44e8;
+  border: 1px solid #b2d1e32b;
+  border-radius: 6px;
+  font-size: 9px;
+}
+.trait-chip img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+.draft-card {
+  position: relative;
+  padding-left: 68px;
+}
+.draft-card img {
+  position: absolute;
+  left: 14px;
+  top: 34px;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}

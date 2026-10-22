@@ -1,5 +1,5 @@
 importScripts("./v17-cache.js");
-const CACHE = "monster-rush-road-squad-v17-1";
+const CACHE = "monster-rush-road-squad-v17-2";
 const FILES = [
   "./",
   "./index.html",
@@ -39,7 +39,9 @@ const FILES = [
   "./vendor/three/LICENSE",
 ];
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll([...FILES,...self.V17_FILES])));
+  e.waitUntil(
+    caches.open(CACHE).then((c) => c.addAll([...FILES, ...self.V17_FILES])),
+  );
   self.skipWaiting();
 });
 self.addEventListener("activate", (e) => {

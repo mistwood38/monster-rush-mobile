@@ -1,22 +1,136 @@
-import { BALANCE } from './balance-v17.js';
+import { BALANCE } from "./balance-v17.js";
 export { BALANCE };
-export const RULES=Object.freeze({teamLimit:4,affixLimit:4,maxLevel:2,armorDuration:12,bosses:BALANCE.boss_targets_seconds,traitTimes:BALANCE.trait_events_seconds,enemyLimit:32,bulletLimit:160,particleLimit:64});
-export const ROLES={
- assault:{name:'突击',weapon:'rifle',hp:40,hps:[40,48,56],dps:[15,18,22],interval:.6,damage:9,color:'#70edff'},
- heavy:{name:'重火力',weapon:'machine',hp:32,hps:[32,32,40],dps:[22,22,28],interval:.22,damage:4.84,color:'#ffce85'},
- guard:{name:'护卫',weapon:'rifle',hp:70,hps:[70,70,82],dps:[8,8,11],interval:.8,damage:6.4,color:'#a2e9c2'},
+export const RULES = Object.freeze({
+  teamLimit: 4,
+  affixLimit: 4,
+  maxLevel: 2,
+  armorDuration: 12,
+  bosses: BALANCE.boss_targets_seconds,
+  traitTimes: BALANCE.trait_events_seconds,
+  enemyLimit: 32,
+  bulletLimit: 160,
+  particleLimit: 64,
+});
+export const ROLES = {
+  assault: {
+    name: "突击",
+    weapon: "rifle",
+    hp: 40,
+    hps: [40, 48, 56],
+    dps: [15, 18, 22],
+    interval: 0.6,
+    damage: 9,
+    color: "#70edff",
+  },
+  heavy: {
+    name: "重火力",
+    weapon: "machine",
+    hp: 32,
+    hps: [32, 32, 40],
+    dps: [22, 22, 28],
+    interval: 0.22,
+    damage: 4.84,
+    color: "#ffce85",
+  },
+  guard: {
+    name: "护卫",
+    weapon: "rifle",
+    hp: 70,
+    hps: [70, 70, 82],
+    dps: [8, 8, 11],
+    interval: 0.8,
+    damage: 6.4,
+    color: "#a2e9c2",
+  },
 };
-export const PETS={
- dragon:{name:'烈焰幼龙',icon:'炎',color:'#ffb173',cooldown:20,description:'有敌人时发动，伤害 +15% / 18% / 20%，持续5 / 5 / 6秒'},
- owl:{name:'电磁夜枭',icon:'电',color:'#b6a2ff',cooldown:22,description:'附近敌人伤害 -20% / 25% / 25%，持续5秒；Boss效果减半'},
- drone:{name:'守护机灵',icon:'盾',color:'#7fe5ff',cooldown:26,description:'保护危险单位，20 / 26 / 32护盾；同类不叠加'},
- fairy:{name:'生命精灵',icon:'愈',color:'#a2f5c3',cooldown:28,description:'治疗受伤目标10 / 14 / 18生命；无目标时待机'},
+export const PETS = {
+  dragon: {
+    name: "烈焰幼龙",
+    icon: "炎",
+    color: "#ffb173",
+    cooldown: 20,
+    description: "有敌人时发动，伤害 +15% / 18% / 20%，持续5 / 5 / 6秒",
+  },
+  owl: {
+    name: "电磁夜枭",
+    icon: "电",
+    color: "#b6a2ff",
+    cooldown: 22,
+    description: "附近敌人伤害 -20% / 25% / 25%，持续5秒；Boss效果减半",
+  },
+  drone: {
+    name: "守护机灵",
+    icon: "盾",
+    color: "#7fe5ff",
+    cooldown: 26,
+    description: "保护危险单位，20 / 26 / 32护盾；同类不叠加",
+  },
+  fairy: {
+    name: "生命精灵",
+    icon: "愈",
+    color: "#a2f5c3",
+    cooldown: 28,
+    description: "治疗受伤目标10 / 14 / 18生命；无目标时待机",
+  },
 };
-export const ARMORS={
- thunder:{name:'雷霆战甲',asset:'storm',color:'#a8a1ff',damage:1.3,rate:1.2,description:'电弧枪火 · 伤害×1.30 / 射速×1.20'},
- molten:{name:'熔火战甲',asset:'inferno',color:'#ffac76',damage:1.3,rate:1,description:'限速范围爆炸 · 伤害×1.30'},
- phantom:{name:'幻影战甲',asset:'phantom',color:'#75f5e2',damage:1.4,rate:1,description:'有限穿透 · 伤害×1.40'},
+export const ARMORS = {
+  thunder: {
+    name: "雷霆战甲",
+    asset: "storm",
+    color: "#a8a1ff",
+    damage: 1.3,
+    rate: 1.2,
+    description: "电弧枪火 · 伤害×1.30 / 射速×1.20",
+  },
+  molten: {
+    name: "熔火战甲",
+    asset: "inferno",
+    color: "#ffac76",
+    damage: 1.3,
+    rate: 1,
+    description: "限速范围爆炸 · 伤害×1.30",
+  },
+  phantom: {
+    name: "幻影战甲",
+    asset: "phantom",
+    color: "#75f5e2",
+    damage: 1.4,
+    rate: 1,
+    description: "有限穿透 · 伤害×1.40",
+  },
 };
-const groups={projectile:'弹幕',element:'元素',squad:'编队',survival:'生存',tech:'科技'};
-const icons={piercing_core:'armor_piercing',spread_shot:'barrage_spread',focus_combo:'focused_combo',critical_calibration:'critical_calibration',chain_lightning:'chain_lightning',frost_round:'frost_ammo',explosive_round:'explosive_round',scorch_mag:'burning_magazine',squad_command:'tactical_command',squad_reload:'coordinated_reload',guardian_line:'guardian_line',last_stand:'last_stand',armor_training:'armor_reinforcement',emergency_repair:'emergency_repair',counter_pulse:'counter_pulse',toughness_core:'resilient_core',pet_resonance:'pet_resonance',energy_recycling:'energy_recycling',armor_overclock:'armor_overload',armor_endurance:'armor_duration'};
-export const AFFIXES=BALANCE.trait_catalog.map(a=>({...a,category:groups[a.group],description:a.tier1+'；Ⅱ：'+a.tier2,icon:'./assets/v17/ui_icons_trait_'+icons[a.id]+'.webp'}));
+const groups = {
+  projectile: "弹幕",
+  element: "元素",
+  squad: "编队",
+  survival: "生存",
+  tech: "科技",
+};
+const icons = {
+  piercing_core: "armor_piercing",
+  spread_shot: "barrage_spread",
+  focus_combo: "focused_combo",
+  critical_calibration: "critical_calibration",
+  chain_lightning: "chain_lightning",
+  frost_round: "frost_ammo",
+  explosive_round: "explosive_round",
+  scorch_mag: "burning_magazine",
+  squad_command: "tactical_command",
+  squad_reload: "coordinated_reload",
+  guardian_line: "guardian_line",
+  last_stand: "last_stand",
+  armor_training: "armor_reinforcement",
+  emergency_repair: "emergency_repair",
+  counter_pulse: "counter_pulse",
+  toughness_core: "resilient_core",
+  pet_resonance: "pet_resonance",
+  energy_recycling: "energy_recycling",
+  armor_overclock: "armor_overload",
+  armor_endurance: "armor_duration",
+};
+export const AFFIXES = BALANCE.trait_catalog.map((a) => ({
+  ...a,
+  category: groups[a.group],
+  description: a.tier1 + "；Ⅱ：" + a.tier2,
+  icon: "./assets/v17/ui_icons_trait_" + icons[a.id] + ".webp",
+}));

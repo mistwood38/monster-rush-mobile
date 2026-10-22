@@ -3,7 +3,9 @@
   "version": "3.0.0-review",
   "private": true,
   "scripts": {
-    "test": "node --test tests/systems.test.js tests/source-sprite-state.test.mjs && node tests/browser.cjs"
+    "test": "node --test tests/systems.test.js tests/source-sprite-state.test.mjs && node tests/browser.cjs",
+    "test:balance": "node tests/balance.cjs",
+    "test:performance": "node tests/performance.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
