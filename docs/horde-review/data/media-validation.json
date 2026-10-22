@@ -1,0 +1,208 @@
+{
+  "capturedAudioClips": 12,
+  "note": "Non-silent audio tracks verified; no subjective listening-quality claim. Dense main video captures canvas only without audio.",
+  "files": [
+    {
+      "file": "armor-molten.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-24.2"
+    },
+    {
+      "file": "armor-phantom.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-24.0"
+    },
+    {
+      "file": "armor-thunder.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-27.3"
+    },
+    {
+      "file": "dense-horde-270-300.webm",
+      "streams": [
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": null
+    },
+    {
+      "file": "pet-dragon.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-28.9"
+    },
+    {
+      "file": "pet-drone.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-28.7"
+    },
+    {
+      "file": "pet-fairy.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-29.3"
+    },
+    {
+      "file": "pet-owl.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-28.4"
+    },
+    {
+      "file": "weapon-laser.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-25.5"
+    },
+    {
+      "file": "weapon-machine.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-27.3"
+    },
+    {
+      "file": "weapon-plasma.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-24.4"
+    },
+    {
+      "file": "weapon-rifle.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-32.9"
+    },
+    {
+      "file": "weapon-shotgun.webm",
+      "streams": [
+        {
+          "codec_name": "opus",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2
+        },
+        {
+          "codec_name": "vp8",
+          "codec_type": "video"
+        }
+      ],
+      "meanVolumeDb": "-29.1"
+    }
+  ]
+}

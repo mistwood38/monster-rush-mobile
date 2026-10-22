@@ -1,0 +1,1299 @@
+{
+  "limitation": "Isolated cloud Chromium/SwiftShader software rasterization. Frozen snapshots, quality-tier render and dynamic frame workloads are separated. No Android hardware, touch latency, thermals or battery verification.",
+  "runs": [
+    {
+      "label": "rework",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "viewport": "393x873",
+      "rows": [
+        {
+          "scenario": "frozen rendering only",
+          "requestedEnemies": 32,
+          "actualEnemies": 32,
+          "frames": 50,
+          "meanFrameMs": 242.326,
+          "p95FrameMs": 466.7000000000007,
+          "observedFps": 4.126672333963339,
+          "count": 160,
+          "avgSpeed": 31.999999999999993,
+          "totalDamage": 1093.200000000002,
+          "weapon": "rifle",
+          "interval": 0.25,
+          "lanes": 3,
+          "pellets": 3,
+          "damageMultiplier": 1,
+          "bulletSpeedMultiplier": 1,
+          "kinds": [
+            "bullet"
+          ],
+          "gunMeshes": 2,
+          "playerMeshes": 3,
+          "drawCalls": 46,
+          "memory": {
+            "geometries": 30,
+            "textures": 9
+          },
+          "triangles": 69568,
+          "heap": {
+            "used": 23103943,
+            "total": 36971747
+          },
+          "laser": false,
+          "horde": {
+            "spawned": 32,
+            "killed": 0,
+            "breached": 0,
+            "hits": 0,
+            "damageTaken": 0,
+            "damageDealt": 0,
+            "killSeconds": 0,
+            "engagementSeconds": 0,
+            "breachHits": 0,
+            "directHits": 0,
+            "peakAlive": 0,
+            "peakVisible": 32,
+            "collisionTests": 0,
+            "bossFights": [],
+            "stages": [],
+            "realSeconds": 0,
+            "time": 240.025,
+            "alive": 32,
+            "visible": 32,
+            "averageKillSeconds": 0,
+            "averageEngagementSeconds": 0,
+            "models": {
+              "technique": "GPU instanced articulated original meshes",
+              "families": 6,
+              "instances": 32,
+              "draws": 6,
+              "proxyPool": 0
+            },
+            "quality": 0,
+            "stats": {
+              "lanes": 3,
+              "pellets": 3,
+              "fireRate": 1,
+              "bulletSpeed": 1,
+              "damage": 1
+            },
+            "crew": 4
+          },
+          "model": {
+            "rigs": [
+              {
+                "key": "rig/hero",
+                "action": "shoot",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/assault",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/heavy",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/guardian",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/assault",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              }
+            ],
+            "batches": [
+              {
+                "type": "grunt",
+                "count": 6,
+                "vertices": 1086,
+                "finite": true
+              },
+              {
+                "type": "runner",
+                "count": 6,
+                "vertices": 1170,
+                "finite": true
+              },
+              {
+                "type": "heavy",
+                "count": 5,
+                "vertices": 1446,
+                "finite": true
+              },
+              {
+                "type": "charger",
+                "count": 5,
+                "vertices": 1290,
+                "finite": true
+              },
+              {
+                "type": "ranged",
+                "count": 5,
+                "vertices": 1326,
+                "finite": true
+              },
+              {
+                "type": "elite",
+                "count": 5,
+                "vertices": 1290,
+                "finite": true
+              }
+            ],
+            "sceneObjects": 144
+          }
+        },
+        {
+          "scenario": "frozen rendering only",
+          "requestedEnemies": 160,
+          "actualEnemies": 160,
+          "frames": 50,
+          "meanFrameMs": 329.654,
+          "p95FrameMs": 383.3000000000029,
+          "observedFps": 3.033483591887251,
+          "count": 160,
+          "avgSpeed": 32,
+          "totalDamage": 1093.200000000002,
+          "weapon": "rifle",
+          "interval": 0.25,
+          "lanes": 3,
+          "pellets": 3,
+          "damageMultiplier": 1,
+          "bulletSpeedMultiplier": 1,
+          "kinds": [
+            "bullet"
+          ],
+          "gunMeshes": 2,
+          "playerMeshes": 3,
+          "drawCalls": 46,
+          "memory": {
+            "geometries": 30,
+            "textures": 9
+          },
+          "triangles": 125996,
+          "heap": {
+            "used": 16665005,
+            "total": 18482493
+          },
+          "laser": false,
+          "horde": {
+            "spawned": 160,
+            "killed": 0,
+            "breached": 0,
+            "hits": 0,
+            "damageTaken": 0,
+            "damageDealt": 0,
+            "killSeconds": 0,
+            "engagementSeconds": 0,
+            "breachHits": 0,
+            "directHits": 0,
+            "peakAlive": 0,
+            "peakVisible": 160,
+            "collisionTests": 0,
+            "bossFights": [],
+            "stages": [],
+            "realSeconds": 0,
+            "time": 240.025,
+            "alive": 160,
+            "visible": 160,
+            "averageKillSeconds": 0,
+            "averageEngagementSeconds": 0,
+            "models": {
+              "technique": "GPU instanced articulated original meshes",
+              "families": 6,
+              "instances": 160,
+              "draws": 6,
+              "proxyPool": 0
+            },
+            "quality": 0,
+            "stats": {
+              "lanes": 3,
+              "pellets": 3,
+              "fireRate": 1,
+              "bulletSpeed": 1,
+              "damage": 1
+            },
+            "crew": 4
+          },
+          "model": {
+            "rigs": [
+              {
+                "key": "rig/hero",
+                "action": "shoot",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/assault",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/heavy",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/guardian",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/assault",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              }
+            ],
+            "batches": [
+              {
+                "type": "grunt",
+                "count": 27,
+                "vertices": 1086,
+                "finite": true
+              },
+              {
+                "type": "runner",
+                "count": 27,
+                "vertices": 1170,
+                "finite": true
+              },
+              {
+                "type": "heavy",
+                "count": 27,
+                "vertices": 1446,
+                "finite": true
+              },
+              {
+                "type": "charger",
+                "count": 27,
+                "vertices": 1290,
+                "finite": true
+              },
+              {
+                "type": "ranged",
+                "count": 26,
+                "vertices": 1326,
+                "finite": true
+              },
+              {
+                "type": "elite",
+                "count": 26,
+                "vertices": 1290,
+                "finite": true
+              }
+            ],
+            "sceneObjects": 144
+          }
+        },
+        {
+          "scenario": "frozen rendering only",
+          "requestedEnemies": 240,
+          "actualEnemies": 240,
+          "frames": 50,
+          "meanFrameMs": 399.31800000000004,
+          "p95FrameMs": 1099.8999999999942,
+          "observedFps": 2.504269779974857,
+          "count": 160,
+          "avgSpeed": 32,
+          "totalDamage": 1093.200000000002,
+          "weapon": "rifle",
+          "interval": 0.25,
+          "lanes": 3,
+          "pellets": 3,
+          "damageMultiplier": 1,
+          "bulletSpeedMultiplier": 1,
+          "kinds": [
+            "bullet"
+          ],
+          "gunMeshes": 2,
+          "playerMeshes": 3,
+          "drawCalls": 46,
+          "memory": {
+            "geometries": 30,
+            "textures": 9
+          },
+          "triangles": 161172,
+          "heap": {
+            "used": 20697574,
+            "total": 24503606
+          },
+          "laser": false,
+          "horde": {
+            "spawned": 240,
+            "killed": 0,
+            "breached": 0,
+            "hits": 0,
+            "damageTaken": 0,
+            "damageDealt": 0,
+            "killSeconds": 0,
+            "engagementSeconds": 0,
+            "breachHits": 0,
+            "directHits": 0,
+            "peakAlive": 0,
+            "peakVisible": 240,
+            "collisionTests": 0,
+            "bossFights": [],
+            "stages": [],
+            "realSeconds": 0,
+            "time": 240.025,
+            "alive": 240,
+            "visible": 240,
+            "averageKillSeconds": 0,
+            "averageEngagementSeconds": 0,
+            "models": {
+              "technique": "GPU instanced articulated original meshes",
+              "families": 6,
+              "instances": 240,
+              "draws": 6,
+              "proxyPool": 0
+            },
+            "quality": 0,
+            "stats": {
+              "lanes": 3,
+              "pellets": 3,
+              "fireRate": 1,
+              "bulletSpeed": 1,
+              "damage": 1
+            },
+            "crew": 4
+          },
+          "model": {
+            "rigs": [
+              {
+                "key": "rig/hero",
+                "action": "shoot",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/assault",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/heavy",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/guardian",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/assault",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              }
+            ],
+            "batches": [
+              {
+                "type": "grunt",
+                "count": 40,
+                "vertices": 1086,
+                "finite": true
+              },
+              {
+                "type": "runner",
+                "count": 40,
+                "vertices": 1170,
+                "finite": true
+              },
+              {
+                "type": "heavy",
+                "count": 40,
+                "vertices": 1446,
+                "finite": true
+              },
+              {
+                "type": "charger",
+                "count": 40,
+                "vertices": 1290,
+                "finite": true
+              },
+              {
+                "type": "ranged",
+                "count": 40,
+                "vertices": 1326,
+                "finite": true
+              },
+              {
+                "type": "elite",
+                "count": 40,
+                "vertices": 1290,
+                "finite": true
+              }
+            ],
+            "sceneObjects": 144
+          }
+        },
+        {
+          "scenario": "frozen rendering only",
+          "requestedEnemies": 320,
+          "actualEnemies": 320,
+          "frames": 50,
+          "meanFrameMs": 426.31600000000003,
+          "p95FrameMs": 816.6000000000058,
+          "observedFps": 2.3456778539862446,
+          "count": 160,
+          "avgSpeed": 32,
+          "totalDamage": 1093.200000000002,
+          "weapon": "rifle",
+          "interval": 0.25,
+          "lanes": 3,
+          "pellets": 3,
+          "damageMultiplier": 1,
+          "bulletSpeedMultiplier": 1,
+          "kinds": [
+            "bullet"
+          ],
+          "gunMeshes": 2,
+          "playerMeshes": 3,
+          "drawCalls": 46,
+          "memory": {
+            "geometries": 30,
+            "textures": 9
+          },
+          "triangles": 196224,
+          "heap": {
+            "used": 33028182,
+            "total": 43986422
+          },
+          "laser": false,
+          "horde": {
+            "spawned": 320,
+            "killed": 0,
+            "breached": 0,
+            "hits": 0,
+            "damageTaken": 0,
+            "damageDealt": 0,
+            "killSeconds": 0,
+            "engagementSeconds": 0,
+            "breachHits": 0,
+            "directHits": 0,
+            "peakAlive": 0,
+            "peakVisible": 320,
+            "collisionTests": 0,
+            "bossFights": [],
+            "stages": [],
+            "realSeconds": 0,
+            "time": 240.025,
+            "alive": 320,
+            "visible": 320,
+            "averageKillSeconds": 0,
+            "averageEngagementSeconds": 0,
+            "models": {
+              "technique": "GPU instanced articulated original meshes",
+              "families": 6,
+              "instances": 320,
+              "draws": 6,
+              "proxyPool": 0
+            },
+            "quality": 0,
+            "stats": {
+              "lanes": 3,
+              "pellets": 3,
+              "fireRate": 1,
+              "bulletSpeed": 1,
+              "damage": 1
+            },
+            "crew": 4
+          },
+          "model": {
+            "rigs": [
+              {
+                "key": "rig/hero",
+                "action": "shoot",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/assault",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/heavy",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/guardian",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              },
+              {
+                "key": "rig/assault",
+                "action": "run",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              }
+            ],
+            "batches": [
+              {
+                "type": "grunt",
+                "count": 54,
+                "vertices": 1086,
+                "finite": true
+              },
+              {
+                "type": "runner",
+                "count": 54,
+                "vertices": 1170,
+                "finite": true
+              },
+              {
+                "type": "heavy",
+                "count": 53,
+                "vertices": 1446,
+                "finite": true
+              },
+              {
+                "type": "charger",
+                "count": 53,
+                "vertices": 1290,
+                "finite": true
+              },
+              {
+                "type": "ranged",
+                "count": 53,
+                "vertices": 1326,
+                "finite": true
+              },
+              {
+                "type": "elite",
+                "count": 53,
+                "vertices": 1290,
+                "finite": true
+              }
+            ],
+            "sceneObjects": 144
+          }
+        },
+        {
+          "scenario": "quality tiers on same 320 live actors",
+          "quality": [
+            {
+              "tier": 0,
+              "frames": 35,
+              "meanFrameMs": 426.1742857142855,
+              "p95FrameMs": 833.1999999999971,
+              "observedFps": 2.346457854264856,
+              "count": 160,
+              "avgSpeed": 32,
+              "totalDamage": 1093.200000000002,
+              "weapon": "rifle",
+              "interval": 0.25,
+              "lanes": 3,
+              "pellets": 3,
+              "damageMultiplier": 1,
+              "bulletSpeedMultiplier": 1,
+              "kinds": [
+                "bullet"
+              ],
+              "gunMeshes": 2,
+              "playerMeshes": 3,
+              "drawCalls": 46,
+              "memory": {
+                "geometries": 30,
+                "textures": 9
+              },
+              "triangles": 196224,
+              "heap": {
+                "used": 27315626,
+                "total": 29830646
+              },
+              "laser": false,
+              "horde": {
+                "spawned": 320,
+                "killed": 0,
+                "breached": 0,
+                "hits": 0,
+                "damageTaken": 0,
+                "damageDealt": 0,
+                "killSeconds": 0,
+                "engagementSeconds": 0,
+                "breachHits": 0,
+                "directHits": 0,
+                "peakAlive": 0,
+                "peakVisible": 320,
+                "collisionTests": 0,
+                "bossFights": [],
+                "stages": [],
+                "realSeconds": 0,
+                "time": 240.025,
+                "alive": 320,
+                "visible": 320,
+                "averageKillSeconds": 0,
+                "averageEngagementSeconds": 0,
+                "models": {
+                  "technique": "GPU instanced articulated original meshes",
+                  "families": 6,
+                  "instances": 320,
+                  "draws": 6,
+                  "proxyPool": 0
+                },
+                "quality": 0,
+                "stats": {
+                  "lanes": 3,
+                  "pellets": 3,
+                  "fireRate": 1,
+                  "bulletSpeed": 1,
+                  "damage": 1
+                },
+                "crew": 4
+              },
+              "model": {
+                "rigs": [
+                  {
+                    "key": "rig/hero",
+                    "action": "shoot",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/assault",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/heavy",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/guardian",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/assault",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  }
+                ],
+                "batches": [
+                  {
+                    "type": "grunt",
+                    "count": 54,
+                    "vertices": 1086,
+                    "finite": true
+                  },
+                  {
+                    "type": "runner",
+                    "count": 54,
+                    "vertices": 1170,
+                    "finite": true
+                  },
+                  {
+                    "type": "heavy",
+                    "count": 53,
+                    "vertices": 1446,
+                    "finite": true
+                  },
+                  {
+                    "type": "charger",
+                    "count": 53,
+                    "vertices": 1290,
+                    "finite": true
+                  },
+                  {
+                    "type": "ranged",
+                    "count": 53,
+                    "vertices": 1326,
+                    "finite": true
+                  },
+                  {
+                    "type": "elite",
+                    "count": 53,
+                    "vertices": 1290,
+                    "finite": true
+                  }
+                ],
+                "sceneObjects": 144
+              }
+            },
+            {
+              "tier": 1,
+              "frames": 35,
+              "meanFrameMs": 384.7485714285713,
+              "p95FrameMs": 716.6999999999971,
+              "observedFps": 2.5990999688108007,
+              "count": 160,
+              "avgSpeed": 32,
+              "totalDamage": 1093.200000000002,
+              "weapon": "rifle",
+              "interval": 0.25,
+              "lanes": 3,
+              "pellets": 3,
+              "damageMultiplier": 1,
+              "bulletSpeedMultiplier": 1,
+              "kinds": [
+                "bullet"
+              ],
+              "gunMeshes": 2,
+              "playerMeshes": 3,
+              "drawCalls": 46,
+              "memory": {
+                "geometries": 30,
+                "textures": 9
+              },
+              "triangles": 196224,
+              "heap": {
+                "used": 26767073,
+                "total": 29044241
+              },
+              "laser": false,
+              "horde": {
+                "spawned": 320,
+                "killed": 0,
+                "breached": 0,
+                "hits": 0,
+                "damageTaken": 0,
+                "damageDealt": 0,
+                "killSeconds": 0,
+                "engagementSeconds": 0,
+                "breachHits": 0,
+                "directHits": 0,
+                "peakAlive": 0,
+                "peakVisible": 320,
+                "collisionTests": 0,
+                "bossFights": [],
+                "stages": [],
+                "realSeconds": 0,
+                "time": 240.025,
+                "alive": 320,
+                "visible": 320,
+                "averageKillSeconds": 0,
+                "averageEngagementSeconds": 0,
+                "models": {
+                  "technique": "GPU instanced articulated original meshes",
+                  "families": 6,
+                  "instances": 320,
+                  "draws": 6,
+                  "proxyPool": 0
+                },
+                "quality": 1,
+                "stats": {
+                  "lanes": 3,
+                  "pellets": 3,
+                  "fireRate": 1,
+                  "bulletSpeed": 1,
+                  "damage": 1
+                },
+                "crew": 4
+              },
+              "model": {
+                "rigs": [
+                  {
+                    "key": "rig/hero",
+                    "action": "shoot",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/assault",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/heavy",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/guardian",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/assault",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  }
+                ],
+                "batches": [
+                  {
+                    "type": "grunt",
+                    "count": 54,
+                    "vertices": 1086,
+                    "finite": true
+                  },
+                  {
+                    "type": "runner",
+                    "count": 54,
+                    "vertices": 1170,
+                    "finite": true
+                  },
+                  {
+                    "type": "heavy",
+                    "count": 53,
+                    "vertices": 1446,
+                    "finite": true
+                  },
+                  {
+                    "type": "charger",
+                    "count": 53,
+                    "vertices": 1290,
+                    "finite": true
+                  },
+                  {
+                    "type": "ranged",
+                    "count": 53,
+                    "vertices": 1326,
+                    "finite": true
+                  },
+                  {
+                    "type": "elite",
+                    "count": 53,
+                    "vertices": 1290,
+                    "finite": true
+                  }
+                ],
+                "sceneObjects": 144
+              }
+            },
+            {
+              "tier": 2,
+              "frames": 35,
+              "meanFrameMs": 290.9428571428571,
+              "p95FrameMs": 566.7000000000116,
+              "observedFps": 3.4371010507708926,
+              "count": 160,
+              "avgSpeed": 32,
+              "totalDamage": 1093.200000000002,
+              "weapon": "rifle",
+              "interval": 0.25,
+              "lanes": 3,
+              "pellets": 3,
+              "damageMultiplier": 1,
+              "bulletSpeedMultiplier": 1,
+              "kinds": [
+                "bullet"
+              ],
+              "gunMeshes": 2,
+              "playerMeshes": 3,
+              "drawCalls": 46,
+              "memory": {
+                "geometries": 30,
+                "textures": 9
+              },
+              "triangles": 196224,
+              "heap": {
+                "used": 26956713,
+                "total": 29306385
+              },
+              "laser": false,
+              "horde": {
+                "spawned": 320,
+                "killed": 0,
+                "breached": 0,
+                "hits": 0,
+                "damageTaken": 0,
+                "damageDealt": 0,
+                "killSeconds": 0,
+                "engagementSeconds": 0,
+                "breachHits": 0,
+                "directHits": 0,
+                "peakAlive": 0,
+                "peakVisible": 320,
+                "collisionTests": 0,
+                "bossFights": [],
+                "stages": [],
+                "realSeconds": 0,
+                "time": 240.025,
+                "alive": 320,
+                "visible": 320,
+                "averageKillSeconds": 0,
+                "averageEngagementSeconds": 0,
+                "models": {
+                  "technique": "GPU instanced articulated original meshes",
+                  "families": 6,
+                  "instances": 320,
+                  "draws": 6,
+                  "proxyPool": 0
+                },
+                "quality": 2,
+                "stats": {
+                  "lanes": 3,
+                  "pellets": 3,
+                  "fireRate": 1,
+                  "bulletSpeed": 1,
+                  "damage": 1
+                },
+                "crew": 4
+              },
+              "model": {
+                "rigs": [
+                  {
+                    "key": "rig/hero",
+                    "action": "shoot",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/assault",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/heavy",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/guardian",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  },
+                  {
+                    "key": "rig/assault",
+                    "action": "run",
+                    "hipAngle": 0,
+                    "bones": 13,
+                    "skinned": true,
+                    "handBound": true,
+                    "gunChildren": 1
+                  }
+                ],
+                "batches": [
+                  {
+                    "type": "grunt",
+                    "count": 54,
+                    "vertices": 1086,
+                    "finite": true
+                  },
+                  {
+                    "type": "runner",
+                    "count": 54,
+                    "vertices": 1170,
+                    "finite": true
+                  },
+                  {
+                    "type": "heavy",
+                    "count": 53,
+                    "vertices": 1446,
+                    "finite": true
+                  },
+                  {
+                    "type": "charger",
+                    "count": 53,
+                    "vertices": 1290,
+                    "finite": true
+                  },
+                  {
+                    "type": "ranged",
+                    "count": 53,
+                    "vertices": 1326,
+                    "finite": true
+                  },
+                  {
+                    "type": "elite",
+                    "count": 53,
+                    "vertices": 1290,
+                    "finite": true
+                  }
+                ],
+                "sceneObjects": 144
+              }
+            }
+          ]
+        },
+        {
+          "scenario": "real rAF movement, shooting, collision and AI; HP restored",
+          "frames": 100,
+          "meanFrameMs": 222.6569999999998,
+          "p95FrameMs": 449.8999999999942,
+          "observedFps": 4.491212941879217,
+          "count": 72,
+          "avgSpeed": 36,
+          "totalDamage": 334.56,
+          "weapon": "machine",
+          "interval": 0.12,
+          "lanes": 3,
+          "pellets": 3,
+          "damageMultiplier": 1,
+          "bulletSpeedMultiplier": 1,
+          "kinds": [
+            "bullet"
+          ],
+          "gunMeshes": 2,
+          "playerMeshes": 3,
+          "drawCalls": 58,
+          "memory": {
+            "geometries": 28,
+            "textures": 28
+          },
+          "triangles": 51056,
+          "heap": {
+            "used": 23796876,
+            "total": 33515752
+          },
+          "laser": false,
+          "horde": {
+            "spawned": 320,
+            "killed": 13,
+            "breached": 256,
+            "hits": 274,
+            "damageTaken": 255.76000000000133,
+            "damageDealt": 8026.6893333331545,
+            "killSeconds": 99.2562488888955,
+            "engagementSeconds": 18.160458013097212,
+            "breachHits": 256,
+            "directHits": 18,
+            "peakAlive": 320,
+            "peakVisible": 320,
+            "collisionTests": 67295,
+            "bossFights": [],
+            "stages": [],
+            "realSeconds": 24.082599999999996,
+            "time": 264.10760000000045,
+            "alive": 51,
+            "visible": 51,
+            "averageKillSeconds": 7.635096068376577,
+            "averageEngagementSeconds": 1.3969583086997857,
+            "models": {
+              "technique": "GPU instanced articulated original meshes",
+              "families": 6,
+              "instances": 52,
+              "draws": 1,
+              "proxyPool": 268
+            },
+            "quality": 2,
+            "stats": {
+              "lanes": 3,
+              "pellets": 3,
+              "fireRate": 1,
+              "bulletSpeed": 1,
+              "damage": 1
+            },
+            "crew": 0
+          },
+          "model": {
+            "rigs": [
+              {
+                "key": "rig/hero",
+                "action": "shoot",
+                "hipAngle": 0,
+                "bones": 13,
+                "skinned": true,
+                "handBound": true,
+                "gunChildren": 1
+              }
+            ],
+            "batches": [
+              {
+                "type": "grunt",
+                "count": 0,
+                "vertices": 1086,
+                "finite": true
+              },
+              {
+                "type": "runner",
+                "count": 0,
+                "vertices": 1170,
+                "finite": true
+              },
+              {
+                "type": "heavy",
+                "count": 0,
+                "vertices": 1446,
+                "finite": true
+              },
+              {
+                "type": "charger",
+                "count": 0,
+                "vertices": 1290,
+                "finite": true
+              },
+              {
+                "type": "ranged",
+                "count": 52,
+                "vertices": 1326,
+                "finite": true
+              },
+              {
+                "type": "elite",
+                "count": 0,
+                "vertices": 1290,
+                "finite": true
+              }
+            ],
+            "sceneObjects": 84
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "label": "old-5b01820",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "viewport": "393x873",
+      "rows": [
+        {
+          "scenario": "frozen rendering only",
+          "requestedEnemies": 32,
+          "actualEnemies": 32,
+          "frames": 50,
+          "meanFrameMs": 130.99400000000003,
+          "p95FrameMs": 150.10000000000036,
+          "observedFps": 7.633937432248804,
+          "count": 160,
+          "avgSpeed": 31.999999999999993,
+          "totalDamage": 911,
+          "weapon": "rifle",
+          "interval": 0.25,
+          "lanes": 3,
+          "pellets": 3,
+          "damageMultiplier": 1,
+          "bulletSpeedMultiplier": 1,
+          "kinds": [
+            "bullet"
+          ],
+          "gunMeshes": 2,
+          "playerMeshes": 3,
+          "drawCalls": 129,
+          "memory": {
+            "geometries": 52,
+            "textures": 18
+          },
+          "laser": false
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "errors": [],
+  "network": [],
+  "state": {
+    "mode": "draft",
+    "time": 1.999999999999997,
+    "overdrive": 0,
+    "heat": 1,
+    "wave": 1,
+    "hp": 100,
+    "score": 12.300000000000024,
+    "kills": 1,
+    "weapon": "rifle",
+    "playerX": 0,
+    "targetX": 0,
+    "stats": {
+      "lanes": 1,
+      "pellets": 1,
+      "fireRate": 1,
+      "bulletSpeed": 1,
+      "damage": 1
+    },
+    "enemies": 0,
+    "gates": 0,
+    "crates": 0,
+    "boss": false,
+    "enemyShots": 0,
+    "bullets": 4,
+    "audio": {
+      "samples": 15,
+      "sampleErrors": [],
+      "loop": "normal_loop",
+      "voices": 0,
+      "initialized": true,
+      "playing": false,
+      "music": 0.55,
+      "sfx": 0.75,
+      "bossTrack": false
+    }
+  },
+  "art": {
+    "errors": [],
+    "loaded": true
+  },
+  "audio": {
+    "samples": 15,
+    "sampleErrors": [],
+    "loop": "normal_loop",
+    "voices": 0,
+    "initialized": true,
+    "playing": false,
+    "music": 0.55,
+    "sfx": 0.75,
+    "bossTrack": false
+  },
+  "limitation": "Self-contained HTML tested over local HTTP with zero external requests. file:// navigation is blocked by the environment administrator; Android file opening has not been tested. The review artifact does not register a PWA service worker."
+}

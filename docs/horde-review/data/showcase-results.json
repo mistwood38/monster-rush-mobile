@@ -1,0 +1,1598 @@
+{
+  "note": "Controlled 150s fixtures with 60 real enemies; original game rendering and mixed game audio captured in real time. HP restored and supplied equipment/skills, not a natural progression or survival benchmark. Canvas videos omit DOM HUD.",
+  "report": [
+    {
+      "group": "weapon",
+      "kind": "rifle",
+      "stats": {
+        "spawned": 60,
+        "killed": 1,
+        "breached": 2,
+        "hits": 3,
+        "damageTaken": 10.360000000000014,
+        "damageDealt": 299,
+        "killSeconds": 0.9750000000002217,
+        "engagementSeconds": 0.7250000000001648,
+        "breachHits": 2,
+        "directHits": 1,
+        "peakAlive": 60,
+        "peakVisible": 57,
+        "collisionTests": 346,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 2.7999000000000005,
+        "time": 152.79990000000066,
+        "alive": 57,
+        "visible": 57,
+        "averageKillSeconds": 0.9750000000002217,
+        "averageEngagementSeconds": 0.7250000000001648,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 57,
+          "draws": 6,
+          "proxyPool": 3
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 0,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": null,
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": false,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 0,
+          "armors": 0,
+          "breaches": 2,
+          "armorSeconds": 0
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "run",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 9,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 10,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 8,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 66
+      }
+    },
+    {
+      "group": "weapon",
+      "kind": "machine",
+      "stats": {
+        "spawned": 60,
+        "killed": 3,
+        "breached": 2,
+        "hits": 3,
+        "damageTaken": 6.360000000000014,
+        "damageDealt": 431.25,
+        "killSeconds": 5.210600000009492,
+        "engagementSeconds": 4.333400000000324,
+        "breachHits": 2,
+        "directHits": 1,
+        "peakAlive": 60,
+        "peakVisible": 55,
+        "collisionTests": 619,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 2.8091000000029815,
+        "time": 152.8091000000033,
+        "alive": 55,
+        "visible": 55,
+        "averageKillSeconds": 1.7368666666698307,
+        "averageEngagementSeconds": 1.4444666666667747,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 55,
+          "draws": 6,
+          "proxyPool": 5
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 0,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": null,
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": false,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 0,
+          "armors": 0,
+          "breaches": 2,
+          "armorSeconds": 0
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "shoot",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 9,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 10,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 7,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 9,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 74
+      }
+    },
+    {
+      "group": "weapon",
+      "kind": "shotgun",
+      "stats": {
+        "spawned": 60,
+        "killed": 6,
+        "breached": 2,
+        "hits": 3,
+        "damageTaken": 5.360000000000014,
+        "damageDealt": 883.7057768823655,
+        "killSeconds": 8.464711111095227,
+        "engagementSeconds": 2.120311111111562,
+        "breachHits": 2,
+        "directHits": 1,
+        "peakAlive": 60,
+        "peakVisible": 52,
+        "collisionTests": 1551,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 3.2781999999970193,
+        "time": 153.27819999999775,
+        "alive": 52,
+        "visible": 52,
+        "averageKillSeconds": 1.4107851851825377,
+        "averageEngagementSeconds": 0.3533851851852603,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 53,
+          "draws": 6,
+          "proxyPool": 7
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 0,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": null,
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": false,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 0,
+          "armors": 0,
+          "breaches": 2,
+          "armorSeconds": 0
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "run",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 8,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 10,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 7,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 8,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 76
+      }
+    },
+    {
+      "group": "weapon",
+      "kind": "plasma",
+      "stats": {
+        "spawned": 60,
+        "killed": 7,
+        "breached": 1,
+        "hits": 2,
+        "damageTaken": 10.180000000000007,
+        "damageDealt": 973.5238044395907,
+        "killSeconds": 9.624520000042907,
+        "engagementSeconds": 4.3304800000002786,
+        "breachHits": 1,
+        "directHits": 1,
+        "peakAlive": 60,
+        "peakVisible": 52,
+        "collisionTests": 158,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 2.674400000005957,
+        "time": 152.67440000000624,
+        "alive": 52,
+        "visible": 52,
+        "averageKillSeconds": 1.374931428577558,
+        "averageEngagementSeconds": 0.6186400000000398,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 52,
+          "draws": 6,
+          "proxyPool": 8
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 0,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": null,
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": false,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 0,
+          "armors": 0,
+          "breaches": 1,
+          "armorSeconds": 0
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "run",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 8,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 10,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 6,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 8,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 69
+      }
+    },
+    {
+      "group": "weapon",
+      "kind": "laser",
+      "stats": {
+        "spawned": 60,
+        "killed": 5,
+        "breached": 0,
+        "hits": 0,
+        "damageTaken": 0,
+        "damageDealt": 781.350270233599,
+        "killSeconds": 9.123000000047341,
+        "engagementSeconds": 6.129060714294042,
+        "breachHits": 0,
+        "directHits": 0,
+        "peakAlive": 60,
+        "peakVisible": 55,
+        "collisionTests": 0,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 2.541400000008944,
+        "time": 152.54140000000962,
+        "alive": 55,
+        "visible": 55,
+        "averageKillSeconds": 1.8246000000094682,
+        "averageEngagementSeconds": 1.2258121428588082,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 57,
+          "draws": 6,
+          "proxyPool": 3
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 4,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": null,
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": false,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 0,
+          "armors": 0,
+          "breaches": 0,
+          "armorSeconds": 0
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "run",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 9,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 10,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 8,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 102
+      }
+    },
+    {
+      "group": "pet",
+      "kind": "dragon",
+      "stats": {
+        "spawned": 60,
+        "killed": 1,
+        "breached": 2,
+        "hits": 3,
+        "damageTaken": 10.36,
+        "damageDealt": 317,
+        "killSeconds": 0.9572000000060541,
+        "engagementSeconds": 0.7081166666677916,
+        "breachHits": 2,
+        "directHits": 1,
+        "peakAlive": 60,
+        "peakVisible": 57,
+        "collisionTests": 297,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 2.615600000005961,
+        "time": 152.61560000000645,
+        "alive": 57,
+        "visible": 57,
+        "averageKillSeconds": 0.9572000000060541,
+        "averageEngagementSeconds": 0.7081166666677916,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 57,
+          "draws": 6,
+          "proxyPool": 3
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.5
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 3,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": {
+          "kind": "dragon",
+          "level": 3,
+          "cooldown": 19.285735714285728,
+          "flash": 0
+        },
+        "petBuff": 5.285735714285709,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": false,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 1,
+          "armors": 0,
+          "breaches": 2,
+          "armorSeconds": 0
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "hit",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 10,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 10,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 7,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 77
+      }
+    },
+    {
+      "group": "pet",
+      "kind": "owl",
+      "stats": {
+        "spawned": 60,
+        "killed": 1,
+        "breached": 8,
+        "hits": 10,
+        "damageTaken": 12.945000000000014,
+        "damageDealt": 359,
+        "killSeconds": 0.9623000000031254,
+        "engagementSeconds": 0.7166000000000565,
+        "breachHits": 8,
+        "directHits": 2,
+        "peakAlive": 60,
+        "peakVisible": 51,
+        "collisionTests": 391,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 3.5955000000029753,
+        "time": 153.59550000000343,
+        "alive": 51,
+        "visible": 51,
+        "averageKillSeconds": 0.9623000000031254,
+        "averageEngagementSeconds": 0.7166000000000565,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 51,
+          "draws": 6,
+          "proxyPool": 9
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 0,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": {
+          "kind": "owl",
+          "level": 3,
+          "cooldown": 20.30636250000004,
+          "flash": 0
+        },
+        "petBuff": 3.3063624999999894,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": false,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 1,
+          "armors": 0,
+          "breaches": 8,
+          "armorSeconds": 0
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "run",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 8,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 10,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 7,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 7,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 9,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 73
+      }
+    },
+    {
+      "group": "pet",
+      "kind": "drone",
+      "stats": {
+        "spawned": 60,
+        "killed": 1,
+        "breached": 2,
+        "hits": 1,
+        "damageTaken": 10,
+        "damageDealt": 269,
+        "killSeconds": 0.968600000006063,
+        "engagementSeconds": 0.7250000000001648,
+        "breachHits": 0,
+        "directHits": 1,
+        "peakAlive": 60,
+        "peakVisible": 57,
+        "collisionTests": 245,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 2.5352000000059562,
+        "time": 152.5352000000063,
+        "alive": 57,
+        "visible": 57,
+        "averageKillSeconds": 0.968600000006063,
+        "averageEngagementSeconds": 0.7250000000001648,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 57,
+          "draws": 6,
+          "proxyPool": 3
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 0,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": {
+          "kind": "drone",
+          "level": 3,
+          "cooldown": 25.375000000000036,
+          "flash": 0.07499999999999962
+        },
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": false,
+        "affixes": [],
+        "shield": 31.64,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 1,
+          "armors": 0,
+          "breaches": 2,
+          "armorSeconds": 0
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "hit",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 10,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 10,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 7,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 10,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 75
+      }
+    },
+    {
+      "group": "pet",
+      "kind": "fairy",
+      "stats": {
+        "spawned": 60,
+        "killed": 2,
+        "breached": 11,
+        "hits": 13,
+        "damageTaken": 18.02000000000006,
+        "damageDealt": 419,
+        "killSeconds": 4.012140000006383,
+        "engagementSeconds": 3.2971400000002973,
+        "breachHits": 11,
+        "directHits": 2,
+        "peakAlive": 60,
+        "peakVisible": 47,
+        "collisionTests": 474,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 3.8699000000029775,
+        "time": 153.86990000000333,
+        "alive": 47,
+        "visible": 47,
+        "averageKillSeconds": 2.0060700000031915,
+        "averageEngagementSeconds": 1.6485700000001486,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 47,
+          "draws": 6,
+          "proxyPool": 13
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 0,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": {
+          "kind": "fairy",
+          "level": 3,
+          "cooldown": 26.04342000000002,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": false,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 1,
+          "armors": 0,
+          "breaches": 11,
+          "armorSeconds": 0
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "shoot",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 8,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 9,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 5,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 6,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 9,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 76
+      }
+    },
+    {
+      "group": "armor",
+      "kind": "thunder",
+      "stats": {
+        "spawned": 60,
+        "killed": 7,
+        "breached": 43,
+        "hits": 56,
+        "damageTaken": 139.1000000000001,
+        "damageDealt": 2584.550000000001,
+        "killSeconds": 37.292562545832794,
+        "engagementSeconds": 11.53206254578754,
+        "breachHits": 43,
+        "directHits": 13,
+        "peakAlive": 60,
+        "peakVisible": 10,
+        "collisionTests": 2655,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 14.552800000005965,
+        "time": 164.55280000000718,
+        "alive": 10,
+        "visible": 10,
+        "averageKillSeconds": 5.327508935118971,
+        "averageEngagementSeconds": 1.6474375065410771,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 10,
+          "draws": 1,
+          "proxyPool": 50
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 0,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": null,
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 0,
+          "armors": 1,
+          "breaches": 43,
+          "armorSeconds": 12.019600000005923
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "shoot",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 0,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 0,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 0,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 0,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 0,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 67
+      }
+    },
+    {
+      "group": "armor",
+      "kind": "molten",
+      "stats": {
+        "spawned": 60,
+        "killed": 36,
+        "breached": 15,
+        "hits": 25,
+        "damageTaken": 117.96000000000001,
+        "damageDealt": 6336.102797845071,
+        "killSeconds": 169.02894138912617,
+        "engagementSeconds": 36.17699573232662,
+        "breachHits": 15,
+        "directHits": 10,
+        "peakAlive": 60,
+        "peakVisible": 9,
+        "collisionTests": 408,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 14.155800000005963,
+        "time": 164.15580000000728,
+        "alive": 9,
+        "visible": 9,
+        "averageKillSeconds": 4.695248371920171,
+        "averageEngagementSeconds": 1.0049165481201838,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 9,
+          "draws": 1,
+          "proxyPool": 51
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 1,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": null,
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 0,
+          "armors": 1,
+          "breaches": 15,
+          "armorSeconds": 12.017492307698351
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "shoot",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 0,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 0,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 0,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 0,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 9,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 0,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 63
+      }
+    },
+    {
+      "group": "armor",
+      "kind": "phantom",
+      "stats": {
+        "spawned": 60,
+        "killed": 29,
+        "breached": 19,
+        "hits": 33,
+        "damageTaken": 174.10000000000008,
+        "damageDealt": 6500.782026142725,
+        "killSeconds": 165.2102773669642,
+        "engagementSeconds": 80.08908010504996,
+        "breachHits": 19,
+        "directHits": 14,
+        "peakAlive": 60,
+        "peakVisible": 12,
+        "collisionTests": 0,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 15.933100000000007,
+        "time": 165.9331000000017,
+        "alive": 12,
+        "visible": 12,
+        "averageKillSeconds": 5.696906116102213,
+        "averageEngagementSeconds": 2.761692417415516,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "instances": 12,
+          "draws": 2,
+          "proxyPool": 48
+        },
+        "quality": 0,
+        "stats": {
+          "lanes": 2,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1.25
+        },
+        "crew": 0
+      },
+      "audio": {
+        "samples": 15,
+        "sampleErrors": [],
+        "loop": "normal_loop",
+        "voices": 3,
+        "initialized": true,
+        "playing": true,
+        "music": 0.55,
+        "sfx": 0.75,
+        "bossTrack": false
+      },
+      "systems": {
+        "team": [],
+        "pet": null,
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": null,
+        "totals": {
+          "recruits": 0,
+          "fallen": 0,
+          "petSkills": 0,
+          "armors": 1,
+          "breaches": 19,
+          "armorSeconds": 12.01655714285712
+        },
+        "teamPower": 0,
+        "eligibleCrates": 0,
+        "armorDrops": 0
+      },
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "run",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt",
+            "count": 0,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "heavy",
+            "count": 0,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "runner",
+            "count": 0,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "charger",
+            "count": 0,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged",
+            "count": 10,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite",
+            "count": 2,
+            "vertices": 1290,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 90
+      }
+    }
+  ],
+  "errors": []
+}

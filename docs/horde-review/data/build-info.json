@@ -1,0 +1,20 @@
+{
+  "branch": "codex/horde-combat-rework",
+  "parentCommit": "d1a4dbc44ca7ad647508f39730e1049538bf1e71",
+  "sourceSha256": {
+    "game.js": "952facc23a653314f18f488a2fc5db41c66a2df39073435b352c1d544192ced5",
+    "actors3d.js": "e9fe87f6e7da543290140e24aa976a0fea6eebd3fbb0a2f62f36a885af140330",
+    "horde.js": "3c037d88eeade80891cd14260394763f010842fee552d4f3fdd184bb0566dc88",
+    "audio.js": "208256d681150dd4ee726b193ba24d27df9b09a246030e6502e44a55d123704b",
+    "systems.js": "09ad16f65353ccac8e35752bf3ed858e84866e8de2860fb53c223c520b6716c4",
+    "config/catalog.js": "227b5b2642bcfe9e11970fbce98178ed3dd3dd769063e842677f5ffc17166801",
+    "config/balance-v17.js": "ec2df8fb213979a26b36eed229c112e89e8e6ddc761c4dfe9ecb423477a80a12",
+    "style.css": "c933d95418ca4b930794e3bef3f9a260f60b98f26ce8f789f8828bc0d5d14afb",
+    "sw.js": "185fa69489058071a19a3c3a76f4cafeab218d8452977989ad2eb0e7526a33ef",
+    "sprites.js": "5f669b9033e1cfb2b02e71990d62bb6a88c9311ecf9dd7a7c10efaf565e82194"
+  },
+  "notes": [
+    "Runtime tests on final source except isolated benchmark, completed before final player hit color/death-feedback patch; frozen render workload unchanged, dynamic benchmark version distinguished in report.",
+    "No Android device test. No main merge or deployment."
+  ]
+}

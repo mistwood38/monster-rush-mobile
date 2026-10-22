@@ -1,0 +1,2145 @@
+{
+  "weaponMethod": "120 enemies, time150, identical legal numeric upgrades, 10 simulated seconds, sinusoidal movement, HP restored, no new waves. Damage/kill efficiency fixture, not survival or FPS.",
+  "buildMethod": "Normal HP, medium controller, supplied four level-I traits, machine gun + modest numeric upgrades + heavy/guard at start. Natural drops afterward; draft disabled to keep recipes fixed. Not naturally earned build probabilities.",
+  "weapons": [
+    {
+      "weapon": "rifle",
+      "seed": 1,
+      "seconds": 10.000000000002274,
+      "kills": 4,
+      "damage": 1779.4999999999995,
+      "report": {
+        "spawned": 120,
+        "killed": 4,
+        "breached": 80,
+        "hits": 89,
+        "damageTaken": 126.90000000000043,
+        "damageDealt": 1779.4999999999995,
+        "killSeconds": 16.325000000003712,
+        "engagementSeconds": 3.7500000000008527,
+        "breachHits": 80,
+        "directHits": 9,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 3116,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 36,
+        "visible": 36,
+        "averageKillSeconds": 4.081250000000928,
+        "averageEngagementSeconds": 0.9375000000002132,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 0,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 84
+        },
+        "quality": 1,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "rifle",
+      "seed": 2,
+      "seconds": 10.000000000002274,
+      "kills": 3,
+      "damage": 1716.5799999999997,
+      "report": {
+        "spawned": 120,
+        "killed": 3,
+        "breached": 82,
+        "hits": 91,
+        "damageTaken": 121.08000000000044,
+        "damageDealt": 1716.5799999999997,
+        "killSeconds": 9.225000000002098,
+        "engagementSeconds": 1.9500000000004434,
+        "breachHits": 82,
+        "directHits": 9,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 3569,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 35,
+        "visible": 35,
+        "averageKillSeconds": 3.075000000000699,
+        "averageEngagementSeconds": 0.6500000000001478,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 85
+        },
+        "quality": 1,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "rifle",
+      "seed": 3,
+      "seconds": 10.000000000002274,
+      "kills": 3,
+      "damage": 1727.4999999999995,
+      "report": {
+        "spawned": 120,
+        "killed": 3,
+        "breached": 81,
+        "hits": 90,
+        "damageTaken": 105.08000000000044,
+        "damageDealt": 1727.4999999999995,
+        "killSeconds": 8.775000000001995,
+        "engagementSeconds": 1.500000000000341,
+        "breachHits": 81,
+        "directHits": 9,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 3567,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 36,
+        "visible": 36,
+        "averageKillSeconds": 2.925000000000665,
+        "averageEngagementSeconds": 0.5000000000001137,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 84
+        },
+        "quality": 1,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "machine",
+      "seed": 1,
+      "seconds": 10.000000000002274,
+      "kills": 4,
+      "damage": 2710.336000000008,
+      "report": {
+        "spawned": 120,
+        "killed": 4,
+        "breached": 81,
+        "hits": 90,
+        "damageTaken": 138.08000000000044,
+        "damageDealt": 2710.336000000008,
+        "killSeconds": 13.875000000003155,
+        "engagementSeconds": 6.900000000001569,
+        "breachHits": 81,
+        "directHits": 9,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 7729,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 35,
+        "visible": 35,
+        "averageKillSeconds": 3.4687500000007887,
+        "averageEngagementSeconds": 1.7250000000003922,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 84
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "machine",
+      "seed": 2,
+      "seconds": 10.000000000002274,
+      "kills": 7,
+      "damage": 2666.9890000000078,
+      "report": {
+        "spawned": 120,
+        "killed": 7,
+        "breached": 78,
+        "hits": 87,
+        "damageTaken": 110.54000000000042,
+        "damageDealt": 2666.9890000000078,
+        "killSeconds": 29.750000000006764,
+        "engagementSeconds": 9.000000000002046,
+        "breachHits": 78,
+        "directHits": 9,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 8420,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 35,
+        "visible": 35,
+        "averageKillSeconds": 4.250000000000966,
+        "averageEngagementSeconds": 1.285714285714578,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 85
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "machine",
+      "seed": 3,
+      "seconds": 10.000000000002274,
+      "kills": 6,
+      "damage": 2717.988000000008,
+      "report": {
+        "spawned": 120,
+        "killed": 6,
+        "breached": 80,
+        "hits": 89,
+        "damageTaken": 123.50000000000043,
+        "damageDealt": 2717.988000000008,
+        "killSeconds": 26.025000000005917,
+        "engagementSeconds": 10.100000000002296,
+        "breachHits": 80,
+        "directHits": 9,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 7658,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 34,
+        "visible": 34,
+        "averageKillSeconds": 4.337500000000986,
+        "averageEngagementSeconds": 1.6833333333337162,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 85
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "shotgun",
+      "seed": 1,
+      "seconds": 10.000000000002274,
+      "kills": 12,
+      "damage": 3961.9364454929264,
+      "report": {
+        "spawned": 120,
+        "killed": 12,
+        "breached": 73,
+        "hits": 81,
+        "damageTaken": 86.46000000000038,
+        "damageDealt": 3961.9364454929264,
+        "killSeconds": 33.32500000000758,
+        "engagementSeconds": 4.125000000000938,
+        "breachHits": 73,
+        "directHits": 8,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 6613,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 35,
+        "visible": 35,
+        "averageKillSeconds": 2.7770833333339646,
+        "averageEngagementSeconds": 0.34375000000007816,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 85
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "shotgun",
+      "seed": 2,
+      "seconds": 10.000000000002274,
+      "kills": 13,
+      "damage": 4188.389719584213,
+      "report": {
+        "spawned": 120,
+        "killed": 13,
+        "breached": 74,
+        "hits": 81,
+        "damageTaken": 107.64000000000038,
+        "damageDealt": 4188.389719584213,
+        "killSeconds": 40.050000000009106,
+        "engagementSeconds": 5.175000000001177,
+        "breachHits": 74,
+        "directHits": 7,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 6308,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 33,
+        "visible": 33,
+        "averageKillSeconds": 3.0807692307699313,
+        "averageEngagementSeconds": 0.3980769230770136,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 86
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.4040000000000001
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "shotgun",
+      "seed": 3,
+      "seconds": 10.000000000002274,
+      "kills": 15,
+      "damage": 4053.4831746775462,
+      "report": {
+        "spawned": 120,
+        "killed": 15,
+        "breached": 72,
+        "hits": 79,
+        "damageTaken": 105.28000000000037,
+        "damageDealt": 4053.4831746775462,
+        "killSeconds": 53.500000000012164,
+        "engagementSeconds": 7.4750000000017,
+        "breachHits": 72,
+        "directHits": 7,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 6487,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 33,
+        "visible": 33,
+        "averageKillSeconds": 3.566666666667478,
+        "averageEngagementSeconds": 0.49833333333344665,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 87
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "plasma",
+      "seed": 1,
+      "seconds": 10.000000000002274,
+      "kills": 54,
+      "damage": 10831.290187711302,
+      "report": {
+        "spawned": 120,
+        "killed": 54,
+        "breached": 34,
+        "hits": 39,
+        "damageTaken": 82.28000000000014,
+        "damageDealt": 10831.290187711302,
+        "killSeconds": 214.87500000004886,
+        "engagementSeconds": 43.02500000000978,
+        "breachHits": 34,
+        "directHits": 5,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 1067,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 32,
+        "visible": 32,
+        "averageKillSeconds": 3.9791666666675716,
+        "averageEngagementSeconds": 0.7967592592594405,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 87
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.4040000000000001
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "plasma",
+      "seed": 2,
+      "seconds": 10.000000000002274,
+      "kills": 57,
+      "damage": 11192.14359021076,
+      "report": {
+        "spawned": 120,
+        "killed": 57,
+        "breached": 31,
+        "hits": 36,
+        "damageTaken": 72.70000000000013,
+        "damageDealt": 11192.14359021076,
+        "killSeconds": 241.850000000055,
+        "engagementSeconds": 55.65000000001265,
+        "breachHits": 31,
+        "directHits": 5,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 1079,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 32,
+        "visible": 32,
+        "averageKillSeconds": 4.242982456141315,
+        "averageEngagementSeconds": 0.9763157894739062,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 86
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "plasma",
+      "seed": 3,
+      "seconds": 10.000000000002274,
+      "kills": 51,
+      "damage": 10123.23569689406,
+      "report": {
+        "spawned": 120,
+        "killed": 51,
+        "breached": 36,
+        "hits": 42,
+        "damageTaken": 93.60000000000016,
+        "damageDealt": 10123.23569689406,
+        "killSeconds": 201.8500000000459,
+        "engagementSeconds": 45.60000000001037,
+        "breachHits": 36,
+        "directHits": 6,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 1066,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 33,
+        "visible": 33,
+        "averageKillSeconds": 3.957843137255802,
+        "averageEngagementSeconds": 0.8941176470590269,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 87
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "laser",
+      "seed": 1,
+      "seconds": 10.000000000002274,
+      "kills": 34,
+      "damage": 7078.777084032192,
+      "report": {
+        "spawned": 120,
+        "killed": 34,
+        "breached": 42,
+        "hits": 49,
+        "damageTaken": 86.3400000000002,
+        "damageDealt": 7078.777084032192,
+        "killSeconds": 147.7500000000336,
+        "engagementSeconds": 89.50000000002035,
+        "breachHits": 42,
+        "directHits": 7,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 0,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 44,
+        "visible": 44,
+        "averageKillSeconds": 4.345588235295105,
+        "averageEngagementSeconds": 2.632352941177069,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 4,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 76
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "laser",
+      "seed": 2,
+      "seconds": 10.000000000002274,
+      "kills": 29,
+      "damage": 6755.04226771066,
+      "report": {
+        "spawned": 120,
+        "killed": 29,
+        "breached": 48,
+        "hits": 54,
+        "damageTaken": 97.24000000000024,
+        "damageDealt": 6755.04226771066,
+        "killSeconds": 120.60000000002742,
+        "engagementSeconds": 74.37500000001691,
+        "breachHits": 48,
+        "directHits": 6,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 0,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 43,
+        "visible": 43,
+        "averageKillSeconds": 4.158620689656118,
+        "averageEngagementSeconds": 2.5646551724143762,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 5,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 77
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    },
+    {
+      "weapon": "laser",
+      "seed": 3,
+      "seconds": 10.000000000002274,
+      "kills": 37,
+      "damage": 6887.135294439713,
+      "report": {
+        "spawned": 120,
+        "killed": 37,
+        "breached": 41,
+        "hits": 48,
+        "damageTaken": 130.9800000000002,
+        "damageDealt": 6887.135294439713,
+        "killSeconds": 176.50000000004013,
+        "engagementSeconds": 103.27500000002348,
+        "breachHits": 41,
+        "directHits": 7,
+        "peakAlive": 120,
+        "peakVisible": 120,
+        "collisionTests": 0,
+        "bossFights": [],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 160.00000000000227,
+        "alive": 42,
+        "visible": 42,
+        "averageKillSeconds": 4.770270270271355,
+        "averageEngagementSeconds": 2.791216216216851,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 5,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 77
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 2,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 1,
+          "damage": 1.3
+        },
+        "crew": 0
+      }
+    }
+  ],
+  "builds": [
+    {
+      "build": "barrage",
+      "seed": 1,
+      "seconds": 290.72500000000946,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 4008,
+        "killed": 3707,
+        "breached": 24,
+        "hits": 72,
+        "damageTaken": 583.3799999999997,
+        "damageDealt": 389360.2807824102,
+        "killSeconds": 23440.724999999213,
+        "engagementSeconds": 10647.424999999865,
+        "breachHits": 24,
+        "directHits": 48,
+        "peakAlive": 292,
+        "peakVisible": 277,
+        "collisionTests": 119492,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 107.32500000000728
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 203.3250000000291
+          },
+          {
+            "started": 270.0000000000283,
+            "maxHp": 4250.000000000283,
+            "ended": null
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 290.72500000000946,
+        "alive": 277,
+        "visible": 277,
+        "averageKillSeconds": 6.323367952522043,
+        "averageEngagementSeconds": 2.87224844888046,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 5,
+          "instances": 0,
+          "draws": 0,
+          "proxyPool": 14
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.5,
+          "bulletSpeed": 2,
+          "damage": 2.8600000000000003
+        },
+        "crew": 0
+      },
+      "systems": {
+        "team": [],
+        "pet": {
+          "kind": "owl",
+          "level": 1,
+          "cooldown": 0.15000000000018054,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": {
+          "kind": "thunder",
+          "remaining": 3.399999999999889,
+          "duration": 12,
+          "pulse": 1.0750000000000046
+        },
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "piercing_core",
+            "level": 1
+          },
+          {
+            "id": "spread_shot",
+            "level": 1
+          },
+          {
+            "id": "focus_combo",
+            "level": 1
+          },
+          {
+            "id": "critical_calibration",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "击破武装运输车",
+        "totals": {
+          "recruits": 10,
+          "fallen": 10,
+          "petSkills": 7,
+          "armors": 6,
+          "breaches": 24,
+          "armorSeconds": 68.59999999999847
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 25,
+        "armorDrops": 7
+      }
+    },
+    {
+      "build": "barrage",
+      "seed": 2,
+      "seconds": 253.4500000000405,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 3340,
+        "killed": 3175,
+        "breached": 7,
+        "hits": 37,
+        "damageTaken": 382,
+        "damageDealt": 323632.1201965818,
+        "killSeconds": 16949.600000003455,
+        "engagementSeconds": 8125.975000001737,
+        "breachHits": 7,
+        "directHits": 30,
+        "peakAlive": 171,
+        "peakVisible": 158,
+        "collisionTests": 108964,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 108.70000000000759
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 204.52500000002937
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 253.4500000000405,
+        "alive": 158,
+        "visible": 158,
+        "averageKillSeconds": 5.338456692914474,
+        "averageEngagementSeconds": 2.5593622047249562,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 289,
+          "draws": 7,
+          "proxyPool": 130
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 2,
+          "damage": 2.2
+        },
+        "crew": 3
+      },
+      "systems": {
+        "team": [
+          {
+            "id": 7,
+            "role": "guard",
+            "level": 2,
+            "hp": 37.8,
+            "maxHp": 70,
+            "shield": 0,
+            "fire": 0.2675925925925924,
+            "invuln": 0,
+            "x": 1.4499999999999988,
+            "z": 1.75
+          },
+          {
+            "id": 8,
+            "role": "assault",
+            "level": 1,
+            "hp": 17,
+            "maxHp": 40,
+            "shield": 8,
+            "fire": 0.01944444444444436,
+            "invuln": 0,
+            "x": 3.9499999999999984,
+            "z": 1.75
+          },
+          {
+            "id": 9,
+            "role": "assault",
+            "level": 1,
+            "hp": 40,
+            "maxHp": 40,
+            "shield": 0,
+            "fire": 0.3694444444444444,
+            "invuln": 0,
+            "x": 0.3499999999999991,
+            "z": 0.5999999999999999
+          }
+        ],
+        "pet": {
+          "kind": "dragon",
+          "level": 1,
+          "cooldown": 14.200000000000273,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": 8,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "piercing_core",
+            "level": 1
+          },
+          {
+            "id": "spread_shot",
+            "level": 1
+          },
+          {
+            "id": "focus_combo",
+            "level": 1
+          },
+          {
+            "id": "critical_calibration",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "伙伴信标 · 二选一",
+        "totals": {
+          "recruits": 9,
+          "fallen": 6,
+          "petSkills": 10,
+          "armors": 5,
+          "breaches": 7,
+          "armorSeconds": 59.99999999999766
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 18,
+        "armorDrops": 5
+      }
+    },
+    {
+      "build": "barrage",
+      "seed": 3,
+      "seconds": 220.0750000000329,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 2703,
+        "killed": 2575,
+        "breached": 0,
+        "hits": 18,
+        "damageTaken": 221,
+        "damageDealt": 245235.45650541224,
+        "killSeconds": 12834.500000002525,
+        "engagementSeconds": 6165.475000001305,
+        "breachHits": 0,
+        "directHits": 18,
+        "peakAlive": 145,
+        "peakVisible": 128,
+        "collisionTests": 107386,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 114.27500000000886
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 202.12500000002882
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 220.0750000000329,
+        "alive": 128,
+        "visible": 128,
+        "averageKillSeconds": 4.9842718446611745,
+        "averageEngagementSeconds": 2.3943592233014774,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 170,
+          "draws": 6,
+          "proxyPool": 154
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 2,
+          "damage": 2.2
+        },
+        "crew": 2
+      },
+      "systems": {
+        "team": [
+          {
+            "id": 2,
+            "role": "guard",
+            "level": 2,
+            "hp": 29,
+            "maxHp": 70,
+            "shield": 8,
+            "fire": 0.11759259259259242,
+            "invuln": 0,
+            "x": -3.9499999999999984,
+            "z": 1.75
+          },
+          {
+            "id": 6,
+            "role": "assault",
+            "level": 1,
+            "hp": 40,
+            "maxHp": 40,
+            "shield": 0,
+            "fire": 0.09444444444444436,
+            "invuln": 0,
+            "x": -1.4499999999999993,
+            "z": 1.75
+          }
+        ],
+        "pet": {
+          "kind": "dragon",
+          "level": 1,
+          "cooldown": 14.80000000000021,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": 2,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "piercing_core",
+            "level": 1
+          },
+          {
+            "id": "spread_shot",
+            "level": 1
+          },
+          {
+            "id": "focus_combo",
+            "level": 1
+          },
+          {
+            "id": "critical_calibration",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "击破武装运输车",
+        "totals": {
+          "recruits": 6,
+          "fallen": 4,
+          "petSkills": 7,
+          "armors": 3,
+          "breaches": 0,
+          "armorSeconds": 35.99999999999903
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 18,
+        "armorDrops": 4
+      }
+    },
+    {
+      "build": "element",
+      "seed": 1,
+      "seconds": 260.17500000003724,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 3508,
+        "killed": 3292,
+        "breached": 37,
+        "hits": 45,
+        "damageTaken": 195.92000000000016,
+        "damageDealt": 324735.5051046564,
+        "killSeconds": 15987.200000003271,
+        "engagementSeconds": 7917.750000001579,
+        "breachHits": 27,
+        "directHits": 18,
+        "peakAlive": 196,
+        "peakVisible": 179,
+        "collisionTests": 74457,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 111.42500000000821
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 202.12500000002882
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 260.17500000003724,
+        "alive": 179,
+        "visible": 179,
+        "averageKillSeconds": 4.856379100851541,
+        "averageEngagementSeconds": 2.4051488456869925,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 144,
+          "draws": 6,
+          "proxyPool": 108
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 2,
+          "damage": 2.2
+        },
+        "crew": 1
+      },
+      "systems": {
+        "team": [
+          {
+            "id": 9,
+            "role": "assault",
+            "level": 1,
+            "hp": 15,
+            "maxHp": 40,
+            "shield": 0,
+            "fire": 0.39444444444444443,
+            "invuln": 0,
+            "x": 1.4499999999999997,
+            "z": 1.7499999999999996
+          }
+        ],
+        "pet": {
+          "kind": "fairy",
+          "level": 2,
+          "cooldown": 25.20000000000016,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": 9,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "chain_lightning",
+            "level": 1
+          },
+          {
+            "id": "frost_round",
+            "level": 1
+          },
+          {
+            "id": "explosive_round",
+            "level": 1
+          },
+          {
+            "id": "scorch_mag",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "伙伴信标 · 二选一",
+        "totals": {
+          "recruits": 9,
+          "fallen": 8,
+          "petSkills": 10,
+          "armors": 4,
+          "breaches": 37,
+          "armorSeconds": 47.999999999998344
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 19,
+        "armorDrops": 4
+      }
+    },
+    {
+      "build": "element",
+      "seed": 2,
+      "seconds": 271.5250000000269,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 3644,
+        "killed": 3480,
+        "breached": 19,
+        "hits": 47,
+        "damageTaken": 498.55999999999995,
+        "damageDealt": 359724.3803007795,
+        "killSeconds": 19294.975000002174,
+        "engagementSeconds": 9060.0250000009,
+        "breachHits": 9,
+        "directHits": 38,
+        "peakAlive": 172,
+        "peakVisible": 145,
+        "collisionTests": 122705,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 107.77500000000738
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 201.6250000000287
+          },
+          {
+            "started": 270.0000000000283,
+            "maxHp": 4250.000000000283,
+            "ended": null
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 271.5250000000269,
+        "alive": 145,
+        "visible": 145,
+        "averageKillSeconds": 5.544533045977636,
+        "averageEngagementSeconds": 2.6034554597703736,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 188,
+          "draws": 6,
+          "proxyPool": 139
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 2,
+          "damage": 3.08
+        },
+        "crew": 1
+      },
+      "systems": {
+        "team": [
+          {
+            "id": 7,
+            "role": "heavy",
+            "level": 2,
+            "hp": 7.75,
+            "maxHp": 32,
+            "shield": 0,
+            "fire": 0.13796296296296298,
+            "invuln": 0,
+            "x": -1.2499999999999996,
+            "z": 1.75
+          }
+        ],
+        "pet": {
+          "kind": "fairy",
+          "level": 2,
+          "cooldown": 24.575000000000195,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": {
+          "kind": "phantom",
+          "remaining": 3.374999999999889,
+          "duration": 12,
+          "pulse": 1.0500000000000047
+        },
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "chain_lightning",
+            "level": 1
+          },
+          {
+            "id": "frost_round",
+            "level": 1
+          },
+          {
+            "id": "explosive_round",
+            "level": 1
+          },
+          {
+            "id": "scorch_mag",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "伙伴信标 · 二选一",
+        "totals": {
+          "recruits": 9,
+          "fallen": 8,
+          "petSkills": 12,
+          "armors": 6,
+          "breaches": 19,
+          "armorSeconds": 68.62499999999848
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 24,
+        "armorDrops": 7
+      }
+    },
+    {
+      "build": "element",
+      "seed": 3,
+      "seconds": 248.80000000003943,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 3284,
+        "killed": 3134,
+        "breached": 10,
+        "hits": 32,
+        "damageTaken": 296.74,
+        "damageDealt": 306022.7414293961,
+        "killSeconds": 15536.625000003178,
+        "engagementSeconds": 7849.150000001694,
+        "breachHits": 10,
+        "directHits": 22,
+        "peakAlive": 162,
+        "peakVisible": 140,
+        "collisionTests": 90478,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 111.3750000000082
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 201.52500000002868
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 248.80000000003943,
+        "alive": 140,
+        "visible": 140,
+        "averageKillSeconds": 4.957442565412628,
+        "averageEngagementSeconds": 2.50451499680973,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 155,
+          "draws": 7,
+          "proxyPool": 146
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 2,
+          "damage": 2.8600000000000003
+        },
+        "crew": 3
+      },
+      "systems": {
+        "team": [
+          {
+            "id": 6,
+            "role": "guard",
+            "level": 2,
+            "hp": 70,
+            "maxHp": 70,
+            "shield": 0,
+            "fire": 0.017592592592592424,
+            "invuln": 0,
+            "x": 1.4499999999999988,
+            "z": 1.75
+          },
+          {
+            "id": 7,
+            "role": "assault",
+            "level": 1,
+            "hp": 40,
+            "maxHp": 40,
+            "shield": 0,
+            "fire": 0.16944444444444434,
+            "invuln": 0,
+            "x": 3.9499999999999984,
+            "z": 1.75
+          },
+          {
+            "id": 8,
+            "role": "assault",
+            "level": 1,
+            "hp": 40,
+            "maxHp": 40,
+            "shield": 0,
+            "fire": 0.06944444444444436,
+            "invuln": 0,
+            "x": 0.3499999999999991,
+            "z": 0.5999999999999999
+          }
+        ],
+        "pet": {
+          "kind": "drone",
+          "level": 1,
+          "cooldown": 13.475000000000533,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": {
+          "kind": "molten",
+          "remaining": 4.799999999999898,
+          "duration": 12,
+          "pulse": 0.050000000000004256
+        },
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "chain_lightning",
+            "level": 1
+          },
+          {
+            "id": "frost_round",
+            "level": 1
+          },
+          {
+            "id": "explosive_round",
+            "level": 1
+          },
+          {
+            "id": "scorch_mag",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "悬赏精英 · 队员救援",
+        "totals": {
+          "recruits": 8,
+          "fallen": 5,
+          "petSkills": 7,
+          "armors": 3,
+          "breaches": 10,
+          "armorSeconds": 31.199999999999296
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 16,
+        "armorDrops": 4
+      }
+    },
+    {
+      "build": "squad",
+      "seed": 1,
+      "seconds": 270.1500000000282,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 3560,
+        "killed": 3386,
+        "breached": 34,
+        "hits": 66,
+        "damageTaken": 353.91999999999996,
+        "damageDealt": 351868.20794552023,
+        "killSeconds": 18614.450000002467,
+        "engagementSeconds": 8922.625000001117,
+        "breachHits": 34,
+        "directHits": 32,
+        "peakAlive": 170,
+        "peakVisible": 140,
+        "collisionTests": 101329,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 110.22500000000794
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 202.925000000029
+          },
+          {
+            "started": 270.0000000000283,
+            "maxHp": 4250.000000000283,
+            "ended": null
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 270.1500000000282,
+        "alive": 140,
+        "visible": 140,
+        "averageKillSeconds": 5.497474896633924,
+        "averageEngagementSeconds": 2.6351520968697923,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 145,
+          "draws": 6,
+          "proxyPool": 138
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.5,
+          "bulletSpeed": 2,
+          "damage": 2.8600000000000003
+        },
+        "crew": 0
+      },
+      "systems": {
+        "team": [],
+        "pet": {
+          "kind": "fairy",
+          "level": 2,
+          "cooldown": 20.550000000000423,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": {
+          "kind": "thunder",
+          "remaining": 6.299999999999919,
+          "duration": 12,
+          "pulse": 1.550000000000003
+        },
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "squad_command",
+            "level": 1
+          },
+          {
+            "id": "squad_reload",
+            "level": 1
+          },
+          {
+            "id": "guardian_line",
+            "level": 1
+          },
+          {
+            "id": "last_stand",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "伙伴信标 · 二选一",
+        "totals": {
+          "recruits": 9,
+          "fallen": 9,
+          "petSkills": 6,
+          "armors": 6,
+          "breaches": 34,
+          "armorSeconds": 65.69999999999781
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 25,
+        "armorDrops": 7
+      }
+    },
+    {
+      "build": "squad",
+      "seed": 2,
+      "seconds": 285.5000000000142,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 3926,
+        "killed": 3623,
+        "breached": 27,
+        "hits": 61,
+        "damageTaken": 377.702,
+        "damageDealt": 383600.13020450453,
+        "killSeconds": 22353.95000000099,
+        "engagementSeconds": 10264.42500000023,
+        "breachHits": 27,
+        "directHits": 34,
+        "peakAlive": 279,
+        "peakVisible": 276,
+        "collisionTests": 111564,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 110.62500000000803
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 202.925000000029
+          },
+          {
+            "started": 270.0000000000283,
+            "maxHp": 4250.000000000283,
+            "ended": null
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 285.5000000000142,
+        "alive": 276,
+        "visible": 276,
+        "averageKillSeconds": 6.1700110405743835,
+        "averageEngagementSeconds": 2.8331286226884433,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 151,
+          "draws": 7,
+          "proxyPool": 8
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 2,
+          "damage": 2.2
+        },
+        "crew": 0
+      },
+      "systems": {
+        "team": [],
+        "pet": {
+          "kind": "fairy",
+          "level": 2,
+          "cooldown": 21.975000000000342,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "squad_command",
+            "level": 1
+          },
+          {
+            "id": "squad_reload",
+            "level": 1
+          },
+          {
+            "id": "guardian_line",
+            "level": 1
+          },
+          {
+            "id": "last_stand",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "击破武装运输车",
+        "totals": {
+          "recruits": 8,
+          "fallen": 8,
+          "petSkills": 8,
+          "armors": 6,
+          "breaches": 27,
+          "armorSeconds": 71.99999999999925
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 25,
+        "armorDrops": 8
+      }
+    },
+    {
+      "build": "squad",
+      "seed": 3,
+      "seconds": 291.7750000000085,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 4064,
+        "killed": 3764,
+        "breached": 20,
+        "hits": 51,
+        "damageTaken": 301.70400000000006,
+        "damageDealt": 400942.6646145403,
+        "killSeconds": 22506.799999999308,
+        "engagementSeconds": 10539.574999999832,
+        "breachHits": 17,
+        "directHits": 34,
+        "peakAlive": 299,
+        "peakVisible": 280,
+        "collisionTests": 124196,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 110.25000000000794
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 197.82500000002784
+          },
+          {
+            "started": 270.0000000000283,
+            "maxHp": 4250.000000000283,
+            "ended": null
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 291.7750000000085,
+        "alive": 280,
+        "visible": 280,
+        "averageKillSeconds": 5.979489904356883,
+        "averageEngagementSeconds": 2.8000996280552157,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 283,
+          "draws": 7,
+          "proxyPool": 17
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 2,
+          "damage": 2.2
+        },
+        "crew": 0
+      },
+      "systems": {
+        "team": [],
+        "pet": {
+          "kind": "drone",
+          "level": 2,
+          "cooldown": 17.125000000000504,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "squad_command",
+            "level": 1
+          },
+          {
+            "id": "squad_reload",
+            "level": 1
+          },
+          {
+            "id": "guardian_line",
+            "level": 1
+          },
+          {
+            "id": "last_stand",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 100,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "击破武装运输车",
+        "totals": {
+          "recruits": 7,
+          "fallen": 7,
+          "petSkills": 10,
+          "armors": 7,
+          "breaches": 20,
+          "armorSeconds": 84.00000000000198
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 31,
+        "armorDrops": 9
+      }
+    },
+    {
+      "build": "defense",
+      "seed": 1,
+      "seconds": 288.0250000000119,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 3740,
+        "killed": 3381,
+        "breached": 84,
+        "hits": 140,
+        "damageTaken": 592.7312000000012,
+        "damageDealt": 355449.79928026674,
+        "killSeconds": 23162.650000000256,
+        "engagementSeconds": 9895.95000000051,
+        "breachHits": 81,
+        "directHits": 59,
+        "peakAlive": 281,
+        "peakVisible": 275,
+        "collisionTests": 96675,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 108.7250000000076
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 201.6250000000287
+          },
+          {
+            "started": 270.0000000000283,
+            "maxHp": 4250.000000000283,
+            "ended": null
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 288.0250000000119,
+        "alive": 275,
+        "visible": 275,
+        "averageKillSeconds": 6.850828157349972,
+        "averageEngagementSeconds": 2.9269299023958917,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 287,
+          "draws": 7,
+          "proxyPool": 16
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 2,
+          "damage": 2.2
+        },
+        "crew": 0
+      },
+      "systems": {
+        "team": [],
+        "pet": {
+          "kind": "owl",
+          "level": 2,
+          "cooldown": 22,
+          "flash": 0.7
+        },
+        "petBuff": 5,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "armor_training",
+            "level": 1
+          },
+          {
+            "id": "emergency_repair",
+            "level": 1
+          },
+          {
+            "id": "counter_pulse",
+            "level": 1
+          },
+          {
+            "id": "toughness_core",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 115,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "击破武装运输车",
+        "totals": {
+          "recruits": 9,
+          "fallen": 9,
+          "petSkills": 10,
+          "armors": 4,
+          "breaches": 84,
+          "armorSeconds": 47.999999999998344
+        },
+        "teamPower": 0.3,
+        "eligibleCrates": 26,
+        "armorDrops": 6
+      }
+    },
+    {
+      "build": "defense",
+      "seed": 2,
+      "seconds": 280.1250000000191,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 3758,
+        "killed": 3487,
+        "breached": 31,
+        "hits": 77,
+        "damageTaken": 533.92,
+        "damageDealt": 372090.9596889627,
+        "killSeconds": 21391.625000001575,
+        "engagementSeconds": 10017.775000000645,
+        "breachHits": 31,
+        "directHits": 46,
+        "peakAlive": 240,
+        "peakVisible": 240,
+        "collisionTests": 128174,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 106.22500000000703
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 201.1250000000286
+          },
+          {
+            "started": 270.0000000000283,
+            "maxHp": 4250.000000000283,
+            "ended": null
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 280.1250000000191,
+        "alive": 240,
+        "visible": 240,
+        "averageKillSeconds": 6.13467880699787,
+        "averageEngagementSeconds": 2.872892170920747,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 285,
+          "draws": 7,
+          "proxyPool": 56
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 2,
+          "damage": 2.2
+        },
+        "crew": 0
+      },
+      "systems": {
+        "team": [],
+        "pet": {
+          "kind": "owl",
+          "level": 2,
+          "cooldown": 4.750000000000181,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": 7,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "armor_training",
+            "level": 1
+          },
+          {
+            "id": "emergency_repair",
+            "level": 1
+          },
+          {
+            "id": "counter_pulse",
+            "level": 1
+          },
+          {
+            "id": "toughness_core",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 115,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "击破武装运输车",
+        "totals": {
+          "recruits": 8,
+          "fallen": 8,
+          "petSkills": 8,
+          "armors": 6,
+          "breaches": 31,
+          "armorSeconds": 71.99999999999925
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 21,
+        "armorDrops": 6
+      }
+    },
+    {
+      "build": "defense",
+      "seed": 3,
+      "seconds": 273.02500000002556,
+      "alive": false,
+      "hp": 0,
+      "report": {
+        "spawned": 3666,
+        "killed": 3429,
+        "breached": 40,
+        "hits": 59,
+        "damageTaken": 372.7599999999998,
+        "damageDealt": 355764.2513152822,
+        "killSeconds": 20608.82500000291,
+        "engagementSeconds": 9645.700000001181,
+        "breachHits": 27,
+        "directHits": 32,
+        "peakAlive": 203,
+        "peakVisible": 197,
+        "collisionTests": 90615,
+        "bossFights": [
+          {
+            "started": 95.00000000000448,
+            "maxHp": 2500.000000000045,
+            "ended": 115.82500000000921
+          },
+          {
+            "started": 180.0000000000238,
+            "maxHp": 3350.000000000238,
+            "ended": 204.2250000000293
+          },
+          {
+            "started": 270.0000000000283,
+            "maxHp": 4250.000000000283,
+            "ended": null
+          }
+        ],
+        "stages": [],
+        "realSeconds": 0,
+        "time": 273.02500000002556,
+        "alive": 197,
+        "visible": 197,
+        "averageKillSeconds": 6.010156022164745,
+        "averageEngagementSeconds": 2.8129775444739518,
+        "models": {
+          "technique": "GPU instanced articulated original meshes",
+          "families": 7,
+          "instances": 242,
+          "draws": 7,
+          "proxyPool": 90
+        },
+        "quality": 2,
+        "stats": {
+          "lanes": 3,
+          "pellets": 2,
+          "fireRate": 1.25,
+          "bulletSpeed": 2,
+          "damage": 2.2
+        },
+        "crew": 1
+      },
+      "systems": {
+        "team": [
+          {
+            "id": 7,
+            "role": "heavy",
+            "level": 2,
+            "hp": 9,
+            "maxHp": 32,
+            "shield": 0,
+            "fire": 0.11296296296296299,
+            "invuln": 0.3749999999999998,
+            "x": 2.428171304976866,
+            "z": 1.75
+          }
+        ],
+        "pet": {
+          "kind": "fairy",
+          "level": 1,
+          "cooldown": 17.95000000000057,
+          "flash": 0
+        },
+        "petBuff": 0,
+        "petTarget": null,
+        "armor": null,
+        "hadArmor": true,
+        "affixes": [
+          {
+            "id": "armor_training",
+            "level": 1
+          },
+          {
+            "id": "emergency_repair",
+            "level": 1
+          },
+          {
+            "id": "counter_pulse",
+            "level": 1
+          },
+          {
+            "id": "toughness_core",
+            "level": 1
+          }
+        ],
+        "shield": 0,
+        "maxHp": 115,
+        "offers": [],
+        "pendingReplacement": null,
+        "event": "伙伴信标 · 二选一",
+        "totals": {
+          "recruits": 7,
+          "fallen": 6,
+          "petSkills": 10,
+          "armors": 5,
+          "breaches": 40,
+          "armorSeconds": 59.99999999999766
+        },
+        "teamPower": 0.2,
+        "eligibleCrates": 22,
+        "armorDrops": 6
+      }
+    }
+  ],
+  "errors": []
+}

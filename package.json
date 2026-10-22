@@ -3,7 +3,7 @@
   "version": "3.0.0-review",
   "private": true,
   "scripts": {
-    "test": "node --test tests/systems.test.js tests/source-sprite-state.test.mjs tests/horde.test.js && node tests/browser.cjs",
+    "test": "node --test tests/systems.test.js tests/source-sprite-state.test.mjs tests/horde.test.js && node tests/browser.cjs && node tests/horde-armored-death.cjs",
     "test:balance": "node tests/horde-balance.cjs",
     "test:performance": "node tests/horde-performance.cjs",
     "build:review": "python3 tools/build-review.py",
@@ -12,7 +12,9 @@
     "test:horde-realtime": "node tests/horde-realtime.cjs",
     "test:horde-performance": "node tests/horde-performance.cjs",
     "test:horde-showcase": "node tests/horde-showcase.cjs",
-    "test:balance:legacy-controller": "node tests/balance.cjs"
+    "test:balance:legacy-controller": "node tests/balance.cjs",
+    "test:horde-fixtures": "node tests/horde-fixtures.cjs",
+    "test:horde-visual": "node tests/horde-visual-audit.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

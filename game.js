@@ -3698,9 +3698,11 @@ function updateGame(dt) {
     clamp((state.targetX - state.playerX) * -0.09, -0.12, 0.12),
     dt * 4,
   );
-  if (state.invuln > 0)
-    playerRig.visible = Math.floor(state.invuln * 16) % 2 === 0;
-  else playerRig.visible = true;
+  // Keep the controlled character readable inside dense waves: color flash, never disappear.
+  playerRig.visible = true;
+  const hitColor = state.invuln > 0 ? "#ffb6a6" : "#ffffff";
+  playerRig.userData.body.material.color.set(hitColor);
+  if (armorVisual) armorVisual.userData.body.material.color.set(hitColor);
   playerShadow.position.x = state.playerX;
   camera.position.x = mix(camera.position.x, state.playerX * 0.17, dt * 1.8);
   camera.lookAt(state.playerX * 0.08, 0.8, -14);
@@ -3822,7 +3824,9 @@ function showCombo(text) {
 function endGame() {
   if (state.mode !== "playing") return;
   state.mode = "ended";
+  playerRig.visible = true;
   sprites.trigger(playerRig, "down");
+  if (armorVisual) sprites.trigger(armorVisual, "down");
   burst3D(state.playerX, 1.1, playerZ, "#b3e9ff", 28);
   playerRig.rotation.z = 0;
   const runs = +saved.get("mr-runs", "0") + 1;
@@ -4151,6 +4155,7 @@ function frame(now) {
     }
     if (state.mode === "ended") {
       sprites.tick(playerRig, dt);
+      if (armorVisual) sprites.tick(armorVisual, dt);
       updateEffects(dt);
     }
   }
@@ -4224,6 +4229,8 @@ if (new URLSearchParams(location.search).get("test") === "1")
       return {
         rigs: rigs.map((r) => ({
           key: r.userData.actor.key,
+          action: r.userData.actor.machine.state,
+          hipAngle: r.userData.bones?.[0].rotation.x,
           bones: r.userData.bones?.length,
           skinned: !!r.userData.body.isSkinnedMesh,
           handBound: r.userData.gun.parent === r.userData.bones?.[9],
