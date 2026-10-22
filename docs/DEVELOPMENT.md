@@ -49,3 +49,11 @@ V1.7 包与完整动画素材未提供。安卓真机测试未执行。GitHub AP
 取得 V1.7 全套资料后，先核对 config/catalog.js 与该包的词条、协同、职业和动画规范；替换 assets/ 中的对应替补图片并保留现有碰撞与系统。然后补安卓 Chrome 真机触感、帧率与长时间温升测试。使用 npm ci、npm test 复核；任何代码发布需所有者确认。
 
 GitHub 分支：codex/final-road-squad。PR 说明正文保存在 PR_REVIEW.md。仅建立审查交付，不合并或发布。
+
+### 远端交付结果（2026-10-22）
+
+审查分支已实际推送到原仓库。创建草稿 PR 时 GitHub CLI 返回 `Post https://api.github.com/graphql: Forbidden`；没有重复尝试或绕过限制，没有创建成功的 PR，也未验证远端 Actions。所有代码、截图、测试结果与 PR 正文已保存。
+
+可在 GitHub 打开 `https://github.com/mistwood38/monster-rush-mobile/pull/new/codex/final-road-squad` 创建审查 PR。**此链接是创建入口，不是假定已存在的 PR。** 按所有者要求，保持未合并，不能点击合并或触发正式发布。
+
+远端 main 仍是 abd994bdffb6e6eaac493e97bb213a73f1f3cd78；本次没有修改主分支或触发部署工作流。
