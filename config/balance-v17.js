@@ -1,0 +1,413 @@
+// Imported unmodified numeric design baseline; measured tuning is documented separately.
+export const BALANCE = {
+  "schema_version": "1.0-draft",
+  "status": "proposed_not_playtested",
+  "game": {
+    "format": "2.5d_portrait",
+    "reference_viewport": [
+      360,
+      800
+    ],
+    "squad_member_cap": 4,
+    "active_pet_cap": 1,
+    "equipped_trait_cap": 4,
+    "trait_max_level": 2,
+    "main_weapon_count": 5
+  },
+  "player": {
+    "hp": 100,
+    "starting_weapon": "rifle",
+    "rifle_damage": 10,
+    "rifle_shots_per_second": 4
+  },
+  "squad": {
+    "assault_tier1": {
+      "dps": 15,
+      "hp": 40
+    },
+    "assault_tier2": {
+      "dps": 18,
+      "hp": 48
+    },
+    "assault_tier3": {
+      "dps": 22,
+      "hp": 56
+    },
+    "heavy_tier2": {
+      "dps": 22,
+      "hp": 32
+    },
+    "heavy_tier3": {
+      "dps": 28,
+      "hp": 40
+    },
+    "guard_tier2": {
+      "dps": 8,
+      "hp": 70
+    },
+    "guard_tier3": {
+      "dps": 11,
+      "hp": 82
+    },
+    "heavy_cap": 2,
+    "guard_cap": 1,
+    "inherit_damage_gate_bonus_fraction": 0.5,
+    "inherit_rate_gate_bonus_fraction": 0.5
+  },
+  "gates": {
+    "first_recruit_seconds": [
+      12,
+      18
+    ],
+    "average_interval_seconds": [
+      9,
+      12
+    ],
+    "tracks_cap": 3,
+    "bullets_per_track_cap": 3,
+    "side_bullet_single_target_damage_fraction": 0.35,
+    "base_fire_rate_multiplier_cap": 2.0,
+    "base_damage_multiplier_cap": 2.2,
+    "projectile_speed_multiplier_cap": 2.0,
+    "team_fire_rate_bonus_cap": 0.3
+  },
+  "pets": {
+    "unlock_seconds": [
+      25,
+      35
+    ],
+    "dragon": {
+      "cooldown_seconds": 20,
+      "buff_damage_by_level": [
+        0.15,
+        0.18,
+        0.2
+      ],
+      "buff_duration_by_level": [
+        5,
+        5,
+        6
+      ]
+    },
+    "owl": {
+      "cooldown_seconds": 22,
+      "enemy_damage_reduction_by_level": [
+        0.2,
+        0.25,
+        0.25
+      ],
+      "boss_fraction_of_effect": 0.5
+    },
+    "shieldbot": {
+      "cooldown_seconds": 26,
+      "shield_by_level": [
+        20,
+        26,
+        32
+      ]
+    },
+    "healer": {
+      "cooldown_seconds": 28,
+      "heal_by_level": [
+        10,
+        14,
+        18
+      ]
+    }
+  },
+  "armors": {
+    "eligible_after_seconds": 45,
+    "chance_per_eligible_crate": 0.12,
+    "pity_on_eligible_crate_number": 4,
+    "duration_seconds": 12,
+    "thunder": {
+      "damage_multiplier": 1.3,
+      "fire_rate_multiplier": 1.2
+    },
+    "inferno": {
+      "damage_multiplier": 1.3
+    },
+    "phantom": {
+      "damage_multiplier": 1.4
+    },
+    "trait_duration_cap_seconds": 15
+  },
+  "trait_events_seconds": [
+    43,
+    78,
+    145,
+    215
+  ],
+  "boss_targets_seconds": [
+    95,
+    180,
+    270
+  ],
+  "enemies_hp": {
+    "basic": 24,
+    "runner": 16,
+    "armored": 100,
+    "ranged": 42,
+    "elite": 280,
+    "first_boss": 2200
+  },
+  "defense": {
+    "combined_damage_reduction_target_cap": 0.45
+  },
+  "traits": {
+    "bullet_piercing": [
+      0.2,
+      0.3
+    ],
+    "spread_width": [
+      0.15,
+      0.25
+    ],
+    "focus_bonus_cap": [
+      0.08,
+      0.12
+    ],
+    "critical_chance": [
+      0.08,
+      0.12
+    ],
+    "chain_lightning_max_targets": [
+      2,
+      3
+    ],
+    "chain_lightning_direct_hits_required": 10,
+    "chain_lightning_cooldown_seconds": 3,
+    "frost_slow_cap": [
+      0.12,
+      0.2
+    ],
+    "boss_frost_slow_cap": 0.08,
+    "explosive_direct_hits_required": 12,
+    "explosive_cooldown_seconds": 3,
+    "burn_chance": [
+      0.15,
+      0.22
+    ],
+    "burn_duration_seconds": 3,
+    "tactical_command_bonus": [
+      0.1,
+      0.18
+    ],
+    "coordinated_reload_bonus": [
+      0.15,
+      0.2
+    ],
+    "guard_line_reduction": [
+      0.1,
+      0.15
+    ],
+    "fallen_counterattack_bonus": [
+      0.12,
+      0.18
+    ],
+    "armor_damage_reduction": [
+      0.08,
+      0.14
+    ],
+    "emergency_repair_heal": [
+      15,
+      20
+    ],
+    "counter_pulse_cooldown_seconds": [
+      10,
+      8
+    ],
+    "extra_hp": [
+      15,
+      25
+    ],
+    "pet_resonance_effect": [
+      0.1,
+      0.15
+    ],
+    "pet_energy_recovery_seconds": [
+      1,
+      1.5
+    ],
+    "armor_overload_extra_damage": [
+      0.08,
+      0.12
+    ],
+    "armor_extension_seconds": [
+      2,
+      3
+    ]
+  },
+  "notes": [
+    "Draft numeric starting points, not final balance and not a promise of runtime implementation.",
+    "Trait effects are constrained by qualification, cooldown, non-recursion, and caps explained in GDD.",
+    "A pity roll requires actually opening eligible high-grade crates; one run is not guaranteed to get armor.",
+    "Only cosmetics and records persist across runs.",
+    "trait_events_seconds 与 boss_targets_seconds 以本配置和正式 GDD v1.0 的 43/78/145/215 与 95/180/270 为统一测试起点。"
+  ],
+  "trait_catalog": [
+    {
+      "id": "piercing_core",
+      "name": "穿甲弹芯",
+      "tier1": "20%直击穿1目标、后续50%伤害",
+      "tier2": "30%直击穿1目标、后续55%伤害",
+      "group": "projectile"
+    },
+    {
+      "id": "spread_shot",
+      "name": "弹幕扩散",
+      "tier1": "侧向覆盖+15%",
+      "tier2": "侧向覆盖+25%",
+      "group": "projectile"
+    },
+    {
+      "id": "focus_combo",
+      "name": "精准连击",
+      "tier1": "同目标最多+8%",
+      "tier2": "同目标最多+12%",
+      "group": "projectile"
+    },
+    {
+      "id": "critical_calibration",
+      "name": "暴击校准",
+      "tier1": "8%几率1.5倍",
+      "tier2": "12%几率1.5倍",
+      "group": "projectile"
+    },
+    {
+      "id": "chain_lightning",
+      "name": "连锁闪电",
+      "tier1": "10直接命中后额外2目标、CD3s",
+      "tier2": "额外3目标、CD3s",
+      "group": "element"
+    },
+    {
+      "id": "frost_round",
+      "name": "冰霜弹药",
+      "tier1": "减速上限12%",
+      "tier2": "减速上限20%",
+      "group": "element"
+    },
+    {
+      "id": "explosive_round",
+      "name": "爆裂弹头",
+      "tier1": "12直接命中后爆炸、CD3s",
+      "tier2": "爆炸范围+20%",
+      "group": "element"
+    },
+    {
+      "id": "scorch_mag",
+      "name": "灼烧弹匣",
+      "tier1": "15%几率灼烧3秒",
+      "tier2": "22%几率灼烧3秒",
+      "group": "element"
+    },
+    {
+      "id": "squad_command",
+      "name": "战术指挥",
+      "tier1": "队员有效攻击+10%",
+      "tier2": "队员有效攻击+18%",
+      "group": "squad"
+    },
+    {
+      "id": "squad_reload",
+      "name": "协同装填",
+      "tier1": "20秒一次队员射速+15% 4秒",
+      "tier2": "20秒一次队员射速+20% 4秒",
+      "group": "squad"
+    },
+    {
+      "id": "guardian_line",
+      "name": "护卫阵线",
+      "tier1": "护卫额外减伤10%",
+      "tier2": "护卫额外减伤15%",
+      "group": "squad",
+      "prerequisite": "has_guardian"
+    },
+    {
+      "id": "last_stand",
+      "name": "阵亡反击",
+      "tier1": "阵亡后队员伤害+12% 6秒",
+      "tier2": "阵亡后队员伤害+18% 6秒",
+      "group": "squad"
+    },
+    {
+      "id": "armor_training",
+      "name": "装甲强化",
+      "tier1": "主角受伤-8%",
+      "tier2": "主角受伤-14%",
+      "group": "survival"
+    },
+    {
+      "id": "emergency_repair",
+      "name": "紧急维修",
+      "tier1": "低于25%HP恢复15HP 每局2次",
+      "tier2": "单次20HP",
+      "group": "survival"
+    },
+    {
+      "id": "counter_pulse",
+      "name": "反击脉冲",
+      "tier1": "受伤小冲击 CD10s",
+      "tier2": "CD8s",
+      "group": "survival"
+    },
+    {
+      "id": "toughness_core",
+      "name": "坚韧核心",
+      "tier1": "最大HP+15",
+      "tier2": "最大HP+25",
+      "group": "survival"
+    },
+    {
+      "id": "pet_resonance",
+      "name": "宠物共鸣",
+      "tier1": "宠物效果+10%",
+      "tier2": "宠物效果+15%",
+      "group": "tech",
+      "prerequisite": "has_pet"
+    },
+    {
+      "id": "energy_recycling",
+      "name": "能量回收",
+      "tier1": "12击杀减少宠物CD1s",
+      "tier2": "12击杀减少宠物CD1.5s",
+      "group": "tech",
+      "prerequisite": "has_pet"
+    },
+    {
+      "id": "armor_overclock",
+      "name": "战甲超载",
+      "tier1": "战甲额外伤害+8%",
+      "tier2": "战甲额外伤害+12%",
+      "group": "tech",
+      "prerequisite": "has_obtained_armor"
+    },
+    {
+      "id": "armor_endurance",
+      "name": "战甲续航",
+      "tier1": "战甲+2s",
+      "tier2": "战甲+3s",
+      "group": "tech",
+      "prerequisite": "has_obtained_armor"
+    }
+  ],
+  "validation_plan": {
+    "replay_seed_runs_min": 50,
+    "replay_seed_runs_target": 100,
+    "android_resolutions": [
+      "360x800",
+      "393x873"
+    ],
+    "fps_target_common_android": "45-60",
+    "fps_low_end_floor_target": 30,
+    "compressed_initial_asset_download_target_mb": 25
+  },
+  "design_lock": {
+    "style": "B_bright_stylized_cartoon_scenes_plus_C_neon_tech_weapons_effects",
+    "growth": "run_based_fair_progression_cosmetic_out_of_run",
+    "pet_slots": 1,
+    "armors_duration_limited": 3,
+    "traits_total": 20
+  }
+};

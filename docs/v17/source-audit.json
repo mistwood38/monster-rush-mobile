@@ -1,0 +1,30 @@
+{
+  "archives": [
+    {
+      "archive": "codex_delivery/v1.7/01_%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%9F%BA%E7%A1%80%E6%96%87%E4%BB%B6_V1.7.zip",
+      "blob": "c55ff60e418134b15b17b9c46fb0b9f6b4cc742f",
+      "sha256": "29c4dbb5d00745d848d4b05c3fc517746b44a5f75388510a7d218ac8e1391cf3"
+    },
+    {
+      "archive": "codex_delivery/v1.7/02_%E8%BF%90%E8%A1%8C%E6%97%B6%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90_V1.7.zip",
+      "blob": "52eda4ff161e14501140dded98561e6c8482ae75",
+      "sha256": "98ad3f23a1561645898f8f185203b6fe32573bd72d8369bafd8abbe585d2b96e"
+    },
+    {
+      "archive": "codex_delivery/v1.7/03_%E8%81%8C%E4%B8%9A%E7%8B%AC%E7%AB%8B%E9%80%A0%E5%9E%8B_V1.7.zip",
+      "blob": "52c2dbec56daa7a7460e26041cf4e78eeb447090",
+      "sha256": "fa2a31fd939df26aaa0053e7c4f15171eca85190e72be7cd71d8faf4a74029c3"
+    },
+    {
+      "archive": "codex_delivery/v1.7/04_%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA%E9%A2%84%E8%A7%88_V1.7.zip",
+      "blob": "3e9c06323911c4ac45be599c47f0c281c4a8094a",
+      "sha256": "7159aa33019e79fb13e21705be783f838d2a9cdeb92fb239d0c4771a8a13b075"
+    }
+  ],
+  "decodedImages": 784,
+  "rgbaImages": 779,
+  "clips": 93,
+  "missingFrames": [],
+  "decodeErrors": [],
+  "warning": "Source QA release_art_complete=false; these are technical candidates, not independent hand-drawn animation."
+}
