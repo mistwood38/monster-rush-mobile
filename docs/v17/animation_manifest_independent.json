@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "version": "V1.7",
+  "kind": "alternative_independent_character_appearance_prototype",
+  "compatible_project": "mistwood38/monster-rush-mobile",
+  "compatible_baseline": "V1.6",
+  "camera": "2.5d rear oblique (visual review required)",
+  "canvas_px": [
+    512,
+    640
+  ],
+  "anchor_px": [
+    256,
+    567
+  ],
+  "actors": {
+    "assault": {
+      "display_name": "突击兵",
+      "visual_description": "红围巾轻装步枪",
+      "original_source": "V0.6.2/team_classes/assault_trooper.png",
+      "animations": {
+        "idle": {
+          "frames": [
+            "actors/assault/idle_00.png"
+          ],
+          "fps": 1,
+          "loop": true,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "run": {
+          "frames": [
+            "actors/assault/run_00.png",
+            "actors/assault/run_01.png",
+            "actors/assault/run_02.png",
+            "actors/assault/run_03.png",
+            "actors/assault/run_04.png",
+            "actors/assault/run_05.png",
+            "actors/assault/run_06.png",
+            "actors/assault/run_07.png"
+          ],
+          "fps": 10,
+          "loop": true,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "shoot": {
+          "frames": [
+            "actors/assault/shoot_00.png",
+            "actors/assault/shoot_01.png",
+            "actors/assault/shoot_02.png",
+            "actors/assault/shoot_03.png"
+          ],
+          "fps": 12,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "hit": {
+          "frames": [
+            "actors/assault/hit_00.png",
+            "actors/assault/hit_01.png"
+          ],
+          "fps": 7,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "down": {
+          "frames": [
+            "actors/assault/down_00.png"
+          ],
+          "fps": 1,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "skill": {
+          "frames": [
+            "actors/assault/skill_00.png",
+            "actors/assault/skill_01.png",
+            "actors/assault/skill_02.png",
+            "actors/assault/skill_03.png",
+            "actors/assault/skill_04.png"
+          ],
+          "fps": 11,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        }
+      },
+      "status": "independent-static-art-procedural-animation",
+      "anchor_px": [
+        256,
+        567
+      ]
+    },
+    "heavy": {
+      "display_name": "重火力",
+      "visual_description": "白发重甲与加特林",
+      "original_source": "V0.6.2/team_classes/heavy_gunner.png",
+      "animations": {
+        "idle": {
+          "frames": [
+            "actors/heavy/idle_00.png"
+          ],
+          "fps": 1,
+          "loop": true,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "run": {
+          "frames": [
+            "actors/heavy/run_00.png",
+            "actors/heavy/run_01.png",
+            "actors/heavy/run_02.png",
+            "actors/heavy/run_03.png",
+            "actors/heavy/run_04.png",
+            "actors/heavy/run_05.png",
+            "actors/heavy/run_06.png",
+            "actors/heavy/run_07.png"
+          ],
+          "fps": 10,
+          "loop": true,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "shoot": {
+          "frames": [
+            "actors/heavy/shoot_00.png",
+            "actors/heavy/shoot_01.png",
+            "actors/heavy/shoot_02.png",
+            "actors/heavy/shoot_03.png"
+          ],
+          "fps": 12,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "hit": {
+          "frames": [
+            "actors/heavy/hit_00.png",
+            "actors/heavy/hit_01.png"
+          ],
+          "fps": 7,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "down": {
+          "frames": [
+            "actors/heavy/down_00.png"
+          ],
+          "fps": 1,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "skill": {
+          "frames": [
+            "actors/heavy/skill_00.png",
+            "actors/heavy/skill_01.png",
+            "actors/heavy/skill_02.png",
+            "actors/heavy/skill_03.png",
+            "actors/heavy/skill_04.png"
+          ],
+          "fps": 11,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        }
+      },
+      "status": "independent-static-art-procedural-animation",
+      "anchor_px": [
+        256,
+        567
+      ]
+    },
+    "guardian": {
+      "display_name": "护卫",
+      "visual_description": "粉发装甲与蓝色能量盾",
+      "original_source": "V0.6.2/team_classes/guardian_defender.png",
+      "animations": {
+        "idle": {
+          "frames": [
+            "actors/guardian/idle_00.png"
+          ],
+          "fps": 1,
+          "loop": true,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "run": {
+          "frames": [
+            "actors/guardian/run_00.png",
+            "actors/guardian/run_01.png",
+            "actors/guardian/run_02.png",
+            "actors/guardian/run_03.png",
+            "actors/guardian/run_04.png",
+            "actors/guardian/run_05.png",
+            "actors/guardian/run_06.png",
+            "actors/guardian/run_07.png"
+          ],
+          "fps": 10,
+          "loop": true,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "shoot": {
+          "frames": [
+            "actors/guardian/shoot_00.png",
+            "actors/guardian/shoot_01.png",
+            "actors/guardian/shoot_02.png",
+            "actors/guardian/shoot_03.png"
+          ],
+          "fps": 12,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "hit": {
+          "frames": [
+            "actors/guardian/hit_00.png",
+            "actors/guardian/hit_01.png"
+          ],
+          "fps": 7,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "down": {
+          "frames": [
+            "actors/guardian/down_00.png"
+          ],
+          "fps": 1,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        },
+        "skill": {
+          "frames": [
+            "actors/guardian/skill_00.png",
+            "actors/guardian/skill_01.png",
+            "actors/guardian/skill_02.png",
+            "actors/guardian/skill_03.png",
+            "actors/guardian/skill_04.png"
+          ],
+          "fps": 11,
+          "loop": false,
+          "technique": "mesh warp / pose transform + class-specific FX (not hand-drawn)"
+        }
+      },
+      "status": "independent-static-art-procedural-animation",
+      "anchor_px": [
+        256,
+        567
+      ]
+    }
+  },
+  "limitations": [
+    "三职业造型源自不同静态候选 PNG，动作以程序网格变形、轻微姿态和特效模拟，非独立手绘逐帧动画",
+    "低分辨率静态候选放大，不构成高清原生角色",
+    "未接入线上 GitHub 3D 游戏，不能声称安卓真机性能已达标"
+  ]
+}

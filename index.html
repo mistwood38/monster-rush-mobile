@@ -8,7 +8,7 @@
     />
     <meta name="theme-color" content="#08131c" />
     <meta name="description" content="战士突围怪潮，选择升级路线，进化火力。" />
-    <title>怪潮突围 V2.1 · Monster Rush</title>
+    <title>怪潮突围 · 公路编队 · Monster Rush</title>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./style.css" />
@@ -31,7 +31,10 @@
           <div class="health-card">
             <div class="health-label">
               <span>战斗装甲</span
-              ><b><i id="healthText">100</i><small> / 100</small></b>
+              ><b
+                ><i id="healthText">100</i
+                ><small> / <span id="maxHealth">100</span></small></b
+              >
             </div>
             <div class="bar"><i id="healthBar"></i></div>
           </div>
@@ -57,12 +60,20 @@
           </div>
           <div class="boss-bar"><i id="bossBar"></i></div>
         </div>
-        <div class="wave-strip" id="waveLabel">第 1 波 · 首领 78 秒</div>
+        <div class="wave-strip" id="waveLabel">第 1 波 · 首领 95 秒</div>
         <div class="overdrive-meter">
           <div>
             <span id="overdriveLabel">击杀充能 · 0 / 10</span><b>OVERDRIVE</b>
           </div>
           <div class="overdrive-track"><i id="overdriveFill"></i></div>
+        </div>
+        <div class="systems-hud">
+          <div id="teamStatus"></div>
+          <div class="support-row">
+            <span id="petStatus"></span><span id="shieldText"></span>
+          </div>
+          <div id="armorStatus" aria-live="polite"></div>
+          <div id="affixStatus"></div>
         </div>
         <div id="upgradeToast" class="upgrade-toast"></div>
         <div id="comboToast" class="combo-toast"></div>
@@ -73,21 +84,22 @@
       <section id="menu" class="overlay menu-overlay">
         <div class="menu-top">
           <span class="season">NEON FRONTIER <i>///</i> DAWN DISTRICT</span
-          ><span class="version">V 2.1</span>
+          ><span class="version">ROAD SQUAD</span>
         </div>
         <div class="hero-title">
           <div class="hero-kicker"><i></i> 曙光前线 · 无尽突围 <i></i></div>
           <h1>怪潮<span>突围</span></h1>
-          <p>MONSTER RUSH <b>· 2.1</b></p>
+          <p>MONSTER RUSH <b>ROAD SQUAD</b></p>
         </div>
         <div class="menu-bottom">
           <div class="menu-desc">
-            <strong>选择火力。击穿怪潮。</strong
-            ><span>拖动闪避 · 射击强化门 · 击杀触发火力过载</span>
+            <strong>集结编队。冲破防线。</strong
+            ><span>拖动闪避 · 招募队员 · 选择战术 · 战甲变身</span>
           </div>
-          <button id="start" class="start-btn">
-            <span>开始突围</span><b>→</b>
+          <button id="start" disabled aria-busy="true" class="start-btn">
+            <span>正在装载战场…</span><b>→</b>
           </button>
+          <p id="collectionText" class="collection"></p>
           <div class="menu-footer">
             <div>最高纪录 <strong id="best">0</strong></div>
             <button id="openSettings" class="small-icon" aria-label="音频设置">
@@ -105,6 +117,7 @@
           class="build-stats"
           aria-label="当前战斗属性"
         ></div>
+        <p id="runDetail" class="modal-copy"></p>
         <div class="audio-controls">
           <label
             >战斗音乐
@@ -166,9 +179,25 @@
             /><b id="menuSfxValue">75%</b></label
           >
         </div>
-        <button id="closeSettings" class="start-btn">
+        <label class="haptic-setting"
+          ><input id="haptics" type="checkbox" checked />
+          短促触觉反馈（设备支持时）</label
+        ><button id="closeSettings" class="start-btn">
           <span>完成</span><b>✓</b>
         </button>
+      </section>
+      <section
+        id="draftPanel"
+        class="overlay modal hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="draftTitle"
+      >
+        <div class="modal-kicker">TACTICAL UPLINK</div>
+        <h2 id="draftTitle">选择本局战术</h2>
+        <p id="draftCopy" class="modal-copy"></p>
+        <div id="draftChoices"></div>
+        <button id="skipDraft" class="flat-btn">保留当前配置 · 继续战斗</button>
       </section>
       <div id="landscape" class="landscape">请旋转手机，使用竖屏进入战场</div>
     </main>

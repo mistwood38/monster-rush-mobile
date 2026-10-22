@@ -1,0 +1,38 @@
+[
+  {
+    "path": "assets/backgrounds/highway_day.png",
+    "size": [
+      941,
+      1672
+    ],
+    "alpha": false,
+    "kind": "game_image"
+  },
+  {
+    "path": "assets/characters/player_soldier_back.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "alpha": true,
+    "kind": "game_image"
+  },
+  {
+    "path": "assets/gates/fire_rate_plus_20.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "alpha": true,
+    "kind": "game_image"
+  },
+  {
+    "path": "reference/style_reference_only.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "alpha": true,
+    "kind": "reference"
+  }
+]

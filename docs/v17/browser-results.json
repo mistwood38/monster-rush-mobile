@@ -1,0 +1,715 @@
+{
+  "passed": 41,
+  "results": [
+    {
+      "name": "Two phone layouts and real menu",
+      "passed": true
+    },
+    {
+      "name": "User gesture audio, pause, resume and separate mixer",
+      "passed": true
+    },
+    {
+      "name": "Relative touch drag and bounded movement",
+      "passed": true
+    },
+    {
+      "name": "All five numeric gates independently affect real projectiles",
+      "passed": true,
+      "detail": {
+        "lanes": {
+          "count": 2,
+          "damage": 20,
+          "interval": 0.25,
+          "speed": 32
+        },
+        "pellets": {
+          "count": 3,
+          "damage": 17,
+          "interval": 0.25,
+          "speed": 32
+        },
+        "rate": {
+          "count": 1,
+          "damage": 10,
+          "interval": 0.2,
+          "speed": 32
+        },
+        "speed": {
+          "count": 1,
+          "damage": 10,
+          "interval": 0.25,
+          "speed": 43.2
+        },
+        "damage": {
+          "count": 1,
+          "damage": 15,
+          "interval": 0.25,
+          "speed": 32
+        }
+      }
+    },
+    {
+      "name": "Five distinct weapons kill actual off-center enemies",
+      "passed": true,
+      "detail": {
+        "rifle": {
+          "kills": 1,
+          "metrics": {
+            "count": 7,
+            "avgSpeed": 32,
+            "totalDamage": 70,
+            "weapon": "rifle",
+            "interval": 0.25,
+            "lanes": 1,
+            "pellets": 1,
+            "damageMultiplier": 1,
+            "bulletSpeedMultiplier": 1,
+            "kinds": [
+              "bullet"
+            ],
+            "gunMeshes": 2,
+            "playerMeshes": 3,
+            "drawCalls": 21,
+            "memory": {
+              "geometries": 13,
+              "textures": 10
+            },
+            "laser": false
+          }
+        },
+        "machine": {
+          "kills": 1,
+          "metrics": {
+            "count": 14,
+            "avgSpeed": 36,
+            "totalDamage": 98,
+            "weapon": "machine",
+            "interval": 0.12,
+            "lanes": 1,
+            "pellets": 1,
+            "damageMultiplier": 1,
+            "bulletSpeedMultiplier": 1,
+            "kinds": [
+              "bullet"
+            ],
+            "gunMeshes": 2,
+            "playerMeshes": 3,
+            "drawCalls": 21,
+            "memory": {
+              "geometries": 13,
+              "textures": 10
+            },
+            "laser": false
+          }
+        },
+        "shotgun": {
+          "kills": 1,
+          "metrics": {
+            "count": 21,
+            "avgSpeed": 27,
+            "totalDamage": 142.79999999999998,
+            "weapon": "shotgun",
+            "interval": 0.72,
+            "lanes": 1,
+            "pellets": 1,
+            "damageMultiplier": 1,
+            "bulletSpeedMultiplier": 1,
+            "kinds": [
+              "pellet"
+            ],
+            "gunMeshes": 2,
+            "playerMeshes": 3,
+            "drawCalls": 21,
+            "memory": {
+              "geometries": 13,
+              "textures": 10
+            },
+            "laser": false
+          }
+        },
+        "plasma": {
+          "kills": 1,
+          "metrics": {
+            "count": 3,
+            "avgSpeed": 17,
+            "totalDamage": 153,
+            "weapon": "plasma",
+            "interval": 0.86,
+            "lanes": 1,
+            "pellets": 1,
+            "damageMultiplier": 1,
+            "bulletSpeedMultiplier": 1,
+            "kinds": [
+              "plasma"
+            ],
+            "gunMeshes": 2,
+            "playerMeshes": 3,
+            "drawCalls": 21,
+            "memory": {
+              "geometries": 13,
+              "textures": 10
+            },
+            "laser": false
+          }
+        },
+        "laser": {
+          "kills": 1,
+          "metrics": {
+            "count": 0,
+            "avgSpeed": 0,
+            "totalDamage": 0,
+            "weapon": "laser",
+            "interval": 0.12,
+            "lanes": 1,
+            "pellets": 1,
+            "damageMultiplier": 1,
+            "bulletSpeedMultiplier": 1,
+            "kinds": [],
+            "gunMeshes": 2,
+            "playerMeshes": 3,
+            "drawCalls": 23,
+            "memory": {
+              "geometries": 15,
+              "textures": 10
+            },
+            "laser": true
+          }
+        }
+      }
+    },
+    {
+      "name": "Swept projectile damage and target-positioned numbers",
+      "passed": true
+    },
+    {
+      "name": "Plasma splash kills multiple neighbors",
+      "passed": true
+    },
+    {
+      "name": "Gate charging is capped, shots pass, choices exclude each other",
+      "passed": true,
+      "detail": {
+        "team": 1,
+        "stats": {
+          "lanes": 1,
+          "pellets": 1,
+          "fireRate": 1,
+          "bulletSpeed": 1,
+          "damage": 1
+        },
+        "gates": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "Laser upgrades widen beams and increase effective damage",
+      "passed": true,
+      "detail": {
+        "base": 7.199999999999818,
+        "upgraded": 12.239999999999782,
+        "lanes": 3
+      }
+    },
+    {
+      "name": "Breach on opposite flank hurts even during contact invulnerability",
+      "passed": true
+    },
+    {
+      "name": "Generous swept crate pickup, healing, no lower-tier downgrade",
+      "passed": true
+    },
+    {
+      "name": "Source atlas animation advances, hit takes priority, road scrolls",
+      "passed": true,
+      "detail": {
+        "before": 0.05427086785714276,
+        "after": 0.441759932142857,
+        "frame": {
+          "key": "actor/hero",
+          "state": "run",
+          "index": 1
+        },
+        "hit": {
+          "key": "actor/hero",
+          "state": "hit",
+          "index": 0
+        },
+        "restored": {
+          "key": "actor/hero",
+          "state": "run",
+          "index": 3
+        },
+        "audit": {
+          "atlases": 25,
+          "active": 1,
+          "errors": [],
+          "loaded": 51,
+          "frames": [
+            {
+              "key": "actor/hero",
+              "state": "run",
+              "index": 3
+            }
+          ]
+        },
+        "projection": {
+          "headY": 606.8204349158559,
+          "feetY": 658.6695994325992,
+          "headNdc": -0.39019572718409135,
+          "feetNdc": -0.508979609238486
+        }
+      }
+    },
+    {
+      "name": "Squad role weapons persist, promotion, damage, death and refill",
+      "passed": true,
+      "detail": {
+        "damage": 122.48000000000093,
+        "shots": 4,
+        "team": 4
+      }
+    },
+    {
+      "name": "Recruitment, promotion and team-rate gates apply formal caps",
+      "passed": true
+    },
+    {
+      "name": "Squad inherits only gate damage, excluding main-weapon supply calibration",
+      "passed": true,
+      "detail": {
+        "base": 4.84,
+        "main": 1.08,
+        "calibrated": 4.84,
+        "gated": 6.05
+      }
+    },
+    {
+      "name": "Four pet skills affect real combat and wait on cooldown",
+      "passed": true,
+      "detail": [
+        {
+          "kind": "dragon",
+          "stats": {
+            "lanes": 1,
+            "pellets": 1,
+            "fireRate": 1,
+            "bulletSpeed": 1,
+            "damage": 1.2
+          },
+          "shield": 0,
+          "hp": 50,
+          "after": 40,
+          "pet": {
+            "kind": "dragon",
+            "level": 3,
+            "cooldown": 20,
+            "flash": 0.7
+          }
+        },
+        {
+          "kind": "owl",
+          "stats": {
+            "lanes": 1,
+            "pellets": 1,
+            "fireRate": 1,
+            "bulletSpeed": 1,
+            "damage": 1
+          },
+          "shield": 0,
+          "hp": 50,
+          "after": 42.5,
+          "pet": {
+            "kind": "owl",
+            "level": 3,
+            "cooldown": 22,
+            "flash": 0.7
+          }
+        },
+        {
+          "kind": "drone",
+          "stats": {
+            "lanes": 1,
+            "pellets": 1,
+            "fireRate": 1,
+            "bulletSpeed": 1,
+            "damage": 1
+          },
+          "shield": 32,
+          "hp": 50,
+          "after": 50,
+          "pet": {
+            "kind": "drone",
+            "level": 3,
+            "cooldown": 26,
+            "flash": 0.7
+          }
+        },
+        {
+          "kind": "fairy",
+          "stats": {
+            "lanes": 1,
+            "pellets": 1,
+            "fireRate": 1,
+            "bulletSpeed": 1,
+            "damage": 1
+          },
+          "shield": 0,
+          "hp": 68,
+          "after": 58,
+          "pet": {
+            "kind": "fairy",
+            "level": 3,
+            "cooldown": 28,
+            "flash": 0.7
+          }
+        }
+      ]
+    },
+    {
+      "name": "Owl level III increases actual skill detection range",
+      "passed": true,
+      "detail": {
+        "level2": 0,
+        "level3": 22,
+        "buff": 5
+      }
+    },
+    {
+      "name": "Strict no-upgrade benchmark switch blocks all pickup effects and resets safely",
+      "passed": true
+    },
+    {
+      "name": "Pet two-choice pickups exclude the other and preserve slot level",
+      "passed": true
+    },
+    {
+      "name": "All three armor animations and multipliers expire and restore exact stats",
+      "passed": true,
+      "detail": [
+        {
+          "kind": "thunder",
+          "state": "activate"
+        },
+        {
+          "kind": "molten",
+          "state": "activate"
+        },
+        {
+          "kind": "phantom",
+          "state": "activate"
+        }
+      ]
+    },
+    {
+      "name": "Four ballistic traits change real spread, piercing and enemy HP",
+      "passed": true,
+      "detail": {
+        "base": [
+          0.63,
+          -1.4700000000000002,
+          2.73
+        ],
+        "spread": [
+          0.63,
+          -1.7850000000000001,
+          3.045
+        ],
+        "first": 15,
+        "second": 7.5,
+        "combo": 16.200000000000045,
+        "hits": 13
+      }
+    },
+    {
+      "name": "Four squad traits affect team shots, timed rate, player damage and death buff",
+      "passed": true,
+      "detail": {
+        "base": 4.84,
+        "boosted": 5.324,
+        "interval": 0.22,
+        "fastInterval": 0.19130434782608696,
+        "hp": 91,
+        "beforeDeath": 1.1,
+        "afterDeath": 1.2320000000000002,
+        "fallen": 6
+      }
+    },
+    {
+      "name": "Four tech traits change real projectile damage, pet cooldown and armor lifetime",
+      "passed": true,
+      "detail": {
+        "base": 11.65,
+        "boosted": 16.356600000000004,
+        "before": 20,
+        "after": 19,
+        "duration": 14
+      }
+    },
+    {
+      "name": "Elemental direct hits proc bounded chain, explosion, frost and burn",
+      "passed": true,
+      "detail": {
+        "direct": {
+          "a": 9880,
+          "b": 9992,
+          "c": 9992,
+          "burn": 3,
+          "slow": 0.12
+        },
+        "after": 9878,
+        "counters": 2,
+        "arc": 2.400000000000002,
+        "blast": 2.400000000000002
+      }
+    },
+    {
+      "name": "Survival traits affect actual HP, repair and knockback",
+      "passed": true,
+      "detail": {
+        "hp": 35.8,
+        "max": 115,
+        "z": -2,
+        "afterZ": -4,
+        "repairs": 1
+      }
+    },
+    {
+      "name": "Three-choice UI pauses combat and supports four-slot replacement",
+      "passed": true
+    },
+    {
+      "name": "Armed truck must be shot open; armor pity counts opened high crates",
+      "passed": true,
+      "detail": {
+        "initial": 160,
+        "hp": 0,
+        "opened": true,
+        "lockedWeapon": "rifle",
+        "weapon": "plasma",
+        "eligible": 1,
+        "afterEligible": 1
+      }
+    },
+    {
+      "name": "Road events include pet choice, destructible truck, elite bounty and rescue",
+      "passed": true,
+      "detail": [
+        {
+          "event": "伙伴信标 · 二选一",
+          "kinds": [
+            "pet",
+            "pet"
+          ],
+          "bounty": false
+        },
+        {
+          "event": "击破武装运输车",
+          "kinds": [
+            "truck"
+          ],
+          "bounty": false
+        },
+        {
+          "event": "悬赏精英 · 队员救援",
+          "kinds": [
+            "rescue"
+          ],
+          "bounty": true
+        }
+      ]
+    },
+    {
+      "name": "Boss arrival, native windup, attack, actual damage and death",
+      "passed": true,
+      "detail": {
+        "spawned": true,
+        "warned": true,
+        "anim": {
+          "key": "boss",
+          "state": "windup",
+          "index": 1
+        },
+        "shots": 3,
+        "hp": 82,
+        "cleared": true,
+        "score": 1620.6499999999967
+      }
+    },
+    {
+      "name": "Boss late-phase wave leaves a dodge lane and summons real enemies",
+      "passed": true,
+      "detail": {
+        "target": 2.6,
+        "width": 5.2,
+        "dodged": true,
+        "summons": 2
+      }
+    },
+    {
+      "name": "Boss schedule 95/180/270 and increasing HP",
+      "passed": true,
+      "detail": [
+        {
+          "time": 95,
+          "hp": 2200.132
+        },
+        {
+          "time": 180,
+          "hp": 2948.132
+        },
+        {
+          "time": 270,
+          "hp": 3740.1319999999996
+        }
+      ]
+    },
+    {
+      "name": "Boss phase guards prevent one-shot deletion",
+      "passed": true
+    },
+    {
+      "name": "Five weapons defeat Boss using actual capped firepower and phase transitions",
+      "passed": true,
+      "detail": [
+        {
+          "weapon": "rifle",
+          "time": 12.100000000000104,
+          "dead": true,
+          "phase": 2
+        },
+        {
+          "weapon": "machine",
+          "time": 10.100000000000076,
+          "dead": true,
+          "phase": 2
+        },
+        {
+          "weapon": "shotgun",
+          "time": 12.900000000000116,
+          "dead": true,
+          "phase": 2
+        },
+        {
+          "weapon": "plasma",
+          "time": 8.800000000000058,
+          "dead": true,
+          "phase": 2
+        },
+        {
+          "weapon": "laser",
+          "time": 12.50000000000011,
+          "dead": true,
+          "phase": 2
+        }
+      ]
+    },
+    {
+      "name": "Pooled particles are reused and capped",
+      "passed": true,
+      "detail": {
+        "before": 12,
+        "pooled": 64,
+        "after": 64
+      }
+    },
+    {
+      "name": "Death, record saving and restart reset run-only systems",
+      "passed": true
+    },
+    {
+      "name": "Full formation remains inside both phone viewports at road edges",
+      "passed": true
+    },
+    {
+      "name": "Enemy budget stops spawning without silently deleting existing threats",
+      "passed": true,
+      "detail": {
+        "before": 32,
+        "after": 32,
+        "retained": true,
+        "hp": 100
+      }
+    },
+    {
+      "name": "Integrated 300-second soak: objects, drafts, Boss and armor stay bounded",
+      "passed": true,
+      "detail": {
+        "time": 299.9000000000011,
+        "max": {
+          "enemies": 10,
+          "bullets": 27,
+          "particles": 64,
+          "shots": 10
+        },
+        "seen": {
+          "drafts": 4,
+          "boss": true,
+          "armor": true
+        },
+        "team": 0,
+        "affixes": 4,
+        "intervals": [
+          1.302,
+          4.7652
+        ]
+      }
+    },
+    {
+      "name": "Maximum projectile pool uses instancing; repeated resets release actors",
+      "passed": true,
+      "detail": {
+        "stress": 160,
+        "drawCalls": 114,
+        "memories": [
+          {
+            "geometries": 20,
+            "textures": 18,
+            "actors": 1
+          },
+          {
+            "geometries": 20,
+            "textures": 18,
+            "actors": 1
+          },
+          {
+            "geometries": 20,
+            "textures": 18,
+            "actors": 1
+          },
+          {
+            "geometries": 20,
+            "textures": 18,
+            "actors": 1
+          },
+          {
+            "geometries": 20,
+            "textures": 18,
+            "actors": 1
+          },
+          {
+            "geometries": 20,
+            "textures": 18,
+            "actors": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "Review screenshots: initial, gate, weapons, formation, armor, draft and Boss",
+      "passed": true
+    },
+    {
+      "name": "Nested Pages path, manifest and all V1.7 files launch offline",
+      "passed": true,
+      "detail": {
+        "orientation": "portrait",
+        "missing": [],
+        "count": 188
+      }
+    }
+  ],
+  "errors": []
+}

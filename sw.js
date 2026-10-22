@@ -1,10 +1,36 @@
-const CACHE = "monster-rush-v2.1.0";
+importScripts("./v17-cache.js");
+const CACHE = "monster-rush-road-squad-v17-2";
 const FILES = [
   "./",
   "./index.html",
   "./style.css",
   "./game.js",
   "./audio.js",
+  "./sprites.js",
+  "./sprite-state.mjs",
+  "./v17-cache.js",
+  "./config/balance-v17.js",
+  "./systems.js",
+  "./config/catalog.js",
+  "./assets/characters/player_soldier_back.webp",
+  "./assets/backgrounds/highway_day.webp",
+  "./assets/gates/fire_rate_plus_20.webp",
+  "./assets/pets/dragon.svg",
+  "./assets/pets/owl.svg",
+  "./assets/pets/drone.svg",
+  "./assets/pets/fairy.svg",
+  "./assets/armors/thunder.svg",
+  "./assets/armors/molten.svg",
+  "./assets/armors/phantom.svg",
+
+  "./assets/enemies/scout.svg",
+  "./assets/enemies/runner.svg",
+  "./assets/enemies/heavy.svg",
+  "./assets/enemies/ranged.svg",
+  "./assets/enemies/charger.svg",
+  "./assets/enemies/elite.svg",
+  "./assets/enemies/boss.svg",
+
   "./manifest.webmanifest",
   "./icons/icon.svg",
   "./icons/icon-192.png",
@@ -13,7 +39,9 @@ const FILES = [
   "./vendor/three/LICENSE",
 ];
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)));
+  e.waitUntil(
+    caches.open(CACHE).then((c) => c.addAll([...FILES, ...self.V17_FILES])),
+  );
   self.skipWaiting();
 });
 self.addEventListener("activate", (e) => {

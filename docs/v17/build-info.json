@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-22",
+  "branch": "codex/final-road-squad",
+  "files": {
+    "game.js": "8bbfe635fc2e99b92951bfa109608ad0a2ea43e43f1cc0320ada41b0feeffa3b",
+    "systems.js": "09ad16f65353ccac8e35752bf3ed858e84866e8de2860fb53c223c520b6716c4",
+    "sprites.js": "cb36146c8fefeecc22ce915805fbd6ad3651cad4992fb675aa5a91588eebae05",
+    "sprite-state.mjs": "ed3e907ded09ce62411875a0a1c362006ea2e7b668c48b0106c9b2de012b9b17",
+    "audio.js": "03ab03ecd5aca37d8997062c42ac38412a3d8cd444195510715bb6344e84a2bc",
+    "config/catalog.js": "f6348c3f09d636ad1330371ba58b16945376ae7e018bb80bad097a7eece3ff06",
+    "config/balance-v17.js": "ec2df8fb213979a26b36eed229c112e89e8e6ddc761c4dfe9ecb423477a80a12",
+    "index.html": "125c8bee947bf75d9dd92db36179872c838cce1bff8c029e09dd50f61810ac23",
+    "style.css": "cf11c113e8e4ce79382ce6801f54782e2ccf7411338dd09e00d12f6968b8b502",
+    "sw.js": "3f8237dc60ea25891661fb49b4a5bf99e70870bece40d7ae25cb22ad9a9c673c",
+    "assets/v17/catalog.json": "80dbf13a5d73111d0cfb90abb0a581d975fc87dcedb131ed3a31d0565d848652"
+  },
+  "runtimeDependencies": "Local Three.js r170; no CDN or backend",
+  "mainDeployment": "Not merged or deployed"
+}

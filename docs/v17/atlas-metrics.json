@@ -1,0 +1,257 @@
+{
+  "atlases": [
+    {
+      "key": "actor/hero",
+      "frames": 13,
+      "atlas": [
+        652,
+        784
+      ],
+      "gpuBytesRGBA": 2044672,
+      "bytes": 149870
+    },
+    {
+      "key": "actor/assault",
+      "frames": 17,
+      "atlas": [
+        815,
+        784
+      ],
+      "gpuBytesRGBA": 2555840,
+      "bytes": 192132
+    },
+    {
+      "key": "actor/heavy",
+      "frames": 17,
+      "atlas": [
+        855,
+        784
+      ],
+      "gpuBytesRGBA": 2681280,
+      "bytes": 202420
+    },
+    {
+      "key": "actor/guardian",
+      "frames": 17,
+      "atlas": [
+        905,
+        784
+      ],
+      "gpuBytesRGBA": 2838080,
+      "bytes": 224642
+    },
+    {
+      "key": "enemy/grunt_slime",
+      "frames": 16,
+      "atlas": [
+        592,
+        560
+      ],
+      "gpuBytesRGBA": 1326080,
+      "bytes": 78608
+    },
+    {
+      "key": "enemy/swift_slime",
+      "frames": 16,
+      "atlas": [
+        592,
+        560
+      ],
+      "gpuBytesRGBA": 1326080,
+      "bytes": 79108
+    },
+    {
+      "key": "enemy/armored_beetle",
+      "frames": 16,
+      "atlas": [
+        575,
+        592
+      ],
+      "gpuBytesRGBA": 1361600,
+      "bytes": 96600
+    },
+    {
+      "key": "enemy/ranged_spider",
+      "frames": 16,
+      "atlas": [
+        592,
+        560
+      ],
+      "gpuBytesRGBA": 1326080,
+      "bytes": 100026
+    },
+    {
+      "key": "enemy/elite_mutant",
+      "frames": 16,
+      "atlas": [
+        592,
+        560
+      ],
+      "gpuBytesRGBA": 1326080,
+      "bytes": 77562
+    },
+    {
+      "key": "boss",
+      "frames": 36,
+      "atlas": [
+        1368,
+        1038
+      ],
+      "gpuBytesRGBA": 5679936,
+      "bytes": 622114
+    },
+    {
+      "key": "pet/fire_dragon/1",
+      "frames": 14,
+      "atlas": [
+        404,
+        404
+      ],
+      "gpuBytesRGBA": 652864,
+      "bytes": 55242
+    },
+    {
+      "key": "pet/fire_dragon/2",
+      "frames": 14,
+      "atlas": [
+        404,
+        404
+      ],
+      "gpuBytesRGBA": 652864,
+      "bytes": 66686
+    },
+    {
+      "key": "pet/fire_dragon/3",
+      "frames": 14,
+      "atlas": [
+        404,
+        404
+      ],
+      "gpuBytesRGBA": 652864,
+      "bytes": 74570
+    },
+    {
+      "key": "pet/electromagnetic_owl/1",
+      "frames": 14,
+      "atlas": [
+        360,
+        400
+      ],
+      "gpuBytesRGBA": 576000,
+      "bytes": 55520
+    },
+    {
+      "key": "pet/electromagnetic_owl/2",
+      "frames": 14,
+      "atlas": [
+        384,
+        400
+      ],
+      "gpuBytesRGBA": 614400,
+      "bytes": 62642
+    },
+    {
+      "key": "pet/electromagnetic_owl/3",
+      "frames": 14,
+      "atlas": [
+        400,
+        392
+      ],
+      "gpuBytesRGBA": 627200,
+      "bytes": 68598
+    },
+    {
+      "key": "pet/shield_drone/1",
+      "frames": 14,
+      "atlas": [
+        404,
+        404
+      ],
+      "gpuBytesRGBA": 652864,
+      "bytes": 55744
+    },
+    {
+      "key": "pet/shield_drone/2",
+      "frames": 14,
+      "atlas": [
+        404,
+        404
+      ],
+      "gpuBytesRGBA": 652864,
+      "bytes": 68420
+    },
+    {
+      "key": "pet/shield_drone/3",
+      "frames": 14,
+      "atlas": [
+        404,
+        404
+      ],
+      "gpuBytesRGBA": 652864,
+      "bytes": 81016
+    },
+    {
+      "key": "pet/life_sprite/1",
+      "frames": 14,
+      "atlas": [
+        404,
+        404
+      ],
+      "gpuBytesRGBA": 652864,
+      "bytes": 54208
+    },
+    {
+      "key": "pet/life_sprite/2",
+      "frames": 14,
+      "atlas": [
+        404,
+        404
+      ],
+      "gpuBytesRGBA": 652864,
+      "bytes": 65042
+    },
+    {
+      "key": "pet/life_sprite/3",
+      "frames": 14,
+      "atlas": [
+        404,
+        404
+      ],
+      "gpuBytesRGBA": 652864,
+      "bytes": 70470
+    },
+    {
+      "key": "armor/storm",
+      "frames": 31,
+      "atlas": [
+        1038,
+        1080
+      ],
+      "gpuBytesRGBA": 4484160,
+      "bytes": 448206
+    },
+    {
+      "key": "armor/inferno",
+      "frames": 31,
+      "atlas": [
+        1038,
+        1080
+      ],
+      "gpuBytesRGBA": 4484160,
+      "bytes": 437352
+    },
+    {
+      "key": "armor/phantom",
+      "frames": 31,
+      "atlas": [
+        1038,
+        1080
+      ],
+      "gpuBytesRGBA": 4484160,
+      "bytes": 444306
+    }
+  ],
+  "totalGpuRGBA": 43611584,
+  "totalFiles": 154,
+  "totalBytes": 5929116
+}

@@ -1,0 +1,9 @@
+{
+  "wallSeconds": 13.2,
+  "simulationSeconds": 5.783300000000002,
+  "mode": "playing",
+  "kills": 2,
+  "hp": 100,
+  "errors": [],
+  "note": "Unfrozen requestAnimationFrame run with real touch events; software WebGL, not Android FPS."
+}

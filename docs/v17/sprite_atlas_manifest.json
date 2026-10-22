@@ -1,0 +1,942 @@
+[
+  {
+    "atlas": "atlases/characters_hero_00.webp",
+    "role": "hero",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/hero/idle_00.webp",
+        "state": "idle",
+        "index": 0,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/hero/run_00.webp",
+        "state": "run",
+        "index": 0,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/hero/run_01.webp",
+        "state": "run",
+        "index": 1,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/hero/run_02.webp",
+        "state": "run",
+        "index": 2,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_hero_01.webp",
+    "role": "hero",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/hero/run_03.webp",
+        "state": "run",
+        "index": 3,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/hero/run_04.webp",
+        "state": "run",
+        "index": 4,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/hero/run_05.webp",
+        "state": "run",
+        "index": 5,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/hero/shoot_00.webp",
+        "state": "shoot",
+        "index": 0,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_hero_02.webp",
+    "role": "hero",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/hero/shoot_01.webp",
+        "state": "shoot",
+        "index": 1,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/hero/shoot_02.webp",
+        "state": "shoot",
+        "index": 2,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/hero/hit_00.webp",
+        "state": "hit",
+        "index": 0,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/hero/hit_01.webp",
+        "state": "hit",
+        "index": 1,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_hero_03.webp",
+    "role": "hero",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/hero/down_00.webp",
+        "state": "down",
+        "index": 0,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_assault_00.webp",
+    "role": "assault",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/assault/idle_00.webp",
+        "state": "idle",
+        "index": 0,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/assault/run_00.webp",
+        "state": "run",
+        "index": 0,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/assault/run_01.webp",
+        "state": "run",
+        "index": 1,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/assault/run_02.webp",
+        "state": "run",
+        "index": 2,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_assault_01.webp",
+    "role": "assault",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/assault/run_03.webp",
+        "state": "run",
+        "index": 3,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/assault/run_04.webp",
+        "state": "run",
+        "index": 4,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/assault/run_05.webp",
+        "state": "run",
+        "index": 5,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/assault/shoot_00.webp",
+        "state": "shoot",
+        "index": 0,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_assault_02.webp",
+    "role": "assault",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/assault/shoot_01.webp",
+        "state": "shoot",
+        "index": 1,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/assault/shoot_02.webp",
+        "state": "shoot",
+        "index": 2,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/assault/hit_00.webp",
+        "state": "hit",
+        "index": 0,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/assault/hit_01.webp",
+        "state": "hit",
+        "index": 1,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_assault_03.webp",
+    "role": "assault",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/assault/down_00.webp",
+        "state": "down",
+        "index": 0,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_heavy_00.webp",
+    "role": "heavy",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/heavy/idle_00.webp",
+        "state": "idle",
+        "index": 0,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/heavy/run_00.webp",
+        "state": "run",
+        "index": 0,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/heavy/run_01.webp",
+        "state": "run",
+        "index": 1,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/heavy/run_02.webp",
+        "state": "run",
+        "index": 2,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_heavy_01.webp",
+    "role": "heavy",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/heavy/run_03.webp",
+        "state": "run",
+        "index": 3,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/heavy/run_04.webp",
+        "state": "run",
+        "index": 4,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/heavy/run_05.webp",
+        "state": "run",
+        "index": 5,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/heavy/shoot_00.webp",
+        "state": "shoot",
+        "index": 0,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_heavy_02.webp",
+    "role": "heavy",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/heavy/shoot_01.webp",
+        "state": "shoot",
+        "index": 1,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/heavy/shoot_02.webp",
+        "state": "shoot",
+        "index": 2,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/heavy/hit_00.webp",
+        "state": "hit",
+        "index": 0,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/heavy/hit_01.webp",
+        "state": "hit",
+        "index": 1,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_heavy_03.webp",
+    "role": "heavy",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/heavy/down_00.webp",
+        "state": "down",
+        "index": 0,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_guardian_00.webp",
+    "role": "guardian",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/guardian/idle_00.webp",
+        "state": "idle",
+        "index": 0,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/guardian/run_00.webp",
+        "state": "run",
+        "index": 0,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/guardian/run_01.webp",
+        "state": "run",
+        "index": 1,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/guardian/run_02.webp",
+        "state": "run",
+        "index": 2,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_guardian_01.webp",
+    "role": "guardian",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/guardian/run_03.webp",
+        "state": "run",
+        "index": 3,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/guardian/run_04.webp",
+        "state": "run",
+        "index": 4,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/guardian/run_05.webp",
+        "state": "run",
+        "index": 5,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/guardian/shoot_00.webp",
+        "state": "shoot",
+        "index": 0,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_guardian_02.webp",
+    "role": "guardian",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/guardian/shoot_01.webp",
+        "state": "shoot",
+        "index": 1,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/guardian/shoot_02.webp",
+        "state": "shoot",
+        "index": 2,
+        "rect_px": [
+          512,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/guardian/hit_00.webp",
+        "state": "hit",
+        "index": 0,
+        "rect_px": [
+          0,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      },
+      {
+        "source": "runtime_webp/actors/guardian/hit_01.webp",
+        "state": "hit",
+        "index": 1,
+        "rect_px": [
+          512,
+          640,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  },
+  {
+    "atlas": "atlases/characters_guardian_03.webp",
+    "role": "guardian",
+    "size_px": [
+      1024,
+      1280
+    ],
+    "frames": [
+      {
+        "source": "runtime_webp/actors/guardian/down_00.webp",
+        "state": "down",
+        "index": 0,
+        "rect_px": [
+          0,
+          0,
+          512,
+          640
+        ],
+        "pivot_in_frame_px": [
+          256,
+          602
+        ]
+      }
+    ]
+  }
+]

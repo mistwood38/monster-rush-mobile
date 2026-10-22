@@ -1,7 +1,7 @@
 {
-  "name": "怪潮突围 V2.1 · Monster Rush",
+  "name": "怪潮突围 · 公路编队",
   "short_name": "怪潮突围",
-  "description": "第三人称 3D 怪潮生存射击：选择强化路线、进化武器、迎战 Boss。",
+  "description": "集结五人编队，选择战术词条，携带伙伴与战甲突破无尽怪潮。",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

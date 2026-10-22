@@ -1,0 +1,1366 @@
+{
+  "version": "V1.6-qa-repaired",
+  "source": "V1.5 runtime WebP: identical animation images audited, procedural variation introduced only when explicitly recorded",
+  "animation_definitions": {
+    "actors": {
+      "hero": {
+        "display_name": "主角",
+        "accent": "#f15d55",
+        "animations": {
+          "idle": {
+            "frames": [
+              "runtime_webp/actors/hero/idle_00.webp"
+            ],
+            "fps": 1,
+            "loop": true
+          },
+          "run": {
+            "frames": [
+              "runtime_webp/actors/hero/run_00.webp",
+              "runtime_webp/actors/hero/run_01.webp",
+              "runtime_webp/actors/hero/run_02.webp",
+              "runtime_webp/actors/hero/run_03.webp",
+              "runtime_webp/actors/hero/run_04.webp",
+              "runtime_webp/actors/hero/run_05.webp"
+            ],
+            "fps": 9,
+            "loop": true
+          },
+          "shoot": {
+            "frames": [
+              "runtime_webp/actors/hero/shoot_00.webp",
+              "runtime_webp/actors/hero/shoot_01.webp",
+              "runtime_webp/actors/hero/shoot_02.webp"
+            ],
+            "fps": 10,
+            "loop": false
+          },
+          "hit": {
+            "frames": [
+              "runtime_webp/actors/hero/hit_00.webp",
+              "runtime_webp/actors/hero/hit_01.webp"
+            ],
+            "fps": 6,
+            "loop": false
+          },
+          "down": {
+            "frames": [
+              "runtime_webp/actors/hero/down_00.webp"
+            ],
+            "fps": 1,
+            "loop": false
+          }
+        },
+        "source_unique_run_poses": 4,
+        "generated_frames": 13,
+        "status": "technical_action_frames_from_shared_pose_source_with_role-specific_accessories"
+      },
+      "assault": {
+        "display_name": "突击队员",
+        "accent": "#35c5b1",
+        "animations": {
+          "idle": {
+            "frames": [
+              "runtime_webp/actors/assault/idle_00.webp"
+            ],
+            "fps": 1,
+            "loop": true
+          },
+          "run": {
+            "frames": [
+              "runtime_webp/actors/assault/run_00.webp",
+              "runtime_webp/actors/assault/run_01.webp",
+              "runtime_webp/actors/assault/run_02.webp",
+              "runtime_webp/actors/assault/run_03.webp",
+              "runtime_webp/actors/assault/run_04.webp",
+              "runtime_webp/actors/assault/run_05.webp"
+            ],
+            "fps": 9,
+            "loop": true
+          },
+          "shoot": {
+            "frames": [
+              "runtime_webp/actors/assault/shoot_00.webp",
+              "runtime_webp/actors/assault/shoot_01.webp",
+              "runtime_webp/actors/assault/shoot_02.webp"
+            ],
+            "fps": 10,
+            "loop": false
+          },
+          "hit": {
+            "frames": [
+              "runtime_webp/actors/assault/hit_00.webp",
+              "runtime_webp/actors/assault/hit_01.webp"
+            ],
+            "fps": 6,
+            "loop": false
+          },
+          "down": {
+            "frames": [
+              "runtime_webp/actors/assault/down_00.webp"
+            ],
+            "fps": 1,
+            "loop": false
+          },
+          "skill": {
+            "frames": [
+              "runtime_webp/vfx/class_skill/assault_skill_00.webp",
+              "runtime_webp/vfx/class_skill/assault_skill_01.webp",
+              "runtime_webp/vfx/class_skill/assault_skill_02.webp",
+              "runtime_webp/vfx/class_skill/assault_skill_03.webp"
+            ],
+            "fps": 10,
+            "loop": false
+          }
+        },
+        "source_unique_run_poses": 4,
+        "generated_frames": 13,
+        "status": "shared_body_source_plus_distinct_weapon_or_defense_silhouettes_v1.2",
+        "equipment_note": "独立突击步枪轮廓与通讯装备；新增职业专属技能动画（技术光效）"
+      },
+      "heavy": {
+        "display_name": "重火力队员",
+        "accent": "#ffb44e",
+        "animations": {
+          "idle": {
+            "frames": [
+              "runtime_webp/actors/heavy/idle_00.webp"
+            ],
+            "fps": 1,
+            "loop": true
+          },
+          "run": {
+            "frames": [
+              "runtime_webp/actors/heavy/run_00.webp",
+              "runtime_webp/actors/heavy/run_01.webp",
+              "runtime_webp/actors/heavy/run_02.webp",
+              "runtime_webp/actors/heavy/run_03.webp",
+              "runtime_webp/actors/heavy/run_04.webp",
+              "runtime_webp/actors/heavy/run_05.webp"
+            ],
+            "fps": 9,
+            "loop": true
+          },
+          "shoot": {
+            "frames": [
+              "runtime_webp/actors/heavy/shoot_00.webp",
+              "runtime_webp/actors/heavy/shoot_01.webp",
+              "runtime_webp/actors/heavy/shoot_02.webp"
+            ],
+            "fps": 10,
+            "loop": false
+          },
+          "hit": {
+            "frames": [
+              "runtime_webp/actors/heavy/hit_00.webp",
+              "runtime_webp/actors/heavy/hit_01.webp"
+            ],
+            "fps": 6,
+            "loop": false
+          },
+          "down": {
+            "frames": [
+              "runtime_webp/actors/heavy/down_00.webp"
+            ],
+            "fps": 1,
+            "loop": false
+          },
+          "skill": {
+            "frames": [
+              "runtime_webp/vfx/class_skill/heavy_skill_00.webp",
+              "runtime_webp/vfx/class_skill/heavy_skill_01.webp",
+              "runtime_webp/vfx/class_skill/heavy_skill_02.webp",
+              "runtime_webp/vfx/class_skill/heavy_skill_03.webp"
+            ],
+            "fps": 10,
+            "loop": false
+          }
+        },
+        "source_unique_run_poses": 4,
+        "generated_frames": 13,
+        "status": "shared_body_source_plus_distinct_weapon_or_defense_silhouettes_v1.2",
+        "equipment_note": "独立加特林炮管与双动力背包；新增职业专属技能动画（技术光效）"
+      },
+      "guardian": {
+        "display_name": "护卫队员",
+        "accent": "#80cfff",
+        "animations": {
+          "idle": {
+            "frames": [
+              "runtime_webp/actors/guardian/idle_00.webp"
+            ],
+            "fps": 1,
+            "loop": true
+          },
+          "run": {
+            "frames": [
+              "runtime_webp/actors/guardian/run_00.webp",
+              "runtime_webp/actors/guardian/run_01.webp",
+              "runtime_webp/actors/guardian/run_02.webp",
+              "runtime_webp/actors/guardian/run_03.webp",
+              "runtime_webp/actors/guardian/run_04.webp",
+              "runtime_webp/actors/guardian/run_05.webp"
+            ],
+            "fps": 9,
+            "loop": true
+          },
+          "shoot": {
+            "frames": [
+              "runtime_webp/actors/guardian/shoot_00.webp",
+              "runtime_webp/actors/guardian/shoot_01.webp",
+              "runtime_webp/actors/guardian/shoot_02.webp"
+            ],
+            "fps": 10,
+            "loop": false
+          },
+          "hit": {
+            "frames": [
+              "runtime_webp/actors/guardian/hit_00.webp",
+              "runtime_webp/actors/guardian/hit_01.webp"
+            ],
+            "fps": 6,
+            "loop": false
+          },
+          "down": {
+            "frames": [
+              "runtime_webp/actors/guardian/down_00.webp"
+            ],
+            "fps": 1,
+            "loop": false
+          },
+          "skill": {
+            "frames": [
+              "runtime_webp/vfx/class_skill/guardian_skill_00.webp",
+              "runtime_webp/vfx/class_skill/guardian_skill_01.webp",
+              "runtime_webp/vfx/class_skill/guardian_skill_02.webp",
+              "runtime_webp/vfx/class_skill/guardian_skill_03.webp"
+            ],
+            "fps": 10,
+            "loop": false
+          }
+        },
+        "source_unique_run_poses": 4,
+        "generated_frames": 13,
+        "status": "shared_body_source_plus_distinct_weapon_or_defense_silhouettes_v1.2",
+        "equipment_note": "独立实体能量盾和辅助能量武器；新增职业专属技能动画（技术光效）"
+      }
+    },
+    "enemies": {
+      "grunt_slime": {
+        "display_name": "普通史莱姆",
+        "role": "slime",
+        "status": "PROCEDURAL_STATUS_CANDIDATE",
+        "animations": {
+          "move": {
+            "fps": 8,
+            "loop": true,
+            "frames": [
+              "runtime_webp/enemies/grunt_slime/move_00.webp",
+              "runtime_webp/enemies/grunt_slime/move_01.webp",
+              "runtime_webp/enemies/grunt_slime/move_02.webp",
+              "runtime_webp/enemies/grunt_slime/move_03.webp",
+              "runtime_webp/enemies/grunt_slime/move_04.webp",
+              "runtime_webp/enemies/grunt_slime/move_05.webp"
+            ]
+          },
+          "attack": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/grunt_slime/attack_00.webp",
+              "runtime_webp/enemies/grunt_slime/attack_01.webp",
+              "runtime_webp/enemies/grunt_slime/attack_02.webp",
+              "runtime_webp/enemies/grunt_slime/attack_03.webp"
+            ]
+          },
+          "hit": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/grunt_slime/hit_00.webp",
+              "runtime_webp/enemies/grunt_slime/hit_01.webp"
+            ]
+          },
+          "down": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/grunt_slime/down_00.webp",
+              "runtime_webp/enemies/grunt_slime/down_01.webp",
+              "runtime_webp/enemies/grunt_slime/down_02.webp",
+              "runtime_webp/enemies/grunt_slime/down_03.webp"
+            ]
+          }
+        },
+        "anchor": [
+          192,
+          338
+        ]
+      },
+      "swift_slime": {
+        "display_name": "迅捷怪",
+        "role": "quick",
+        "status": "PROCEDURAL_STATUS_CANDIDATE",
+        "animations": {
+          "move": {
+            "fps": 8,
+            "loop": true,
+            "frames": [
+              "runtime_webp/enemies/swift_slime/move_00.webp",
+              "runtime_webp/enemies/swift_slime/move_01.webp",
+              "runtime_webp/enemies/swift_slime/move_02.webp",
+              "runtime_webp/enemies/swift_slime/move_03.webp",
+              "runtime_webp/enemies/swift_slime/move_04.webp",
+              "runtime_webp/enemies/swift_slime/move_05.webp"
+            ]
+          },
+          "attack": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/swift_slime/attack_00.webp",
+              "runtime_webp/enemies/swift_slime/attack_01.webp",
+              "runtime_webp/enemies/swift_slime/attack_02.webp",
+              "runtime_webp/enemies/swift_slime/attack_03.webp"
+            ]
+          },
+          "hit": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/swift_slime/hit_00.webp",
+              "runtime_webp/enemies/swift_slime/hit_01.webp"
+            ]
+          },
+          "down": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/swift_slime/down_00.webp",
+              "runtime_webp/enemies/swift_slime/down_01.webp",
+              "runtime_webp/enemies/swift_slime/down_02.webp",
+              "runtime_webp/enemies/swift_slime/down_03.webp"
+            ]
+          }
+        },
+        "anchor": [
+          192,
+          338
+        ]
+      },
+      "armored_beetle": {
+        "display_name": "重甲虫",
+        "role": "beetle",
+        "status": "PROCEDURAL_STATUS_CANDIDATE",
+        "animations": {
+          "move": {
+            "fps": 8,
+            "loop": true,
+            "frames": [
+              "runtime_webp/enemies/armored_beetle/move_00.webp",
+              "runtime_webp/enemies/armored_beetle/move_01.webp",
+              "runtime_webp/enemies/armored_beetle/move_02.webp",
+              "runtime_webp/enemies/armored_beetle/move_03.webp",
+              "runtime_webp/enemies/armored_beetle/move_04.webp",
+              "runtime_webp/enemies/armored_beetle/move_05.webp"
+            ]
+          },
+          "attack": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/armored_beetle/attack_00.webp",
+              "runtime_webp/enemies/armored_beetle/attack_01.webp",
+              "runtime_webp/enemies/armored_beetle/attack_02.webp",
+              "runtime_webp/enemies/armored_beetle/attack_03.webp"
+            ]
+          },
+          "hit": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/armored_beetle/hit_00.webp",
+              "runtime_webp/enemies/armored_beetle/hit_01.webp"
+            ]
+          },
+          "down": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/armored_beetle/down_00.webp",
+              "runtime_webp/enemies/armored_beetle/down_01.webp",
+              "runtime_webp/enemies/armored_beetle/down_02.webp",
+              "runtime_webp/enemies/armored_beetle/down_03.webp"
+            ]
+          }
+        },
+        "anchor": [
+          192,
+          338
+        ]
+      },
+      "ranged_spider": {
+        "display_name": "远程蜘蛛",
+        "role": "spider",
+        "status": "PROCEDURAL_STATUS_CANDIDATE",
+        "animations": {
+          "move": {
+            "fps": 8,
+            "loop": true,
+            "frames": [
+              "runtime_webp/enemies/ranged_spider/move_00.webp",
+              "runtime_webp/enemies/ranged_spider/move_01.webp",
+              "runtime_webp/enemies/ranged_spider/move_02.webp",
+              "runtime_webp/enemies/ranged_spider/move_03.webp",
+              "runtime_webp/enemies/ranged_spider/move_04.webp",
+              "runtime_webp/enemies/ranged_spider/move_05.webp"
+            ]
+          },
+          "attack": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/ranged_spider/attack_00.webp",
+              "runtime_webp/enemies/ranged_spider/attack_01.webp",
+              "runtime_webp/enemies/ranged_spider/attack_02.webp",
+              "runtime_webp/enemies/ranged_spider/attack_03.webp"
+            ]
+          },
+          "hit": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/ranged_spider/hit_00.webp",
+              "runtime_webp/enemies/ranged_spider/hit_01.webp"
+            ]
+          },
+          "down": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/ranged_spider/down_00.webp",
+              "runtime_webp/enemies/ranged_spider/down_01.webp",
+              "runtime_webp/enemies/ranged_spider/down_02.webp",
+              "runtime_webp/enemies/ranged_spider/down_03.webp"
+            ]
+          }
+        },
+        "anchor": [
+          192,
+          338
+        ]
+      },
+      "elite_mutant": {
+        "display_name": "变异精英",
+        "role": "elite",
+        "status": "PROCEDURAL_STATUS_CANDIDATE",
+        "animations": {
+          "move": {
+            "fps": 8,
+            "loop": true,
+            "frames": [
+              "runtime_webp/enemies/elite_mutant/move_00.webp",
+              "runtime_webp/enemies/elite_mutant/move_01.webp",
+              "runtime_webp/enemies/elite_mutant/move_02.webp",
+              "runtime_webp/enemies/elite_mutant/move_03.webp",
+              "runtime_webp/enemies/elite_mutant/move_04.webp",
+              "runtime_webp/enemies/elite_mutant/move_05.webp"
+            ]
+          },
+          "attack": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/elite_mutant/attack_00.webp",
+              "runtime_webp/enemies/elite_mutant/attack_01.webp",
+              "runtime_webp/enemies/elite_mutant/attack_02.webp",
+              "runtime_webp/enemies/elite_mutant/attack_03.webp"
+            ]
+          },
+          "hit": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/elite_mutant/hit_00.webp",
+              "runtime_webp/enemies/elite_mutant/hit_01.webp"
+            ]
+          },
+          "down": {
+            "fps": 10,
+            "loop": false,
+            "frames": [
+              "runtime_webp/enemies/elite_mutant/down_00.webp",
+              "runtime_webp/enemies/elite_mutant/down_01.webp",
+              "runtime_webp/enemies/elite_mutant/down_02.webp",
+              "runtime_webp/enemies/elite_mutant/down_03.webp"
+            ]
+          }
+        },
+        "anchor": [
+          192,
+          338
+        ]
+      }
+    },
+    "pets": {
+      "fire_dragon": {
+        "display_name": "烈焰幼龙",
+        "source": "base_fire_dragon.png",
+        "status": "PROCEDURAL_ANIMATION_CANDIDATE",
+        "stages": {
+          "1": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/fire_dragon/tier_1/hover_00.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/hover_01.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/hover_02.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/hover_03.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/hover_04.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/fire_dragon/tier_1/cast_00.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/cast_01.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/cast_02.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/cast_03.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/cast_04.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/cast_05.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/cast_06.webp",
+                  "runtime_webp/pets/fire_dragon/tier_1/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/fire_dragon/tier_1/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          },
+          "2": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/fire_dragon/tier_2/hover_00.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/hover_01.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/hover_02.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/hover_03.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/hover_04.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/fire_dragon/tier_2/cast_00.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/cast_01.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/cast_02.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/cast_03.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/cast_04.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/cast_05.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/cast_06.webp",
+                  "runtime_webp/pets/fire_dragon/tier_2/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/fire_dragon/tier_2/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          },
+          "3": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/fire_dragon/tier_3/hover_00.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/hover_01.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/hover_02.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/hover_03.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/hover_04.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/fire_dragon/tier_3/cast_00.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/cast_01.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/cast_02.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/cast_03.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/cast_04.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/cast_05.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/cast_06.webp",
+                  "runtime_webp/pets/fire_dragon/tier_3/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/fire_dragon/tier_3/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          }
+        }
+      },
+      "electromagnetic_owl": {
+        "display_name": "电磁夜枭",
+        "source": "references/electromagnetic_owl_original_candidate.png",
+        "status": "CUSTOM_MECHANICAL_OWL_MASTER_PLUS_PROCEDURAL_ANIMATION",
+        "stages": {
+          "1": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/hover_00.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/hover_01.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/hover_02.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/hover_03.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/hover_04.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/cast_00.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/cast_01.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/cast_02.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/cast_03.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/cast_04.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/cast_05.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/cast_06.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_1/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/electromagnetic_owl/tier_1/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          },
+          "2": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/hover_00.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/hover_01.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/hover_02.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/hover_03.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/hover_04.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/cast_00.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/cast_01.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/cast_02.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/cast_03.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/cast_04.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/cast_05.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/cast_06.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_2/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/electromagnetic_owl/tier_2/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          },
+          "3": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/hover_00.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/hover_01.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/hover_02.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/hover_03.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/hover_04.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/cast_00.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/cast_01.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/cast_02.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/cast_03.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/cast_04.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/cast_05.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/cast_06.webp",
+                  "runtime_webp/pets/electromagnetic_owl/tier_3/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/electromagnetic_owl/tier_3/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          }
+        }
+      },
+      "shield_drone": {
+        "display_name": "守护机灵",
+        "source": "base_healer_drone.png",
+        "status": "PROCEDURAL_ANIMATION_CANDIDATE",
+        "stages": {
+          "1": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/shield_drone/tier_1/hover_00.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/hover_01.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/hover_02.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/hover_03.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/hover_04.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/shield_drone/tier_1/cast_00.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/cast_01.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/cast_02.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/cast_03.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/cast_04.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/cast_05.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/cast_06.webp",
+                  "runtime_webp/pets/shield_drone/tier_1/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/shield_drone/tier_1/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          },
+          "2": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/shield_drone/tier_2/hover_00.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/hover_01.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/hover_02.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/hover_03.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/hover_04.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/shield_drone/tier_2/cast_00.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/cast_01.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/cast_02.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/cast_03.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/cast_04.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/cast_05.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/cast_06.webp",
+                  "runtime_webp/pets/shield_drone/tier_2/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/shield_drone/tier_2/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          },
+          "3": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/shield_drone/tier_3/hover_00.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/hover_01.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/hover_02.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/hover_03.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/hover_04.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/shield_drone/tier_3/cast_00.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/cast_01.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/cast_02.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/cast_03.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/cast_04.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/cast_05.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/cast_06.webp",
+                  "runtime_webp/pets/shield_drone/tier_3/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/shield_drone/tier_3/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          }
+        }
+      },
+      "life_sprite": {
+        "display_name": "生命精灵",
+        "source": "base_life_sprite.png",
+        "status": "PROCEDURAL_ANIMATION_CANDIDATE",
+        "stages": {
+          "1": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/life_sprite/tier_1/hover_00.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/hover_01.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/hover_02.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/hover_03.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/hover_04.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/life_sprite/tier_1/cast_00.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/cast_01.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/cast_02.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/cast_03.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/cast_04.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/cast_05.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/cast_06.webp",
+                  "runtime_webp/pets/life_sprite/tier_1/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/life_sprite/tier_1/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          },
+          "2": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/life_sprite/tier_2/hover_00.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/hover_01.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/hover_02.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/hover_03.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/hover_04.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/life_sprite/tier_2/cast_00.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/cast_01.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/cast_02.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/cast_03.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/cast_04.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/cast_05.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/cast_06.webp",
+                  "runtime_webp/pets/life_sprite/tier_2/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/life_sprite/tier_2/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          },
+          "3": {
+            "animations": {
+              "hover": {
+                "fps": 8,
+                "loop": true,
+                "frames": [
+                  "runtime_webp/pets/life_sprite/tier_3/hover_00.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/hover_01.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/hover_02.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/hover_03.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/hover_04.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/hover_05.webp"
+                ]
+              },
+              "cast": {
+                "fps": 12,
+                "loop": false,
+                "frames": [
+                  "runtime_webp/pets/life_sprite/tier_3/cast_00.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/cast_01.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/cast_02.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/cast_03.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/cast_04.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/cast_05.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/cast_06.webp",
+                  "runtime_webp/pets/life_sprite/tier_3/cast_07.webp"
+                ]
+              }
+            },
+            "portrait": "runtime_webp/pets/life_sprite/tier_3/portrait.webp",
+            "anchor": [
+              160,
+              270
+            ],
+            "canvas": [
+              320,
+              320
+            ]
+          }
+        }
+      }
+    },
+    "armors": {
+      "storm": {
+        "status": "FX_COMPOSITE_CANDIDATE",
+        "source": "v10/armors/storm_armor.png",
+        "animations": {
+          "activate": {
+            "frames": [
+              "runtime_webp/armor/storm/activate_00.webp",
+              "runtime_webp/armor/storm/activate_01.webp",
+              "runtime_webp/armor/storm/activate_02.webp",
+              "runtime_webp/armor/storm/activate_03.webp",
+              "runtime_webp/armor/storm/activate_04.webp",
+              "runtime_webp/armor/storm/activate_05.webp",
+              "runtime_webp/armor/storm/activate_06.webp",
+              "runtime_webp/armor/storm/activate_07.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          },
+          "idle": {
+            "frames": [
+              "runtime_webp/armor/storm/idle_00.webp",
+              "runtime_webp/armor/storm/idle_01.webp",
+              "runtime_webp/armor/storm/idle_02.webp",
+              "runtime_webp/armor/storm/idle_03.webp",
+              "runtime_webp/armor/storm/idle_04.webp",
+              "runtime_webp/armor/storm/idle_05.webp"
+            ],
+            "fps": 7,
+            "loop": true
+          },
+          "attack": {
+            "frames": [
+              "runtime_webp/armor/storm/attack_00.webp",
+              "runtime_webp/armor/storm/attack_01.webp",
+              "runtime_webp/armor/storm/attack_02.webp",
+              "runtime_webp/armor/storm/attack_03.webp",
+              "runtime_webp/armor/storm/attack_04.webp",
+              "runtime_webp/armor/storm/attack_05.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          },
+          "hit": {
+            "frames": [
+              "runtime_webp/armor/storm/hit_00.webp",
+              "runtime_webp/armor/storm/hit_01.webp",
+              "runtime_webp/armor/storm/hit_02.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          },
+          "deactivate": {
+            "frames": [
+              "runtime_webp/armor/storm/deactivate_00.webp",
+              "runtime_webp/armor/storm/deactivate_01.webp",
+              "runtime_webp/armor/storm/deactivate_02.webp",
+              "runtime_webp/armor/storm/deactivate_03.webp",
+              "runtime_webp/armor/storm/deactivate_04.webp",
+              "runtime_webp/armor/storm/deactivate_05.webp",
+              "runtime_webp/armor/storm/deactivate_06.webp",
+              "runtime_webp/armor/storm/deactivate_07.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          }
+        },
+        "anchor": [
+          256,
+          448
+        ],
+        "canvas": [
+          512,
+          512
+        ]
+      },
+      "inferno": {
+        "status": "FX_COMPOSITE_CANDIDATE",
+        "source": "v10/armors/inferno_armor.png",
+        "animations": {
+          "activate": {
+            "frames": [
+              "runtime_webp/armor/inferno/activate_00.webp",
+              "runtime_webp/armor/inferno/activate_01.webp",
+              "runtime_webp/armor/inferno/activate_02.webp",
+              "runtime_webp/armor/inferno/activate_03.webp",
+              "runtime_webp/armor/inferno/activate_04.webp",
+              "runtime_webp/armor/inferno/activate_05.webp",
+              "runtime_webp/armor/inferno/activate_06.webp",
+              "runtime_webp/armor/inferno/activate_07.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          },
+          "idle": {
+            "frames": [
+              "runtime_webp/armor/inferno/idle_00.webp",
+              "runtime_webp/armor/inferno/idle_01.webp",
+              "runtime_webp/armor/inferno/idle_02.webp",
+              "runtime_webp/armor/inferno/idle_03.webp",
+              "runtime_webp/armor/inferno/idle_04.webp",
+              "runtime_webp/armor/inferno/idle_05.webp"
+            ],
+            "fps": 7,
+            "loop": true
+          },
+          "attack": {
+            "frames": [
+              "runtime_webp/armor/inferno/attack_00.webp",
+              "runtime_webp/armor/inferno/attack_01.webp",
+              "runtime_webp/armor/inferno/attack_02.webp",
+              "runtime_webp/armor/inferno/attack_03.webp",
+              "runtime_webp/armor/inferno/attack_04.webp",
+              "runtime_webp/armor/inferno/attack_05.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          },
+          "hit": {
+            "frames": [
+              "runtime_webp/armor/inferno/hit_00.webp",
+              "runtime_webp/armor/inferno/hit_01.webp",
+              "runtime_webp/armor/inferno/hit_02.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          },
+          "deactivate": {
+            "frames": [
+              "runtime_webp/armor/inferno/deactivate_00.webp",
+              "runtime_webp/armor/inferno/deactivate_01.webp",
+              "runtime_webp/armor/inferno/deactivate_02.webp",
+              "runtime_webp/armor/inferno/deactivate_03.webp",
+              "runtime_webp/armor/inferno/deactivate_04.webp",
+              "runtime_webp/armor/inferno/deactivate_05.webp",
+              "runtime_webp/armor/inferno/deactivate_06.webp",
+              "runtime_webp/armor/inferno/deactivate_07.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          }
+        },
+        "anchor": [
+          256,
+          448
+        ],
+        "canvas": [
+          512,
+          512
+        ]
+      },
+      "phantom": {
+        "status": "FX_COMPOSITE_CANDIDATE",
+        "source": "v10/armors/phantom_armor.png",
+        "animations": {
+          "activate": {
+            "frames": [
+              "runtime_webp/armor/phantom/activate_00.webp",
+              "runtime_webp/armor/phantom/activate_01.webp",
+              "runtime_webp/armor/phantom/activate_02.webp",
+              "runtime_webp/armor/phantom/activate_03.webp",
+              "runtime_webp/armor/phantom/activate_04.webp",
+              "runtime_webp/armor/phantom/activate_05.webp",
+              "runtime_webp/armor/phantom/activate_06.webp",
+              "runtime_webp/armor/phantom/activate_07.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          },
+          "idle": {
+            "frames": [
+              "runtime_webp/armor/phantom/idle_00.webp",
+              "runtime_webp/armor/phantom/idle_01.webp",
+              "runtime_webp/armor/phantom/idle_02.webp",
+              "runtime_webp/armor/phantom/idle_03.webp",
+              "runtime_webp/armor/phantom/idle_04.webp",
+              "runtime_webp/armor/phantom/idle_05.webp"
+            ],
+            "fps": 7,
+            "loop": true
+          },
+          "attack": {
+            "frames": [
+              "runtime_webp/armor/phantom/attack_00.webp",
+              "runtime_webp/armor/phantom/attack_01.webp",
+              "runtime_webp/armor/phantom/attack_02.webp",
+              "runtime_webp/armor/phantom/attack_03.webp",
+              "runtime_webp/armor/phantom/attack_04.webp",
+              "runtime_webp/armor/phantom/attack_05.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          },
+          "hit": {
+            "frames": [
+              "runtime_webp/armor/phantom/hit_00.webp",
+              "runtime_webp/armor/phantom/hit_01.webp",
+              "runtime_webp/armor/phantom/hit_02.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          },
+          "deactivate": {
+            "frames": [
+              "runtime_webp/armor/phantom/deactivate_00.webp",
+              "runtime_webp/armor/phantom/deactivate_01.webp",
+              "runtime_webp/armor/phantom/deactivate_02.webp",
+              "runtime_webp/armor/phantom/deactivate_03.webp",
+              "runtime_webp/armor/phantom/deactivate_04.webp",
+              "runtime_webp/armor/phantom/deactivate_05.webp",
+              "runtime_webp/armor/phantom/deactivate_06.webp",
+              "runtime_webp/armor/phantom/deactivate_07.webp"
+            ],
+            "fps": 11,
+            "loop": false
+          }
+        },
+        "anchor": [
+          256,
+          448
+        ],
+        "canvas": [
+          512,
+          512
+        ]
+      }
+    },
+    "boss_animations": {
+      "animations": {
+        "idle": {
+          "frames": [
+            "runtime_webp/enemies/legacy_v13/boss/idle_00.webp",
+            "runtime_webp/enemies/legacy_v13/boss/idle_01.webp",
+            "runtime_webp/enemies/legacy_v13/boss/idle_02.webp",
+            "runtime_webp/enemies/legacy_v13/boss/idle_03.webp",
+            "runtime_webp/enemies/legacy_v13/boss/idle_04.webp",
+            "runtime_webp/enemies/legacy_v13/boss/idle_05.webp"
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "windup": {
+          "frames": [
+            "runtime_webp/enemies/legacy_v13/boss/windup_00.webp",
+            "runtime_webp/enemies/legacy_v13/boss/windup_01.webp",
+            "runtime_webp/enemies/legacy_v13/boss/windup_02.webp",
+            "runtime_webp/enemies/legacy_v13/boss/windup_03.webp",
+            "runtime_webp/enemies/legacy_v13/boss/windup_04.webp",
+            "runtime_webp/enemies/legacy_v13/boss/windup_05.webp"
+          ],
+          "fps": 9,
+          "loop": false
+        },
+        "attack": {
+          "frames": [
+            "runtime_webp/enemies/legacy_v13/boss/attack_00.webp",
+            "runtime_webp/enemies/legacy_v13/boss/attack_01.webp",
+            "runtime_webp/enemies/legacy_v13/boss/attack_02.webp",
+            "runtime_webp/enemies/legacy_v13/boss/attack_03.webp",
+            "runtime_webp/enemies/legacy_v13/boss/attack_04.webp",
+            "runtime_webp/enemies/legacy_v13/boss/attack_05.webp"
+          ],
+          "fps": 12,
+          "loop": false
+        },
+        "recover": {
+          "frames": [
+            "runtime_webp/enemies/legacy_v13/boss/recover_00.webp",
+            "runtime_webp/enemies/legacy_v13/boss/recover_01.webp",
+            "runtime_webp/enemies/legacy_v13/boss/recover_02.webp",
+            "runtime_webp/enemies/legacy_v13/boss/recover_03.webp",
+            "runtime_webp/enemies/legacy_v13/boss/recover_04.webp"
+          ],
+          "fps": 9,
+          "loop": false
+        },
+        "hit": {
+          "frames": [
+            "runtime_webp/enemies/legacy_v13/boss/hit_00.webp",
+            "runtime_webp/enemies/legacy_v13/boss/hit_01.webp",
+            "runtime_webp/enemies/legacy_v13/boss/hit_02.webp"
+          ],
+          "fps": 11,
+          "loop": false
+        },
+        "phase2": {
+          "frames": [
+            "runtime_webp/enemies/legacy_v13/boss/phase2_00.webp",
+            "runtime_webp/enemies/legacy_v13/boss/phase2_01.webp",
+            "runtime_webp/enemies/legacy_v13/boss/phase2_02.webp",
+            "runtime_webp/enemies/legacy_v13/boss/phase2_03.webp",
+            "runtime_webp/enemies/legacy_v13/boss/phase2_04.webp"
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "down": {
+          "frames": [
+            "runtime_webp/enemies/legacy_v13/boss/down_00.webp",
+            "runtime_webp/enemies/legacy_v13/boss/down_01.webp",
+            "runtime_webp/enemies/legacy_v13/boss/down_02.webp",
+            "runtime_webp/enemies/legacy_v13/boss/down_03.webp",
+            "runtime_webp/enemies/legacy_v13/boss/down_04.webp"
+          ],
+          "fps": 7,
+          "loop": false
+        }
+      },
+      "source": "existing V1.2 illustrated Boss image segmented into torso and individually rotated forearms, plus original procedural VFX",
+      "status": "articulated_2D_cutout_animation_not_independent_hand_drawn_frames",
+      "frame_size": [
+        512,
+        460
+      ],
+      "anchor": [
+        256,
+        252
+      ]
+    },
+    "v13_slime_animations": {
+      "move": {
+        "frames": [
+          "runtime_webp/enemies/legacy_v13/slime_move_00.webp",
+          "runtime_webp/enemies/legacy_v13/slime_move_01.webp",
+          "runtime_webp/enemies/legacy_v13/slime_move_02.webp",
+          "runtime_webp/enemies/legacy_v13/slime_move_03.webp"
+        ],
+        "fps": 7,
+        "loop": true
+      },
+      "attack": {
+        "frames": [
+          "runtime_webp/enemies/legacy_v13/slime_attack_00.webp"
+        ],
+        "fps": 6,
+        "loop": false
+      },
+      "hit": {
+        "frames": [
+          "runtime_webp/enemies/legacy_v13/slime_hit_00.webp"
+        ],
+        "fps": 4,
+        "loop": false
+      },
+      "down": {
+        "frames": [
+          "runtime_webp/enemies/legacy_v13/slime_down_00.webp",
+          "runtime_webp/enemies/legacy_v13/slime_down_01.webp"
+        ],
+        "fps": 3,
+        "loop": false
+      }
+    }
+  },
+  "unique_validated_animation_frames": 461,
+  "explicit_note": "Existing AI/procedural animation retained; no claim of full independent keyframe art.",
+  "metadata_v16": {
+    "retouched_duplicate_frames": 52,
+    "retouch_type": "procedural micro-pose transform + localized hit/action effects",
+    "production_art_claim": "NO - procedural frames are engineering-grade interpolation, not separately illustrated poses",
+    "primary_actor_animation_design": "same origin body poses for hero and teammates; distinct equipment silhouettes exist",
+    "qa": "all manifest paths and exact within-clip duplicates checked"
+  }
+}
