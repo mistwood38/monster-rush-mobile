@@ -43,3 +43,7 @@ npm test
 - `sw.js` / `v17-cache.js`：版本缓存、离线资源。`.github/workflows/deploy.yml` 保持只在 main 更新或手动执行时部署，本次不触发。
 
 资源包本身明确标注：部分动作是程序处理的候选帧，三职业并非全部独立手绘，尚不满足发行美术完整度。功能测试通过不等于安卓真机、最终画师验收或长期流派平衡全部通过。
+
+自包含审查文件可通过 `npm run build:review` 生成到 `test-results/monster-rush-review.html`，不需复制游戏代码、不依赖外部图片或音频服务。`npm run test:review` 验证其可运行及零额外资源请求。此文件没有PWA安装功能；安卓本地文件打开尚未实测，不能把它当作已发布的网址。
+
+批量策略与渲染测试分别为 `npm run test:balance`（默认七策略各50局）和 `npm run test:performance`。批量运行支持 `BALANCE_SEEDS`、`BALANCE_POLICIES`、`BALANCE_OUTPUT`，每10局保存中间结果，便于继续工作。

@@ -1,0 +1,196 @@
+TAP version 13
+# Subtest: run loops and can be interrupted by shot
+ok 1 - run loops and can be interrupted by shot
+  ---
+  duration_ms: 2.582224
+  type: 'test'
+  ...
+# Subtest: hit overrides shooting; shoot cannot interrupt hit
+ok 2 - hit overrides shooting; shoot cannot interrupt hit
+  ---
+  duration_ms: 0.559018
+  type: 'test'
+  ...
+# Subtest: down locks until reset
+ok 3 - down locks until reset
+  ---
+  duration_ms: 0.737512
+  type: 'test'
+  ...
+# Subtest: boss windup -> attack -> recover -> idle
+ok 4 - boss windup -> attack -> recover -> idle
+  ---
+  duration_ms: 0.398591
+  type: 'test'
+  ...
+# Subtest: invalid dt rejected
+ok 5 - invalid dt rejected
+  ---
+  duration_ms: 0.656599
+  type: 'test'
+  ...
+# Subtest: Official catalog is exactly the delivered 20 IDs with two levels and real icon paths
+ok 6 - Official catalog is exactly the delivered 20 IDs with two levels and real icon paths
+  ---
+  duration_ms: 2.875552
+  type: 'test'
+  ...
+# Subtest: Numeric gate caps and 40-DPS starting rifle formula are independent
+ok 7 - Numeric gate caps and 40-DPS starting rifle formula are independent
+  ---
+  duration_ms: 0.567673
+  type: 'test'
+  ...
+# Subtest: Four permanent teammates: role caps, true HP, death, no auto resurrection, refill
+ok 8 - Four permanent teammates: role caps, true HP, death, no auto resurrection, refill
+  ---
+  duration_ms: 2.249744
+  type: 'test'
+  ...
+# Subtest: Promotion chooses one lowest eligible member and never lowers HP percentage
+ok 9 - Promotion chooses one lowest eligible member and never lowers HP percentage
+  ---
+  duration_ms: 0.765663
+  type: 'test'
+  ...
+# Subtest: DPS example: each assault I inherits 50% damage/rate gate increment only
+ok 10 - DPS example: each assault I inherits 50% damage/rate gate increment only
+  ---
+  duration_ms: 2.874233
+  type: 'test'
+  ...
+# Subtest: Pet dragon waits for a valid target and has official cooldown
+ok 11 - Pet dragon waits for a valid target and has official cooldown
+  ---
+  duration_ms: 0.446144
+  type: 'test'
+  ...
+# Subtest: Pet owl waits for a valid target and has official cooldown
+ok 12 - Pet owl waits for a valid target and has official cooldown
+  ---
+  duration_ms: 0.290799
+  type: 'test'
+  ...
+# Subtest: Pet drone waits for a valid target and has official cooldown
+ok 13 - Pet drone waits for a valid target and has official cooldown
+  ---
+  duration_ms: 0.150037
+  type: 'test'
+  ...
+# Subtest: Pet fairy waits for a valid target and has official cooldown
+ok 14 - Pet fairy waits for a valid target and has official cooldown
+  ---
+  duration_ms: 0.32961
+  type: 'test'
+  ...
+# Subtest: Pet swap preserves slot level and normalized cooldown; no reset exploit
+ok 15 - Pet swap preserves slot level and normalized cooldown; no reset exploit
+  ---
+  duration_ms: 0.478459
+  type: 'test'
+  ...
+# Subtest: Dragon buffs are temporary; owl mitigation is halved against bosses
+ok 16 - Dragon buffs are temporary; owl mitigation is halved against bosses
+  ---
+  duration_ms: 0.258983
+  type: 'test'
+  ...
+# Subtest: Healer and shield target the most endangered unit; shields do not stack
+ok 17 - Healer and shield target the most endangered unit; shields do not stack
+  ---
+  duration_ms: 0.241463
+  type: 'test'
+  ...
+# Subtest: Armor thunder expires in 12s, preserves baseline, cannot stack/refresh
+ok 18 - Armor thunder expires in 12s, preserves baseline, cannot stack/refresh
+  ---
+  duration_ms: 0.193781
+  type: 'test'
+  ...
+# Subtest: Armor molten expires in 12s, preserves baseline, cannot stack/refresh
+ok 19 - Armor molten expires in 12s, preserves baseline, cannot stack/refresh
+  ---
+  duration_ms: 0.137868
+  type: 'test'
+  ...
+# Subtest: Armor phantom expires in 12s, preserves baseline, cannot stack/refresh
+ok 20 - Armor phantom expires in 12s, preserves baseline, cannot stack/refresh
+  ---
+  duration_ms: 0.11167
+  type: 'test'
+  ...
+# Subtest: Armor roll: not eligible before 45s, three misses then fourth actual box guaranteed
+ok 21 - Armor roll: not eligible before 45s, three misses then fourth actual box guaranteed
+  ---
+  duration_ms: 0.211103
+  type: 'test'
+  ...
+# Subtest: Four slots, two levels, replacement, and prerequisite-filtered diverse three choices
+ok 22 - Four slots, two levels, replacement, and prerequisite-filtered diverse three choices
+  ---
+  duration_ms: 0.661546
+  type: 'test'
+  ...
+# Subtest: Focus caps, crit is 1.5x, and direct hit accounting is per target
+ok 23 - Focus caps, crit is 1.5x, and direct hit accounting is per target
+  ---
+  duration_ms: 1.51924
+  type: 'test'
+  ...
+# Subtest: Lightning: every ten direct hits, 2/3 neighbors, cooldown; splash never self-counts
+ok 24 - Lightning: every ten direct hits, 2/3 neighbors, cooldown; splash never self-counts
+  ---
+  duration_ms: 0.216218
+  type: 'test'
+  ...
+# Subtest: Explosive hits, frost caps and burn probability match the formal data
+ok 25 - Explosive hits, frost caps and burn probability match the formal data
+  ---
+  duration_ms: 0.306937
+  type: 'test'
+  ...
+# Subtest: Command affects teammates only, reload is 4 seconds per 20, guard prerequisite works
+ok 26 - Command affects teammates only, reload is 4 seconds per 20, guard prerequisite works
+  ---
+  duration_ms: 0.190847
+  type: 'test'
+  ...
+# Subtest: Fallen counterattack only triggers on real death and has 25s cooldown
+ok 27 - Fallen counterattack only triggers on real death and has 25s cooldown
+  ---
+  duration_ms: 0.108243
+  type: 'test'
+  ...
+# Subtest: Defense ceiling 45%, emergency at most two and rearm, counter pulse bounded
+ok 28 - Defense ceiling 45%, emergency at most two and rearm, counter pulse bounded
+  ---
+  duration_ms: 0.352493
+  type: 'test'
+  ...
+# Subtest: Toughness adds only the delta HP, replacement decreases max HP without farming
+ok 29 - Toughness adds only the delta HP, replacement decreases max HP without farming
+  ---
+  duration_ms: 0.111904
+  type: 'test'
+  ...
+# Subtest: Resonance, recycle, overclock and endurance all have bounded actual effects
+ok 30 - Resonance, recycle, overclock and endurance all have bounded actual effects
+  ---
+  duration_ms: 0.291488
+  type: 'test'
+  ...
+# Subtest: Run reset clears all combat upgrades, armor pity and pet levels
+ok 31 - Run reset clears all combat upgrades, armor pity and pet levels
+  ---
+  duration_ms: 0.194776
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 261.568598

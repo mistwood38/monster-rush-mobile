@@ -112,7 +112,11 @@ let browser;
   const count = Number(process.env.BALANCE_SEEDS || 50),
     seconds = Number(process.env.BALANCE_SECONDS || 180),
     runs = [];
-  for (const [policy, preferred] of Object.entries(policies)) {
+  for (const [policy, preferred] of Object.entries(policies).filter(
+    ([p]) =>
+      !process.env.BALANCE_POLICIES ||
+      process.env.BALANCE_POLICIES.split(",").includes(p),
+  )) {
     for (let seed0 = 1; seed0 <= count; seed0++) {
       runs.push(
         await page.evaluate(
@@ -120,6 +124,7 @@ let browser;
             const t = __MR_TEST__;
             await t.start();
             await t.silence();
+            if (policy === "baseline") t.blockPickups();
             let seed = seed0;
             Math.random = () =>
               (seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) /
@@ -296,52 +301,76 @@ let browser;
   }
   const quantile = (a, p) =>
     [...a].sort((a, b) => a - b)[Math.floor((a.length - 1) * p)];
-  const summary = Object.keys(policies).map((policy) => {
-    const rows = runs.filter((r) => r.policy === policy),
-      durations = rows
-        .filter((r) => r.bossDuration !== null)
-        .map((r) => r.bossDuration);
-    return {
-      policy,
-      runs: rows.length,
-      meanSurvival: +(
-        rows.reduce((a, r) => a + r.seconds, 0) / rows.length
-      ).toFixed(1),
-      p10: quantile(
-        rows.map((r) => r.seconds),
-        0.1,
-      ),
-      median: quantile(
-        rows.map((r) => r.seconds),
-        0.5,
-      ),
-      p90: quantile(
-        rows.map((r) => r.seconds),
-        0.9,
-      ),
-      survivedToCap: rows.filter((r) => r.alive).length,
-      bossReached: rows.filter((r) => r.bossAt !== null).length,
-      bossDefeated: durations.length,
-      bossMedianSeconds: durations.length ? quantile(durations, 0.5) : null,
-      meanKills: +(rows.reduce((a, r) => a + r.kills, 0) / rows.length).toFixed(
-        1,
-      ),
-      armorDrops: rows.reduce((a, r) => a + r.armorDrops, 0),
-    };
-  });
+  const summary = Object.keys(policies)
+    .filter((p) => runs.some((r) => r.policy === p))
+    .map((policy) => {
+      const rows = runs.filter((r) => r.policy === policy),
+        durations = rows
+          .filter((r) => r.bossDuration !== null)
+          .map((r) => r.bossDuration);
+      return {
+        policy,
+        runs: rows.length,
+        meanSurvival: +(
+          rows.reduce((a, r) => a + r.seconds, 0) / rows.length
+        ).toFixed(1),
+        p10: quantile(
+          rows.map((r) => r.seconds),
+          0.1,
+        ),
+        median: quantile(
+          rows.map((r) => r.seconds),
+          0.5,
+        ),
+        p90: quantile(
+          rows.map((r) => r.seconds),
+          0.9,
+        ),
+        survivedToCap: rows.filter((r) => r.alive).length,
+        bossReached: rows.filter((r) => r.bossAt !== null).length,
+        bossDefeated: durations.length,
+        bossMedianSeconds: durations.length ? quantile(durations, 0.5) : null,
+        meanKills: +(
+          rows.reduce((a, r) => a + r.kills, 0) / rows.length
+        ).toFixed(1),
+        armorDrops: rows.reduce((a, r) => a + r.armorDrops, 0),
+      };
+    });
   assert.deepEqual(errors, []);
-  assert.ok(
-    summary[0].survivedToCap === 0,
-    "Stationary unupgraded baseline must not survive indefinitely",
-  );
-  assert.ok(
-    summary
-      .filter((s) => s.policy !== "baseline")
-      .every((s) => s.meanSurvival > summary[0].meanSurvival),
-    "Reward seeking should improve survival",
-  );
+  const baseline = summary.find((s) => s.policy === "baseline");
+  if (baseline) {
+    assert.equal(
+      baseline.survivedToCap,
+      0,
+      "Unupgraded stationary baseline must fail",
+    );
+    assert.ok(
+      summary
+        .filter((s) => s.policy !== "baseline")
+        .every((s) => s.meanSurvival > baseline.meanSurvival),
+      "Rewards should improve survival",
+    );
+    assert.ok(
+      runs
+        .filter((r) => r.policy === "baseline")
+        .every(
+          (r) =>
+            r.weapon === "rifle" &&
+            r.affixes.length === 0 &&
+            JSON.stringify(r.stats) ===
+              JSON.stringify({
+                lanes: 1,
+                pellets: 1,
+                fireRate: 1,
+                bulletSpeed: 1,
+                damage: 1,
+              }),
+        ),
+      "Strict baseline must receive no equipment or numeric upgrades",
+    );
+  }
   fs.writeFileSync(
-    path.join(artifacts, "balance-results.json"),
+    path.join(artifacts, process.env.BALANCE_OUTPUT || "balance-results.json"),
     JSON.stringify(
       {
         method:

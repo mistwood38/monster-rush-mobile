@@ -81,6 +81,7 @@ const state = {
   gateSequence: 0,
   wave: 1,
   stats: { lanes: 1, pellets: 1, fireRate: 1, bulletSpeed: 1, damage: 1 },
+  gateDamage: 1,
   threats: [],
   gates: [],
   crates: [],
@@ -1147,6 +1148,7 @@ function spawnCrate(type, x = rand(-3.7, 3.7), z = -29) {
 }
 
 function acquireGate(g) {
+  if (!testPickupsEnabled) return;
   const special = g.reward.type;
   if (["recruit", "team", "promote", "regroup"].includes(special)) {
     if (special === "recruit") run.recruit("assault");
@@ -1179,6 +1181,7 @@ function acquireGate(g) {
     return;
   }
   const s = state.stats;
+  const previousDamage = s.damage;
   switch (g.reward.type) {
     case "lanes":
       s.lanes = Math.min(3, s.lanes + Math.min(2, g.reward.amount));
@@ -1212,6 +1215,10 @@ function acquireGate(g) {
     else if (g.reward.type === "damage")
       s.damage = Math.min(2.2, s.damage * 1.12);
   }
+  state.gateDamage = Math.min(
+    2.2,
+    (state.gateDamage * s.damage) / previousDamage,
+  );
   announce(
     g.reward.value,
     extra ? "射击充能成功 · 额外强化" : "火力提升 · 装甲修复 +6",
@@ -2655,6 +2662,7 @@ function updateGatesCrates(dt) {
     c.group.rotation.y = Math.sin(c.spin) * 0.07;
     c.group.position.y = 0.42 + Math.sin(c.spin * 2) * 0.09;
     if (
+      testPickupsEnabled &&
       !c.destructible &&
       previousZ <= playerZ + 1.6 &&
       c.z >= playerZ - 1.7 &&
@@ -2785,7 +2793,9 @@ function updateTeam(dt) {
             pellets: 1,
             fireRate: 1,
             bulletSpeed: 1,
-            damage: (base / info.damage) * run.teamDamage(m, state.stats),
+            damage:
+              (base / info.damage) *
+              run.teamDamage(m, { ...state.stats, damage: state.gateDamage }),
           },
         });
         sprites.trigger(v, "shoot");
@@ -3065,7 +3075,9 @@ function finishDraft() {
 }
 function updateRunSystems(dt) {
   run.playerX = state.playerX;
-  const near = state.threats.some((e) => !e.dead && e.z > -28) || !!state.boss;
+  const owlRange = run.pet?.kind === "owl" && run.pet.level === 3 ? 36 : 28;
+  const near =
+    state.threats.some((e) => !e.dead && e.z > -owlRange) || !!state.boss;
   const result = run.tick(dt, { hp: state.hp, enemiesNearby: near });
   state.hp = clamp(state.hp + result.heal, 0, run.maxHp);
   updateTeam(dt);
@@ -3424,6 +3436,7 @@ function updateWeaponUi() {
 }
 
 let testFrozen = false,
+  testPickupsEnabled = true,
   dragOriginX = 0,
   dragPlayerX = 0;
 let gateSerial = 0;
@@ -3541,6 +3554,7 @@ function clearDynamic() {
   audio.setBoss(false);
 }
 function resetRun() {
+  testPickupsEnabled = true;
   clearDynamic();
   app.classList.remove("overdrive", "hurt");
   clearTimeout(toastTimer);
@@ -3568,6 +3582,7 @@ function resetRun() {
   state.gateSequence = 0;
   state.wave = 1;
   state.lastHud = -1;
+  state.gateDamage = 1;
   state.stats = {
     lanes: 1,
     pellets: 1,
@@ -3883,6 +3898,9 @@ if (new URLSearchParams(location.search).get("test") === "1")
     supply: () => ({ gates: state.gates, crates: state.crates }),
     interval: spawnInterval,
     laser: () => state.laserBeam,
+    blockPickups(value = true) {
+      testPickupsEnabled = !value;
+    },
     freeze(value = true) {
       testFrozen = value;
     },

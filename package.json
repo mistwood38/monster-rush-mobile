@@ -5,7 +5,9 @@
   "scripts": {
     "test": "node --test tests/systems.test.js tests/source-sprite-state.test.mjs && node tests/browser.cjs",
     "test:balance": "node tests/balance.cjs",
-    "test:performance": "node tests/performance.cjs"
+    "test:performance": "node tests/performance.cjs",
+    "build:review": "python3 tools/build-review.py",
+    "test:review": "python3 tools/build-review.py && node tests/review.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

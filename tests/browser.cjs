@@ -462,6 +462,35 @@ let browser;
     },
   );
   await check(
+    "Squad inherits only gate damage, excluding main-weapon supply calibration",
+    async () => {
+      const r = await evalGame(() => {
+        const t = __MR_TEST__;
+        t.configure({ shootTimer: 999 });
+        t.recruit("heavy");
+        t.spawnEnemy("heavy", 0, -20);
+        const m = t.runModel().team[0];
+        const shoot = () => {
+          t.clearBullets();
+          m.fire = 0;
+          t.updateRunSystems(0.01);
+          return t.metrics().totalDamage;
+        };
+        const base = shoot();
+        t.forceCrate("rifle");
+        const main = t.state().stats.damage,
+          calibrated = shoot();
+        t.collectReward({ type: "damage", amount: 0.5 });
+        return { base, main, calibrated, gated: shoot() };
+      });
+      assert.ok(r.main > 1);
+      assert.equal(r.base, r.calibrated);
+      assert.ok(Math.abs(r.gated / r.base - 1.25) < 1e-8);
+      return r;
+    },
+  );
+  await reset();
+  await check(
     "Four pet skills affect real combat and wait on cooldown",
     async () => {
       const out = [];
@@ -498,6 +527,50 @@ let browser;
       assert.ok(out[2].shield >= 32 && out[2].after === 50);
       assert.equal(out[3].hp, 68);
       return out;
+    },
+  );
+  await reset();
+  await reset();
+  await check(
+    "Owl level III increases actual skill detection range",
+    async () => {
+      const r = await evalGame(() => {
+        const t = __MR_TEST__;
+        t.equipPet("owl");
+        t.equipPet("owl");
+        t.spawnEnemy("heavy", 0, -32);
+        t.updateRunSystems(0.01);
+        const level2 = t.systems().pet.cooldown;
+        t.equipPet("owl");
+        t.updateRunSystems(0.01);
+        return {
+          level2,
+          level3: t.systems().pet.cooldown,
+          buff: t.runModel().petBuff,
+        };
+      });
+      assert.equal(r.level2, 0);
+      assert.ok(r.level3 > 20 && r.buff > 0);
+      return r;
+    },
+  );
+  await reset();
+  await check(
+    "Strict no-upgrade benchmark switch blocks all pickup effects and resets safely",
+    async () => {
+      const r = await evalGame(() => {
+        const t = __MR_TEST__;
+        t.blockPickups();
+        t.collectReward({ type: "damage", amount: 0.5 });
+        t.forceCrate("laser");
+        const blocked = t.state();
+        t.blockPickups(false);
+        t.updateGatesCrates(0.01);
+        return { blocked, enabled: t.state() };
+      });
+      assert.equal(r.blocked.stats.damage, 1);
+      assert.equal(r.blocked.weapon, "rifle");
+      assert.equal(r.enabled.weapon, "laser");
     },
   );
   await reset();
@@ -567,6 +640,160 @@ let browser;
         assert.equal(r.weapon, "plasma");
       }
       return out.map((r) => ({ kind: r.kind, state: r.active.state }));
+    },
+  );
+  await reset();
+  await reset();
+  await check(
+    "Four ballistic traits change real spread, piercing and enemy HP",
+    async () => {
+      const r = await evalGame(() => {
+        const t = __MR_TEST__;
+        t.configure({ shootTimer: 999 });
+        t.collectReward({ type: "lanes", amount: 2 });
+        t.fire();
+        const base = t.shots().map((b) => b.x);
+        t.clearBullets();
+        for (const a of [
+          "piercing_core",
+          "spread_shot",
+          "focus_combo",
+          "critical_calibration",
+        ])
+          t.affix(a);
+        Math.random = () => 0;
+        t.spawnEnemy("heavy", 2, -6);
+        t.spawnEnemy("heavy", 2, -10);
+        const [a, b] = t.enemyList();
+        a.hp = b.hp = 1000;
+        t.fire();
+        const spread = t.shots().map((b) => b.x),
+          bullet = t.shots()[0];
+        Object.assign(bullet, { prevX: 2, x: 2, prevZ: -2, z: -7 });
+        t.processBulletCollisions(bullet, 0.04);
+        const first = 1000 - a.hp;
+        Object.assign(bullet, { prevX: 2, x: 2, prevZ: -7, z: -12 });
+        t.processBulletCollisions(bullet, 0.04);
+        const second = 1000 - b.hp;
+        for (let i = 0; i < 10; i++) t.damageEnemy(a, 10, false, true);
+        const hp = a.hp;
+        t.damageEnemy(a, 10, false, true);
+        return {
+          base,
+          spread,
+          first,
+          second,
+          combo: hp - a.hp,
+          hits: t.runModel().hitCount,
+        };
+      });
+      assert.ok(
+        Math.abs(r.spread[1] - r.spread[0]) > Math.abs(r.base[1] - r.base[0]),
+      );
+      assert.equal(r.first, 15);
+      assert.equal(r.second, 7.5);
+      assert.ok(r.combo > 16 && r.combo < 16.21);
+      assert.equal(r.hits, 13);
+      return r;
+    },
+  );
+  await reset();
+  await check(
+    "Four squad traits affect team shots, timed rate, player damage and death buff",
+    async () => {
+      const r = await evalGame(() => {
+        const t = __MR_TEST__;
+        t.configure({ shootTimer: 999 });
+        t.recruit("heavy");
+        t.recruit("guard");
+        t.recruit("assault");
+        t.spawnEnemy("heavy", 0, -15);
+        t.getEnemy().hp = 10000;
+        t.updateRunSystems(0.01);
+        const model = t.runModel(),
+          heavy = model.team[0];
+        heavy.fire = 0;
+        t.updateRunSystems(0.01);
+        const base = t.metrics().totalDamage,
+          interval = heavy.fire;
+        t.clearBullets();
+        for (const a of [
+          "squad_command",
+          "squad_reload",
+          "guardian_line",
+          "last_stand",
+        ])
+          t.affix(a);
+        model.reloadClock = 19.99;
+        heavy.fire = 0;
+        t.updateRunSystems(0.02);
+        const boosted = t.metrics().totalDamage,
+          fastInterval = heavy.fire;
+        t.hurtPlayer(10, 0);
+        const hp = t.state().hp,
+          victim = model.team.find((m) => m.role === "assault"),
+          beforeDeath = model.teamDamage(heavy, t.state().stats);
+        victim.invuln = 0;
+        t.hurtMember(victim.id, 999);
+        return {
+          base,
+          boosted,
+          interval,
+          fastInterval,
+          hp,
+          beforeDeath,
+          afterDeath: model.teamDamage(heavy, t.state().stats),
+          fallen: model.fallenBuff,
+        };
+      });
+      assert.ok(r.boosted > r.base && r.fastInterval < r.interval);
+      assert.equal(r.hp, 91);
+      assert.ok(r.afterDeath > r.beforeDeath && r.fallen === 6);
+      return r;
+    },
+  );
+  await reset();
+  await check(
+    "Four tech traits change real projectile damage, pet cooldown and armor lifetime",
+    async () => {
+      const r = await evalGame(() => {
+        const t = __MR_TEST__;
+        t.configure({ shootTimer: 999 });
+        t.equipPet("dragon");
+        t.affix("pet_resonance");
+        t.affix("energy_recycling");
+        t.spawnEnemy("heavy", 0, -15);
+        t.getEnemy().hp = 10000;
+        t.updateRunSystems(0.01);
+        t.fire();
+        const base = t.metrics().totalDamage;
+        t.clearBullets();
+        const model = t.runModel(),
+          before = model.pet.cooldown;
+        for (let i = 0; i < 12; i++) {
+          t.spawnEnemy("grunt", 3, -20);
+          t.damageEnemy(t.enemyList().at(-1), 999, false, false);
+        }
+        const after = model.pet.cooldown;
+        t.armor("thunder");
+        t.affix("armor_overclock");
+        t.affix("armor_endurance");
+        model.armor.remaining = 0.001;
+        t.updateRunSystems(0.002);
+        t.armor("thunder");
+        t.fire();
+        return {
+          base,
+          boosted: t.metrics().totalDamage,
+          before,
+          after,
+          duration: model.armor.duration,
+        };
+      });
+      assert.ok(r.base > 11.5 && r.boosted > r.base * 1.3);
+      assert.equal(r.before - r.after, 1);
+      assert.equal(r.duration, 14);
+      return r;
     },
   );
   await reset();
