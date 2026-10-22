@@ -11,6 +11,10 @@ const results = [],
   errors = [];
 const mime = {
   ".js": "text/javascript",
+  ".mjs": "text/javascript",
+  ".json": "application/json",
+  ".webp": "image/webp",
+  ".ogg": "audio/ogg",
   ".css": "text/css",
   ".html": "text/html",
   ".webmanifest": "application/manifest+json",
@@ -84,1426 +88,168 @@ let browser;
       Math.random = () =>
         (seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296;
     });
-  await check("360×800 and 393×873 layouts + menu", async () => {
-    for (const [width, height] of [
-      [360, 800],
-      [393, 873],
-    ]) {
-      await page.setViewportSize({ width, height });
-      assert.equal(
-        await page.evaluate(
-          () =>
-            document.documentElement.scrollWidth <= innerWidth &&
-            document.documentElement.scrollHeight <= innerHeight,
-        ),
-        true,
-      );
-      await page.screenshot({
-        path: path.join(artifacts, `menu-${width}.png`),
-      });
+  const evalGame = (fn,arg) => page.evaluate(fn,arg);
+  await check('Two phone layouts and real menu',async()=>{
+    for(const [width,height] of [[360,800],[393,873]]){
+      await page.setViewportSize({width,height});
+      assert.ok(await evalGame(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight));
+      await page.screenshot({path:path.join(artifacts,`menu-${width}.png`)});
     }
   });
-  await check(
-    "Audio starts on a real user click, pauses and resumes",
-    async () => {
-      await page.locator("#start").click();
-      await page.waitForFunction(() => window.__MR_TEST__.getAudio().playing);
-      await page.locator("#pause").click();
-      await page.waitForFunction(() => !window.__MR_TEST__.getAudio().playing);
-      await page.locator("#resume").click();
-      await page.waitForFunction(() => window.__MR_TEST__.getAudio().playing);
-    },
-  );
+  await check('User gesture audio, pause, resume and separate mixer',async()=>{
+    await page.locator('#start').click();await page.waitForFunction(()=>__MR_TEST__.getAudio().playing&&__MR_TEST__.getAudio().samples===15);assert.deepEqual(await evalGame(()=>__MR_TEST__.getAudio().sampleErrors),[]);assert.equal(await evalGame(()=>__MR_TEST__.getAudio().loop),'normal_loop');
+    await page.locator('#pause').click();await page.waitForFunction(()=>!__MR_TEST__.getAudio().playing);
+    await page.locator('#musicVolume').fill('32');await page.locator('#musicVolume').dispatchEvent('input');
+    assert.equal(await evalGame(()=>localStorage.getItem('mr2-music')),'0.32');
+    await page.locator('#resume').click();await page.waitForFunction(()=>__MR_TEST__.getAudio().playing);
+  });
   await reset();
-  await check(
-    "Drag is relative, moves smoothly and stays within road",
-    async () => {
-      const canvas = page.locator("#game");
-      await canvas.dispatchEvent("pointerdown", {
-        clientX: 30,
-        clientY: 650,
-        pointerType: "touch",
-        pointerId: 1,
-        buttons: 1,
-      });
-      assert.equal(
-        await page.evaluate(() => window.__MR_TEST__.state().targetX),
-        0,
-      );
-      await canvas.dispatchEvent("pointermove", {
-        clientX: 340,
-        clientY: 650,
-        pointerType: "touch",
-        pointerId: 1,
-        buttons: 1,
-      });
-      const moved = await page.evaluate(() => window.__MR_TEST__.step(0.5));
-      assert.ok(moved.playerX > 4 && moved.playerX <= 4.8);
-      await canvas.dispatchEvent("pointerup", {
-        pointerId: 1,
-        pointerType: "touch",
-      });
-    },
-  );
-  await check(
-    "Every upgrade changes real combat output independently",
-    async () => {
-      const output = {};
-      for (const [type, amount] of [
-        ["lanes", 1],
-        ["pellets", 2],
-        ["rate", 0.25],
-        ["speed", 0.35],
-        ["damage", 0.5],
-      ]) {
-        await reset();
-        const before = await page.evaluate(() => {
-          const t = window.__MR_TEST__;
-          t.fire();
-          return t.metrics();
-        });
-        await reset();
-        const after = await page.evaluate(
-          (r) => {
-            const t = window.__MR_TEST__;
-            t.collectReward(r);
-            t.clearBullets();
-            t.fire();
-            return t.metrics();
-          },
-          { type, amount },
-        );
-        if (type === "lanes") assert.equal(after.count, before.count + 1);
-        if (type === "pellets") {
-          assert.equal(after.count, before.count + 2);
-          assert.ok(after.totalDamage > before.totalDamage * 2);
-        }
-        if (type === "rate") assert.ok(after.interval < before.interval);
-        if (type === "speed") assert.ok(after.avgSpeed > before.avgSpeed);
-        if (type === "damage")
-          assert.ok(after.totalDamage > before.totalDamage);
-        output[type] = {
-          count: after.count,
-          damage: after.totalDamage,
-          interval: after.interval,
-          speed: after.avgSpeed,
-        };
-      }
-      return output;
-    },
-  );
-  await check("All five weapons kill an off-center target", async () => {
-    const output = {};
-    for (const weapon of ["rifle", "machine", "shotgun", "plasma", "laser"]) {
-      await reset();
-      const state = await page.evaluate((weapon) => {
-        const t = window.__MR_TEST__;
-        t.forcePlayerX(-2);
-        t.spawnEnemy("grunt", -2, -9);
-        t.setWeapon(weapon, true);
-        return t.step(3);
-      }, weapon);
-      assert.ok(state.kills >= 1, weapon + " failed to kill");
-      output[weapon] = state.kills;
+  await check('Relative touch drag and bounded movement',async()=>{
+    const c=page.locator('#game');
+    await c.dispatchEvent('pointerdown',{clientX:30,clientY:650,pointerType:'touch',pointerId:1,buttons:1});
+    assert.equal(await evalGame(()=>__MR_TEST__.state().targetX),0);
+    await c.dispatchEvent('pointermove',{clientX:390,clientY:650,pointerType:'touch',pointerId:1,buttons:1});
+    const s=await evalGame(()=>__MR_TEST__.step(.5));assert.ok(s.playerX>4&&s.playerX<=4.8);
+    await c.dispatchEvent('pointerup',{pointerId:1,pointerType:'touch'});
+  });
+  await check('All five numeric gates independently affect real projectiles',async()=>{
+    const out={};
+    for(const [type,amount] of [['lanes',1],['pellets',2],['rate',.25],['speed',.35],['damage',.5]]){
+      await reset();const before=await evalGame(()=>{__MR_TEST__.fire();return __MR_TEST__.metrics()});
+      await reset();const after=await evalGame(r=>{const t=__MR_TEST__;t.collectReward(r);t.clearBullets();t.fire();return t.metrics()},{type,amount});
+      if(type==='lanes')assert.equal(after.count,before.count+1);
+      if(type==='pellets'){assert.equal(after.count,before.count+2);assert.ok(after.totalDamage>before.totalDamage&&after.totalDamage<before.totalDamage*2);}
+      if(type==='rate')assert.ok(after.interval<before.interval);
+      if(type==='speed')assert.ok(after.avgSpeed>before.avgSpeed);
+      if(type==='damage')assert.ok(after.totalDamage>before.totalDamage);
+      out[type]={count:after.count,damage:after.totalDamage,interval:after.interval,speed:after.avgSpeed};
+    }return out;
+  });
+  await check('Five distinct weapons kill actual off-center enemies',async()=>{
+    const out={};for(const weapon of ['rifle','machine','shotgun','plasma','laser']){
+      await reset();out[weapon]=await evalGame(w=>{const t=__MR_TEST__;t.forcePlayerX(-2);t.spawnEnemy('grunt',-2,-9);t.setWeapon(w,true);t.step(3);return {kills:t.state().kills,metrics:t.metrics()}},weapon);
+      assert.ok(out[weapon].kills>=1,weapon);
+    }assert.notEqual(out.rifle.metrics.interval,out.machine.metrics.interval);assert.notEqual(out.plasma.metrics.kinds[0],out.rifle.metrics.kinds[0]);return out;
+  });
+  await reset();
+  await check('Swept projectile damage and target-positioned numbers',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.spawnEnemy('heavy',2,-6);const e=t.getEnemy(),hp=e.hp;t.fire();const b=t.shots()[0];Object.assign(b,{prevX:2,x:2,prevZ:-2,z:-12});const hit=t.processBulletCollisions(b,.04);return {hit,damage:hp-e.hp,text:t.effects().floating[0]}});
+    assert.ok(r.hit&&r.damage>0);assert.ok(Math.abs(r.text.x-2)<.3);assert.equal(r.text.z,-6);
+  });
+  await reset();
+  await check('Plasma splash kills multiple neighbors',async()=>{
+    const s=await evalGame(()=>{const t=__MR_TEST__;t.setWeapon('plasma',true);t.spawnEnemy('grunt',-.6,-9);t.spawnEnemy('grunt',.6,-9);return t.step(1.2)});assert.equal(s.kills,2);
+  });
+  await reset();
+  await check('Gate charging is capped, shots pass, choices exclude each other',async()=>{
+    const charge=await evalGame(()=>{const t=__MR_TEST__;t.forcePlayerX(-2.45);t.configure({gateSequence:2});t.previewGates(-8);t.spawnEnemy('grunt',-2.45,-15);t.step(1.3);return {charge:t.getGate().charge,kills:t.state().kills}});assert.ok(charge.charge>0&&charge.kills===1);
+    await reset();const r=await evalGame(()=>{const t=__MR_TEST__;t.forcePlayerX(-2.45);t.previewGates(1.2);t.updateGatesCrates(.04);t.forcePlayerX(2.45);t.updateGatesCrates(.04);return {team:t.systems().team.length,stats:t.state().stats,gates:t.supply().gates.map(g=>g.resolved)}});assert.equal(r.team,1);assert.equal(r.stats.damage,1);assert.ok(r.gates.every(Boolean));return r;
+  });
+  await reset();
+  await check('Laser upgrades widen beams and increase effective damage',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.configure({shootTimer:999});t.spawnBoss();t.step(1.9);t.setWeapon('laser',true);const hp=t.boss().hp;t.fire();const base=hp-t.boss().hp;t.collectReward({type:'lanes',amount:2});t.collectReward({type:'pellets',amount:2});t.collectReward({type:'speed',amount:.35});const hp2=t.boss().hp;t.fire();return {base,upgraded:hp2-t.boss().hp,lanes:t.laser().beams.filter(b=>b.ray.visible).length}});assert.ok(r.base>0&&r.upgraded>r.base);assert.equal(r.lanes,3);return r;
+  });
+  await reset();
+  await check('Breach on opposite flank hurts even during contact invulnerability',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.forcePlayerX(-4.8);t.configure({shootTimer:999,invuln:999});t.spawnEnemy('grunt',4.8,4.3);t.step(.025);return {hp:t.state().hp,breaches:t.systems().totals.breaches}});assert.ok(r.hp<100);assert.equal(r.breaches,1);
+  });
+  await reset();
+  await check('Generous swept crate pickup, healing, no lower-tier downgrade',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.spawnCrate('machine',1.45,.9);t.updateGatesCrates(.4);const picked=t.state().weapon;t.setWeapon('laser',true);t.forceCrate('rifle');t.configure({hp:50});t.forceCrate('medkit');for(let i=0;i<5;i++)t.collectReward({type:'lanes',amount:1});return {picked,weapon:t.state().weapon,hp:t.state().hp,lanes:t.state().stats.lanes}});assert.equal(r.picked,'machine');assert.equal(r.weapon,'laser');assert.ok(r.hp>50);assert.equal(r.lanes,3);
+  });
+  await reset();
+  await check('Source atlas animation advances, hit takes priority, road scrolls',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.configure({shootTimer:999});const before=t.roadOffset();t.step(.14);const frame=t.spriteAudit().frames[0];t.spriteTrigger('hit');t.step(.02);const hit=t.spriteAudit().frames[0];t.step(.7);return {before,after:t.roadOffset(),frame,hit,restored:t.spriteAudit().frames[0],audit:t.spriteAudit(),projection:t.playerProjection()}});assert.equal(r.audit.atlases,25);assert.deepEqual(r.audit.errors,[]);assert.ok(r.frame.index>0);assert.equal(r.hit.state,'hit');assert.equal(r.restored.state,'run');assert.notEqual(r.before,r.after);return r;
+  });
+  await reset();
+  await check('Squad role weapons persist, promotion, damage, death and refill',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.configure({shootTimer:999});t.recruit('heavy');t.promote('heavy');for(const role of ['assault','guard','assault'])t.recruit(role);t.step(.03);t.spawnEnemy('heavy',0,-9);const e=t.getEnemy();e.hp=e.maxHp=1500;let shots=0;for(let i=0;i<20;i++){t.step(.1);shots=Math.max(shots,t.shots().filter(b=>b.owner==='team').length)}const damage=1500-e.hp;const m=t.runModel().team.find(m=>m.role==='assault'),id=m.id;m.invuln=0;t.hurtMember(id,999);t.step(.7);const fallen=!t.systems().team.some(m=>m.id===id);t.recruit('assault');for(const e of t.enemyList())t.damageEnemy(e,9999,false);t.step(100);return {damage,shots,fallen,team:t.systems().team,active:t.spriteAudit().active}});assert.ok(r.damage>0&&r.shots>0&&r.fallen,JSON.stringify(r));assert.equal(r.team.length,4);assert.ok(r.team.some(m=>m.role==='heavy'&&m.level===3));return {damage:r.damage,shots:r.shots,team:r.team.length};
+  });
+  await reset();
+  await check('Recruitment, promotion and team-rate gates apply formal caps',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.collectReward({type:'recruit'});t.collectReward({type:'promote',role:'heavy'});for(let i=0;i<5;i++)t.collectReward({type:'team'});return t.systems()});assert.equal(r.team.length,1);assert.equal(r.team[0].role,'heavy');assert.ok(r.teamPower<=.3&&r.teamPower>.29);
+  });
+  await check('Four pet skills affect real combat and wait on cooldown',async()=>{
+    const out=[];for(const kind of ['dragon','owl','drone','fairy']){
+      await reset();out.push(await evalGame(kind=>{const t=__MR_TEST__;t.configure({shootTimer:999,hp:50});t.equipPet(kind);t.equipPet(kind);t.equipPet(kind);t.spawnEnemy('heavy',0,-12);t.updateRunSystems(.02);const model=t.runModel(),stats=t.combatStats(),shield=model.shield,hp=t.state().hp;t.hurtPlayer(10,0);return {kind,stats,shield,hp,after:t.state().hp,pet:t.systems().pet}},kind));
+    }assert.ok(out.every(x=>x.pet.level===3&&x.pet.cooldown>5));assert.ok(out[0].stats.damage>1);assert.ok(out[1].after>40);assert.ok(out[2].shield>=32&&out[2].after===50);assert.equal(out[3].hp,68);return out;
+  });
+  await reset();
+  await check('Pet two-choice pickups exclude the other and preserve slot level',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.equipPet('dragon');t.runModel().eventIndex=0;t.runModel().eventTimer=0;t.step(.025);const boxes=t.supply().crates.filter(c=>c.system?.kind==='pet'),c=boxes.find(c=>c.system.value==='dragon');t.forcePlayerX(c.x);for(const c of boxes)c.z=1.3;t.updateGatesCrates(.025);t.updateGatesCrates(.025);return {pet:t.systems().pet,remaining:t.supply().crates.filter(c=>c.choiceId&&!c.resolved).length}});assert.equal(r.pet.kind,'dragon');assert.equal(r.pet.level,2);assert.equal(r.remaining,0);
+  });
+  await reset();
+  await check('All three armor animations and multipliers expire and restore exact stats',async()=>{
+    const out=await evalGame(()=>{const t=__MR_TEST__,out=[];t.setWeapon('plasma',true);t.collectReward({type:'damage',amount:.5});const base=t.combatStats();for(const kind of ['thunder','molten','phantom']){t.armor(kind);t.step(.1);const boosted=t.combatStats(),active=t.spriteAudit().frames.find(a=>a.key.startsWith('armor/'));t.step(12);const ended=t.systems().armor;t.step(1);out.push({kind,base,boosted,active,ended,after:t.combatStats(),weapon:t.state().weapon})}return out});for(const r of out){assert.ok(r.boosted.damage>r.base.damage);assert.ok(r.active);assert.equal(r.ended,null);assert.deepEqual(r.after,r.base);assert.equal(r.weapon,'plasma')}return out.map(r=>({kind:r.kind,state:r.active.state}));
+  });
+  await reset();
+  await check('Elemental direct hits proc bounded chain, explosion, frost and burn',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.configure({shootTimer:999});for(const a of ['scorch_mag','frost_round','chain_lightning','explosive_round'])t.affix(a);Math.random=()=>.1;for(const x of [0,1,1.6]){t.spawnEnemy('heavy',x,-10);const e=t.enemyList().at(-1);e.hp=e.maxHp=10000}const[a,b,c]=t.enemyList();for(let i=0;i<12;i++)t.damageEnemy(a,10,true);const direct={a:a.hp,b:b.hp,c:c.hp,burn:a.burnTime,slow:a.slow};t.step(.6);return {direct,after:a.hp,counters:t.runModel().hitCount,arc:t.runModel().arcCD,blast:t.runModel().blastCD}});assert.ok(r.direct.b<10000&&r.direct.c<10000);assert.ok(r.direct.burn>0&&r.direct.slow>0);assert.ok(r.after<r.direct.a);assert.equal(r.counters,2);assert.ok(r.arc>0&&r.blast>0);return r;
+  });
+  await reset();
+  await check('Survival traits affect actual HP, repair and knockback',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;for(const a of ['armor_training','toughness_core','emergency_repair','counter_pulse'])t.affix(a);t.updateRunSystems(.01);const max=t.runModel().maxHp;t.configure({hp:30,invuln:0});t.spawnEnemy('heavy',0,-2);const e=t.getEnemy(),z=e.z;t.hurtPlayer(10,0);t.updateRunSystems(.01);return {hp:t.state().hp,max,z,afterZ:e.z,repairs:t.runModel().repairUses}});assert.equal(r.max,115);assert.ok(r.hp>30);assert.ok(r.afterZ<r.z);assert.equal(r.repairs,1);return r;
+  });
+  await reset();
+  await check('Three-choice UI pauses combat and supports four-slot replacement',async()=>{
+    await evalGame(()=>{for(const a of ['scorch_mag','frost_round','chain_lightning','explosive_round'])__MR_TEST__.affix(a);__MR_TEST__.draft()});assert.equal(await page.locator('.draft-card').count(),3);
+    assert.ok(await evalGame(()=>{const t=__MR_TEST__,s=t.state().time;t.step(3);return t.state().time===s}));
+    await evalGame(()=>{const t=__MR_TEST__;t.runModel().offers=['toughness_core'];t.choose('toughness_core')});assert.equal(await page.locator('.draft-card').count(),4);await page.locator('.draft-card').first().click();assert.equal(await evalGame(()=>__MR_TEST__.systems().affixes.length),4);assert.equal(await evalGame(()=>__MR_TEST__.state().mode),'playing');await evalGame(()=>__MR_TEST__.draft());await page.locator('#skipDraft').click();
+  });
+  await reset();
+  await check('Armed truck must be shot open; armor pity counts opened high crates',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.configure({time:60});const c=t.roadReward('truck',0,-9,'plasma');const initial=c.hp;for(let i=0;i<10;i++){t.fire();const b=t.shots().at(-1);if(b){b.prevX=b.x=0;b.prevZ=-2;b.z=-12;t.processBulletCollisions(b,.04)}}const model=t.runModel();return {initial,hp:c.hp,opened:c.hp<=0,pity:model.armorMisses,eligible:model.eligibleCrates}});assert.ok(r.hp<r.initial);return r;
+  });
+  await reset();
+  await check('Road events include pet choice, destructible truck, elite bounty and rescue',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__,out=[];for(let i=0;i<3;i++){for(const c of t.supply().crates)c.z=10;t.updateGatesCrates(.01);t.runModel().eventTimer=0;t.step(.025);out.push({event:t.systems().event,kinds:t.supply().crates.map(c=>c.system?.kind),bounty:t.enemyList().some(e=>e.bounty)})}return out});assert.ok(r[0].kinds.includes('pet'));assert.ok(r[1].kinds.includes('truck'));assert.ok(r[2].kinds.includes('rescue')&&r[2].bounty);return r;
+  });
+  await reset();
+  await check('Boss arrival, native windup, attack, actual damage and death',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.configure({time:94.9,nextBoss:95});t.step(.2);const spawned=t.state().boss;t.step(2.3);const warned=t.boss().phase==='warn',anim=t.spriteAudit().frames.find(a=>a.key==='boss');t.step(.8);const shots=t.state().enemyShots;t.step(1.6);const hp=t.state().hp;for(let i=0;i<3;i++){t.damageBoss(10000);if(t.boss()?.shield>0)t.step(2.3)}t.step(1.5);return {spawned,warned,anim,shots,hp,cleared:!t.state().boss,score:t.state().score}});assert.ok(r.spawned&&r.warned&&r.shots>0&&r.hp<100&&r.cleared);assert.ok(r.score>1400);return r;
+  });
+  await check('Boss schedule 95/180/270 and increasing HP',async()=>{
+    const out=[];for(const time of [95,180,270]){await reset();out.push(await evalGame(time=>{const t=__MR_TEST__;t.configure({time:time-.01,nextBoss:time});t.step(.025);return {time,hp:t.boss()?.hp}},time))}assert.ok(out[2].hp>out[1].hp&&out[1].hp>out[0].hp);return out;
+  });
+  await reset();
+  await check('Boss phase guards prevent one-shot deletion',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.configure({shootTimer:999});t.spawnBoss();const full=t.boss().hp;t.damageBoss(100000);const guarded=t.boss().hp;t.step(1.9);t.damageBoss(100000);const first=t.boss().hp;t.damageBoss(100000);return {full,guarded,first,blocked:t.boss().hp,phase:t.boss().armorPhase}});assert.equal(r.full,r.guarded);assert.equal(r.first,r.blocked);assert.ok(r.first>0&&r.first<r.full);assert.equal(r.phase,1);
+  });
+  await check('Five weapons defeat Boss using actual capped firepower and phase transitions',async()=>{
+    const out=[];for(const weapon of ['rifle','machine','shotgun','plasma','laser']){await reset();out.push(await evalGame(w=>{const t=__MR_TEST__;t.setWeapon(w,true);for(const r of [{type:'lanes',amount:2},{type:'pellets',amount:2},{type:'rate',amount:1},{type:'damage',amount:1.2},{type:'speed',amount:1}])t.collectReward(r);t.configure({invuln:999});t.spawnBoss();for(let i=0;i<600&&t.boss()&&!t.boss().dead;i++){t.forcePlayerX(t.boss().x);t.step(.1)}return {weapon:w,time:t.state().time,dead:!!t.boss()?.dead,phase:t.boss()?.armorPhase}},weapon))}assert.ok(out.every(x=>x.dead&&x.phase===2),JSON.stringify(out));return out;
+  });
+  await reset();
+  await check('Pooled particles are reused and capped',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.emit(0,1,-8,'#fff',12);const before=t.effects().active;t.updateEffects(1);const pooled=t.effects().pooled;for(let i=0;i<30;i++)t.emit(0,1,-8,'#fff',24);return {before,pooled,after:t.effects().active}});assert.equal(r.before,12);assert.ok(r.pooled>=12);assert.ok(r.after<=64);return r;
+  });
+  await reset();
+  await check('Death, record saving and restart reset run-only systems',async()=>{
+    await evalGame(()=>{const t=__MR_TEST__;t.recruit('assault');t.equipPet('owl');t.affix('toughness_core');t.configure({score:321});t.hurtPlayer(1000,0)});assert.ok(await page.locator('#endPanel').isVisible());assert.equal(await evalGame(()=>localStorage.getItem('mr2-best')),'321');await page.locator('#again').click();assert.equal(await evalGame(()=>__MR_TEST__.state().hp),100);assert.equal(await evalGame(()=>__MR_TEST__.systems().team.length),0);await evalGame(()=>__MR_TEST__.silence());
+  });
+  await reset();
+  await check('Full formation remains inside both phone viewports at road edges',async()=>{
+    for(const [width,height] of [[360,800],[393,873]]){await page.setViewportSize({width,height});await page.waitForTimeout(100);for(const x of [-4.8,0,4.8]){const r=await evalGame(x=>{const t=__MR_TEST__;if(!t.systems().team.length)for(let i=0;i<4;i++)t.recruit('assault');t.forcePlayerX(x);t.step(.8);return t.formationBounds()},x);for(const b of r)assert.ok(b.minX>=-1&&b.maxX<=width+1,JSON.stringify({width,x,r}));}}
+  });
+  await reset();
+  await check('Integrated 300-second soak: objects, drafts, Boss and armor stay bounded',async()=>{
+    const r=await evalGame(()=>{const t=__MR_TEST__;t.configure({spawnTimer:.1,gateTimer:1,crateTimer:8});t.runModel().eventTimer=8;t.runModel().nextDraft=18;for(const role of ['assault','heavy','guard','assault'])t.recruit(role);t.equipPet('dragon');t.setWeapon('plasma',true);const max={enemies:0,bullets:0,particles:0,shots:0},seen={drafts:0,boss:false,armor:false};for(let i=0;i<3000;i++){if(t.state().mode==='draft'){const r=t.runModel();t.choose(r.pendingReplacement?r.affixes[0].id:r.offers[0]);seen.drafts++}t.configure({hp:100,invuln:1});if(i%700===0)t.armor(['thunder','molten','phantom'][Math.floor(i/700)%3]);t.setTarget(Math.sin(i*.03)*3.6);t.step(.1);const s=t.state();seen.boss ||=s.boss;seen.armor ||=!!t.systems().armor;max.enemies=Math.max(max.enemies,s.enemies);max.bullets=Math.max(max.bullets,s.bullets);max.particles=Math.max(max.particles,t.effects().active);max.shots=Math.max(max.shots,s.enemyShots)}return {time:t.state().time,max,seen,team:t.systems().team.length,affixes:t.systems().affixes.length,intervals:[t.interval(18),t.interval(21)]}});assert.ok(r.time>295&&r.seen.drafts>=3&&r.seen.boss&&r.seen.armor);assert.ok(r.max.enemies<=32&&r.max.bullets<=160&&r.max.particles<=64&&r.max.shots<=60,JSON.stringify(r));assert.ok(r.team<=4&&r.affixes<=4);assert.ok(r.intervals[1]>r.intervals[0]*3);return r;
+  });
+  await reset();
+  await check('Maximum projectile pool uses instancing; repeated resets release actors',async()=>{
+    await evalGame(()=>{const t=__MR_TEST__;t.collectReward({type:'lanes',amount:2});t.collectReward({type:'pellets',amount:2});for(let i=0;i<30;i++)t.fire()});await page.waitForTimeout(100);const stress=await evalGame(()=>__MR_TEST__.metrics());assert.equal(stress.count,160);assert.ok(stress.drawCalls<150,JSON.stringify(stress));const memories=[];for(let i=0;i<6;i++){await reset();await evalGame(i=>{const t=__MR_TEST__;t.recruit('guard');t.equipPet(['dragon','owl','drone','fairy'][i%4]);t.armor(['thunder','molten','phantom'][i%3]);t.spawnEnemy('heavy',0,-12);t.step(.1)},i);await page.waitForTimeout(50);await reset();await page.waitForTimeout(50);memories.push(await evalGame(()=>({...__MR_TEST__.metrics().memory,actors:__MR_TEST__.spriteAudit().active})))}assert.ok(memories.at(-1).textures<=memories[2].textures+5,JSON.stringify(memories));assert.ok(memories.at(-1).geometries<=memories[2].geometries+5,JSON.stringify(memories));assert.equal(memories.at(-1).actors,1);return {stress:stress.count,drawCalls:stress.drawCalls,memories};
+  });
+  await check('Review screenshots: initial, gate, weapons, formation, armor, draft and Boss',async()=>{
+    for(const [width,height] of [[360,800],[393,873]]){await page.setViewportSize({width,height});await reset();await page.screenshot({path:path.join(artifacts,`initial-${width}.png`)});
+      await evalGame(()=>{const t=__MR_TEST__;t.previewGates(-8);t.spawnEnemy('grunt',-2,-16);t.spawnEnemy('heavy',3,-22);t.step(.1)});await page.waitForTimeout(150);await page.screenshot({path:path.join(artifacts,`upgrade-${width}.png`)});
+      await reset();await evalGame(()=>{const t=__MR_TEST__;for(const role of ['assault','heavy','guard','assault'])t.recruit(role);t.equipPet('owl');t.setWeapon('plasma',true);t.affix('scorch_mag');t.affix('chain_lightning');t.spawnEnemy('ranged',-2,-15);t.spawnEnemy('elite',2,-21);t.step(.1)});await page.waitForTimeout(150);await page.screenshot({path:path.join(artifacts,`formation-${width}.png`)});
+      await evalGame(()=>{__MR_TEST__.armor('thunder');__MR_TEST__.step(.25)});await page.waitForTimeout(120);await page.screenshot({path:path.join(artifacts,`armor-${width}.png`)});await evalGame(()=>__MR_TEST__.draft());await page.screenshot({path:path.join(artifacts,`draft-${width}.png`)});await page.locator('#skipDraft').click();
+      await reset();await evalGame(()=>{const t=__MR_TEST__;t.setWeapon('laser',true);t.recruit('heavy');t.equipPet('dragon');t.spawnBoss();t.step(2.5)});await page.waitForTimeout(150);await page.screenshot({path:path.join(artifacts,`boss-${width}.png`)});
     }
-    return output;
   });
-  await reset();
-  await check(
-    "Fast projectile swept collision + target-positioned damage text",
-    async () => {
-      const result = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.spawnEnemy("heavy", 2, -6);
-        const e = t.getEnemy(),
-          hp = e.hp;
-        t.fire();
-        const b = t.shots()[0];
-        Object.assign(b, { prevX: 2, x: 2, prevZ: -2, z: -12 });
-        const hit = t.processBulletCollisions(b, 0.04);
-        return { hit, damage: hp - e.hp, text: t.effects().floating[0] };
-      });
-      assert.ok(result.hit && result.damage > 0);
-      assert.ok(Math.abs(result.text.x - 2) < 0.3);
-      assert.equal(result.text.z, -6);
-    },
-  );
-  await reset();
-  await check("Plasma splash kills adjacent enemies", async () => {
-    const state = await page.evaluate(() => {
-      const t = window.__MR_TEST__;
-      t.setWeapon("plasma", true);
-      t.spawnEnemy("grunt", -0.6, -9);
-      t.spawnEnemy("grunt", 0.6, -9);
-      return t.step(1.2);
-    });
-    assert.equal(state.kills, 2);
+  await check('Nested Pages path, manifest and all V1.7 files launch offline',async()=>{
+    await page.goto(base);await page.waitForFunction(async()=>!!(await navigator.serviceWorker.getRegistration())?.active,{timeout:20000});await page.evaluate(async()=>navigator.serviceWorker.ready);assert.equal(await evalGame(()=>typeof window.__MR_TEST__),'undefined');
+    const r=await evalGame(async()=>{const manifest=await(await fetch('./manifest.webmanifest')).json();const cache=await caches.open('monster-rush-road-squad-v17-1');const catalog=await(await fetch('./assets/v17/catalog.json')).json();const missing=[];for(const def of Object.values(catalog.actors))if(!await cache.match('./assets/v17/'+def.file))missing.push(def.file);for(const u of ['./','./game.js','./sprites.js','./sprite-state.mjs','./config/balance-v17.js','./icons/icon-192.png'])if(!await cache.match(u))missing.push(u);return {orientation:manifest.orientation,missing,count:(await cache.keys()).length}});assert.equal(r.orientation,'portrait');assert.deepEqual(r.missing,[]);await context.setOffline(true);await page.reload();await page.locator('#start').click();await page.waitForFunction(()=>document.querySelector('#hud')&&!document.querySelector('#hud').classList.contains('hidden'));await context.setOffline(false);return r;
   });
-  await reset();
-  await check(
-    "Portals charge without blocking shots; one reward per pair",
-    async () => {
-      const charged = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.forcePlayerX(-2.45);
-        t.configure({ gateSequence: 2 });
-        t.previewGates(-8);
-        t.spawnEnemy("grunt", -2.45, -15);
-        t.step(1.3);
-        return { charge: t.getGate().charge, kills: t.state().kills };
-      });
-      assert.ok(
-        charged.charge > 0 && charged.kills === 1,
-        JSON.stringify(charged),
-      );
-      await reset();
-      const pickup = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.forcePlayerX(-2.45);
-        t.previewGates(1.2);
-        t.updateGatesCrates(0.04);
-        return {
-          state: t.state(),
-          toast: document.querySelector("#upgradeToast").textContent,
-        };
-      });
-      assert.equal(pickup.state.stats.lanes, 1);
-      assert.equal(pickup.state.stats.pellets, 1);
-      assert.ok(pickup.toast.includes("队员 +1"));
-      assert.ok(!pickup.toast.includes("错过"));
-    },
-  );
-  await reset();
-  await check(
-    "Laser damages Boss; lane/pellet/speed upgrades affect beams",
-    async () => {
-      const output = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.spawnBoss();
-        t.configure({ shootTimer: 999 });
-        t.step(1.9);
-        t.setWeapon("laser", true);
-        const initial = t.boss().hp;
-        t.fire();
-        const base = initial - t.boss().hp;
-        for (const r of [
-          { type: "lanes", amount: 2 },
-          { type: "pellets", amount: 2 },
-          { type: "speed", amount: 0.35 },
-        ])
-          t.collectReward(r);
-        const hp = t.boss().hp;
-        t.fire();
-        return {
-          base,
-          upgraded: hp - t.boss().hp,
-          lanes: t.laser().beams.filter((b) => b.ray.visible).length,
-          range: t.laser().beams[0].outer.scale.y,
-        };
-      });
-      assert.ok(output.base > 0 && output.upgraded > output.base * 3);
-      assert.equal(output.lanes, 3);
-      assert.ok(output.range > 32);
-      return output;
-    },
-  );
-  await reset();
-  await check(
-    "Kill-charge overdrive boosts output, then expires; medkit heals",
-    async () => {
-      const output = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.fire();
-        const base = t.metrics();
-        t.clearBullets();
-        t.charge(10);
-        t.fire();
-        const boosted = t.metrics();
-        const active = t.state().overdrive;
-        t.step(6.2);
-        const expired = t.state().overdrive;
-        t.configure({ hp: 50 });
-        t.forceCrate("medkit");
-        return {
-          base: base.interval,
-          boosted: boosted.interval,
-          damage: boosted.totalDamage,
-          active,
-          expired,
-          hp: t.state().hp,
-        };
-      });
-      assert.ok(output.boosted < output.base && output.damage > 12);
-      assert.equal(output.active, 6);
-      assert.equal(output.expired, 0);
-      assert.equal(output.hp, 75);
-      return output;
-    },
-  );
-  await reset();
-  await check(
-    "Boss arrives at 95 seconds, warns, attacks, hurts and can die",
-    async () => {
-      const output = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.configure({ time: 94.9, nextBoss: 95 });
-        t.step(0.2);
-        const spawned = t.state().boss;
-        t.step(2.3);
-        const warned = t.boss().phase === "warn";
-        t.step(0.8);
-        const shots = t.state().enemyShots;
-        t.step(1.6);
-        const hp = t.state().hp;
-        for (let i = 0; i < 3; i++) {
-          t.damageBoss(10000);
-          if (t.boss()?.shield > 0) t.step(2.3);
-        }
-        t.step(1.5);
-        return {
-          spawned,
-          warned,
-          shots,
-          hp,
-          cleared: !t.state().boss,
-          score: t.state().score,
-        };
-      });
-      assert.ok(
-        output.spawned &&
-          output.warned &&
-          output.shots > 0 &&
-          output.hp < 100 &&
-          output.cleared &&
-          output.score > 1400,
-      );
-      return output;
-    },
-  );
-  await reset();
-  await check(
-    "Recycled impact particles remain attached and are bounded",
-    async () => {
-      const result = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.emit(3, 1, -9, "#ffcc99", 12);
-        const initial = t.effects().active;
-        t.updateEffects(1);
-        const pooled = t.effects().pooled;
-        t.emit(3, 1, -9, "#ffcc99", 8);
-        const reused = t.effects().active;
-        for (let i = 0; i < 30; i++) t.emit(0, 1, -5, "#ffffff", 24);
-        return { initial, pooled, reused, capped: t.effects().active };
-      });
-      assert.equal(result.initial, 12);
-      assert.ok(result.pooled >= 12);
-      assert.equal(result.reused, 8);
-      assert.ok(result.capped <= 100);
-      return result;
-    },
-  );
-  await check(
-    "Weapon noise goes to effects volume, drum noise to music volume",
-    async () => {
-      const routing = await page.evaluate(async () => {
-        const { BattleAudio } = await import("./audio.js");
-        const a = new BattleAudio(),
-          routes = [];
-        a.enabled = true;
-        a.sfxGain = "effects";
-        a.musicGain = "music";
-        const node = () => ({
-          connect() {},
-          start() {},
-          stop() {},
-          frequency: { value: 0 },
-        });
-        a.context = {
-          createBufferSource: node,
-          createBiquadFilter: node,
-          createGain: () => ({
-            gain: { setValueAtTime() {}, exponentialRampToValueAtTime() {} },
-            connect(out) {
-              routes.push(out);
-            },
-          }),
-        };
-        a.noiseHit(0, 0.1, 0.4);
-        a.noiseHit(0, 0.1, 0.4, 3400, a.musicGain);
-        return routes;
-      });
-      assert.deepEqual(routing, ["effects", "music"]);
-    },
-  );
-  await reset();
-  await check(
-    "Death, score persistence, restart and both mixer readouts",
-    async () => {
-      await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.configure({ score: 321 });
-        t.hurtPlayer(100, 0);
-      });
-      assert.equal(await page.locator("#endPanel").isVisible(), true);
-      assert.equal(
-        await page.evaluate(() => localStorage.getItem("mr2-best")),
-        "321",
-      );
-      await page.locator("#again").click();
-      await page.waitForFunction(() => window.__MR_TEST__.getAudio().playing);
-      assert.equal(
-        await page.evaluate(() => window.__MR_TEST__.state().hp),
-        100,
-      );
-      await page.locator("#pause").click();
-      await page.locator("#musicVolume").fill("32");
-      await page.locator("#musicVolume").dispatchEvent("input");
-      const values = await page.evaluate(() => [
-        localStorage.getItem("mr2-music"),
-        document.querySelector("#musicValue").textContent,
-        document.querySelector("#menuMusicValue").textContent,
-      ]);
-      assert.deepEqual(values, ["0.32", "32%", "32%"]);
-      await page.locator("#resume").click();
-    },
-  );
-  await reset();
-  await check(
-    "180-second combat soak: bounds, wave relief and automatic Boss",
-    async () => {
-      const output = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.configure({
-          spawnTimer: 0.1,
-          gateTimer: 1,
-          crateTimer: 10,
-          invuln: 10000,
-        });
-        t.setWeapon("machine", true);
-        t.collectReward({ type: "lanes", amount: 2 });
-        t.collectReward({ type: "damage", amount: 0.5 });
-        const cap = { enemies: 0, bullets: 0, particles: 0 };
-        let sawBoss = false;
-        for (let i = 0; i < 720; i++) {
-          t.configure({ hp: 100 });
-          t.setTarget(Math.sin(i * 0.11) * 3.2);
-          t.step(0.25);
-          const s = t.state();
-          sawBoss ||= s.boss;
-          cap.enemies = Math.max(cap.enemies, s.enemies);
-          cap.bullets = Math.max(cap.bullets, s.bullets);
-          cap.particles = Math.max(cap.particles, t.effects().active);
-        }
-        return {
-          time: t.state().time,
-          kills: t.state().kills,
-          cap,
-          sawBoss,
-          activeInterval: t.interval(18),
-          reliefInterval: t.interval(21),
-        };
-      });
-      assert.ok(output.time >= 179 && output.kills > 20 && output.sawBoss);
-      assert.ok(
-        output.cap.enemies <= 24 &&
-          output.cap.bullets <= 260 &&
-          output.cap.particles <= 110,
-      );
-      assert.ok(output.reliefInterval > output.activeInterval * 3);
-      return output;
-    },
-  );
-  await reset();
-  await check(
-    "Boss phase shields prevent a maximum-damage instant kill",
-    async () => {
-      const output = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.configure({ shootTimer: 999 });
-        t.spawnBoss();
-        const full = t.boss().hp;
-        t.damageBoss(100000);
-        const guarded = t.boss().hp;
-        t.step(1.9);
-        t.damageBoss(100000);
-        const first = t.boss().hp;
-        t.damageBoss(100000);
-        const blocked = t.boss().hp;
-        t.step(2.3);
-        t.damageBoss(100000);
-        const second = t.boss().hp;
-        return {
-          full,
-          guarded,
-          first,
-          blocked,
-          second,
-          phase: t.boss().armorPhase,
-        };
-      });
-      assert.equal(output.guarded, output.full);
-      assert.equal(output.first, output.blocked);
-      assert.ok(output.second > 0 && output.second < output.first);
-      assert.equal(output.phase, 2);
-      return output;
-    },
-  );
-  await check(
-    "Normal-health simulation rewards movement and collecting upgrades",
-    async () => {
-      const output = await page.evaluate(async () => {
-        const t = window.__MR_TEST__,
-          runs = [];
-        for (const active of [false, true]) {
-          await t.start();
-          await t.silence();
-          t.runModel().nextDraft = 9999;
-          t.runModel().eventTimer = 9999;
-          let seed = 17;
-          Math.random = () =>
-            (seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296;
-          let dodgeUntil = 0,
-            dodgeX = 0,
-            sawBoss = false;
-          for (let i = 0; i < 1200 && t.state().mode === "playing"; i++) {
-            const s = t.state();
-            sawBoss ||= s.boss;
-            if (active) {
-              const boss = t.boss();
-              if (
-                boss?.phase === "warn" &&
-                Math.abs(boss.targetX - s.playerX) < 1.6
-              ) {
-                dodgeUntil = s.time + 2.1;
-                dodgeX = boss.targetX > 0 ? -4.2 : 4.2;
-              }
-              const danger = t
-                  .enemyList()
-                  .find(
-                    (e) =>
-                      !e.dead && e.z > -4 && Math.abs(e.x - s.playerX) < 1.5,
-                  ),
-                supplies = t.supply();
-              const pickup = [
-                ...supplies.crates,
-                ...supplies.gates.filter((g) => !g.resolved),
-              ]
-                .filter((x) => x.z > -20)
-                .sort((a, b) => b.z - a.z)[0];
-              const enemy = t
-                .enemyList()
-                .filter((e) => !e.dead)
-                .sort((a, b) => b.z - a.z)[0];
-              const target =
-                s.time < dodgeUntil
-                  ? dodgeX
-                  : danger
-                    ? danger.x > 0
-                      ? -4.1
-                      : 4.1
-                    : pickup
-                      ? pickup.x
-                      : enemy
-                        ? enemy.x
-                        : boss
-                          ? boss.x
-                          : 0;
-              t.setTarget(target);
-            }
-            t.step(0.1);
-          }
-          const s = t.state();
-          runs.push({
-            active,
-            seconds: +s.time.toFixed(1),
-            kills: s.kills,
-            hp: s.hp,
-            sawBoss,
-          });
-        }
-        return runs;
-      });
-      assert.equal(output[0].hp, 0);
-      assert.ok(
-        output[1].seconds > output[0].seconds &&
-          output[1].kills > output[0].kills &&
-          output[1].sawBoss,
-      );
-      return output;
-    },
-  );
-  await reset();
-  await check(
-    "Lower-tier supplies cannot downgrade weapons; capped gates become repairs",
-    async () => {
-      const output = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.setWeapon("laser", true);
-        t.configure({ hp: 50 });
-        t.forceCrate("rifle");
-        const weapon = t.state().weapon,
-          damage = t.state().stats.damage;
-        for (let i = 0; i < 4; i++)
-          t.collectReward({ type: "lanes", amount: 1 });
-        t.configure({ hp: 50 });
-        t.collectReward({ type: "lanes", amount: 3 });
-        return {
-          weapon,
-          damage,
-          lanes: t.state().stats.lanes,
-          hp: t.state().hp,
-          toast: document.querySelector("#upgradeToast").textContent,
-        };
-      });
-      assert.equal(output.weapon, "laser");
-      assert.ok(output.damage > 1);
-      assert.equal(output.lanes, 5);
-      assert.equal(output.hp, 62);
-      assert.ok(output.toast.includes("装甲修复"));
-      return output;
-    },
-  );
-  await reset();
-  await check(
-    "Uploaded art decodes; scrolling road changes without moving the camera",
-    async () => {
-      await page.waitForFunction(() => window.__MR_TEST__.artStatus().loaded);
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__,
-          before = t.roadOffset();
-        t.step(1);
-        return {
-          art: t.artStatus(),
-          before,
-          after: t.roadOffset(),
-          projection: t.playerProjection(),
-        };
-      });
-      assert.deepEqual(r.art.errors, []);
-      assert.notEqual(r.before, r.after);
-      assert.ok(r.projection.headY > 400);
-      return r;
-    },
-  );
-  await reset();
-  await check(
-    "Four teammates persist, fire role weapons, promote, collide, fall and refill",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.configure({ shootTimer: 999 });
-        for (const role of ["assault", "heavy", "guard", "assault"])
-          t.recruit(role);
-        t.promote("heavy");
-        t.promote("heavy");
-        t.step(0.03);
-        const roles = t.systems().team.map((m) => [m.role, m.level]);
-        t.spawnEnemy("heavy", 0, -9);
-        const e = t.getEnemy();
-        e.hp = e.maxHp = 1500;
-        t.step(2);
-        const dealt = 1500 - e.hp,
-          shots = t.shots().filter((b) => b.owner === "team").length;
-        const model = t.runModel(),
-          victim = model.team[0],
-          id = victim.id;
-        victim.hp = 1;
-        t.spawnEnemy("grunt", victim.x, victim.z);
-        t.step(0.025);
-        const fallen = !model.team.some((m) => m.id === id);
-        t.recruit("guard");
-        // remove hostile objects, retain squad; waiting never despawns them.
-        for (const en of t.enemyList()) {
-          en.hp = 1;
-          t.damageEnemy(en, 999, false);
-        }
-        t.step(2);
-        t.configure({
-          spawnTimer: 9999,
-          gateTimer: 9999,
-          crateTimer: 9999,
-          nextBoss: 9999,
-          hp: 100,
-        });
-        t.step(100);
-        return {
-          roles,
-          dealt,
-          shots,
-          fallen,
-          team: t.systems().team.length,
-          totals: t.systems().totals,
-        };
-      });
-      assert.deepEqual(
-        r.roles.map((a) => a[0]),
-        ["assault", "heavy", "guard", "assault"],
-      );
-      assert.equal(r.roles[1][1], 3);
-      assert.ok(r.dealt > 0 && r.shots > 0 && r.fallen);
-      assert.equal(r.team, 4);
-      return r;
-    },
-  );
-  await reset();
-  await check(
-    "Recruit, team and promotion gates change real squad attributes",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.collectReward({ type: "recruit", role: "heavy", value: "招募 +1" });
-        const a = t.systems();
-        t.collectReward({ type: "team", value: "团队 +8%" });
-        t.collectReward({ type: "promote", value: "职业 +1" });
-        return { a, b: t.systems() };
-      });
-      assert.equal(r.a.team.length, 1);
-      assert.equal(r.b.teamPower, 1);
-      assert.equal(r.b.team[0].level, 2);
-    },
-  );
-  await reset();
-  await check(
-    "Every pet has actual skills, bounded levels, cooldown and replacement",
-    async () => {
-      const outputs = await page.evaluate(async () => {
-        const t = window.__MR_TEST__,
-          results = [];
-        t.configure({ shootTimer: 999 });
-        for (const kind of ["dragon", "owl", "drone", "fairy"]) {
-          for (let i = 0; i < 4; i++) t.equipPet(kind);
-          t.spawnEnemy("heavy", 0, -12);
-          const e = t.enemyList().at(-1);
-          e.hp = e.maxHp = 1000;
-          t.configure({ hp: 50, invuln: 0 });
-          const model = t.runModel();
-          model.pet.cooldown = 0.01;
-          t.updateRunSystems(0.02);
-          const hpAfterSkill = t.state().hp,
-            shield = model.shield,
-            slow = e.slowTime || 0,
-            damage = 1000 - e.hp;
-          t.hurtPlayer(10, 0.1);
-          const hpAfterHit = t.state().hp;
-          results.push({
-            kind,
-            level: model.pet.level,
-            cooldown: model.pet.cooldown,
-            hpAfterSkill,
-            hpAfterHit,
-            shield,
-            slow,
-            damage,
-          });
-        }
-        return results;
-      });
-      assert.ok(outputs.every((p) => p.level === 3 && p.cooldown > 5));
-      assert.ok(outputs[0].damage > 0);
-      assert.ok(outputs[1].hpAfterHit > 40 && outputs[1].slow > 0);
-      assert.ok(outputs[2].shield > 0 && outputs[2].hpAfterHit === 50);
-      assert.ok(outputs[3].hpAfterSkill > 50);
-      return outputs;
-    },
-  );
-  await reset();
-  await check(
-    "All three armors transform firepower, expire and restore the exact base weapon/stats",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__,
-          out = [];
-        t.setWeapon("plasma", true);
-        t.collectReward({ type: "damage", amount: 0.5 });
-        const base = t.combatStats();
-        for (const kind of ["thunder", "molten", "phantom"]) {
-          t.armor(kind);
-          const boosted = t.combatStats();
-          t.step(0.1);
-          const active = t.systems().armor.remaining,
-            visible = document.querySelector("#armorStatus").textContent;
-          t.step(12);
-          out.push({
-            kind,
-            base,
-            boosted,
-            active,
-            visible,
-            ended: t.systems().armor,
-            after: t.combatStats(),
-            weapon: t.state().weapon,
-          });
-        }
-        return out;
-      });
-      for (const x of r) {
-        assert.ok(x.boosted.damage > x.base.damage && x.active > 11);
-        assert.equal(x.ended, null);
-        assert.deepEqual(x.after, x.base);
-        assert.equal(x.weapon, "plasma");
-      }
-      return r.map((x) => ({ kind: x.kind, active: x.active, restored: true }));
-    },
-  );
-  await reset();
-  await check(
-    "Elemental affixes apply DOT, movement slow, bounded chain and splash without recursion",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.configure({ shootTimer: 999 });
-        for (const a of ["burn", "frost", "arc", "blast"]) t.affix(a);
-        for (const x of [0, 1, 1.6]) {
-          t.spawnEnemy("heavy", x, -10);
-          const e = t.enemyList().at(-1);
-          e.hp = e.maxHp = 1000;
-        }
-        const [a, b, c] = t.enemyList();
-        t.damageEnemy(a, 10, false);
-        const direct = {
-          a: a.hp,
-          b: b.hp,
-          c: c.hp,
-          burn: a.burnTime,
-          slow: a.slow,
-        };
-        t.step(0.6);
-        const after = { a: a.hp, b: b.hp, c: c.hp };
-        return {
-          direct,
-          after,
-          cd: { arc: t.runModel().arcCD, blast: t.runModel().blastCD },
-        };
-      });
-      assert.ok(r.direct.b < 1000 && r.direct.c < 1000 && r.direct.a === 990);
-      assert.ok(r.direct.burn > 0 && r.direct.slow > 0);
-      assert.ok(r.after.a < r.direct.a);
-      assert.ok(r.after.b === r.direct.b && r.after.c === r.direct.c);
-      return r;
-    },
-  );
-  await reset();
-  await check(
-    "Survival and tech affixes heal on cadence, absorb damage, execute and expand pickup range",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.configure({ hp: 40, shootTimer: 999 });
-        t.affix("recovery");
-        t.affix("barrier");
-        t.affix("capacitor");
-        t.affix("salvage");
-        t.step(8.1);
-        const healed = t.state().hp,
-          shield = t.systems().shield;
-        t.hurtPlayer(8, 0.8);
-        const blocked = t.state().hp;
-        t.spawnEnemy("grunt", 0, -12);
-        t.damageEnemy(t.getEnemy(), 1000, false);
-        const killHeal = t.state().hp;
-        t.spawnEnemy("grunt", 0, -13);
-        t.damageEnemy(t.enemyList().at(-1), 1000, false);
-        const secondKill = t.state().hp;
-        t.affix("execution", "salvage");
-        t.spawnEnemy("heavy", 0, -15);
-        const e = t.enemyList().at(-1);
-        e.maxHp = 100;
-        e.hp = 20;
-        t.damageEnemy(e, 10, false);
-        const execution = e.hp;
-        t.configure({ hp: 50 });
-        t.spawnCrate("medkit", 1.7, 1.2);
-        t.updateGatesCrates(0.01);
-        const before = t.state().hp;
-        t.affix("magnet", "execution");
-        t.updateGatesCrates(0.01);
-        return {
-          healed,
-          shield,
-          blocked,
-          killHeal,
-          secondKill,
-          execution,
-          before,
-          after: t.state().hp,
-        };
-      });
-      assert.ok(r.healed > 40 && r.shield > 0);
-      assert.equal(r.blocked, r.healed);
-      assert.equal(r.killHeal, r.secondKill);
-      assert.equal(r.execution, 8);
-      assert.equal(r.before, 50);
-      assert.equal(r.after, 75);
-      return r;
-    },
-  );
-  await reset();
-  await check(
-    "Three-choice UI freezes combat; four-slot replacement and skip resume safely",
-    async () => {
-      await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        for (const a of ["burn", "frost", "arc", "blast"]) t.affix(a);
-        t.runModel().nextDraft = 0.02;
-        t.step(0.1);
-      });
-      assert.equal(await page.locator("#draftPanel").isVisible(), true);
-      assert.equal(await page.locator(".draft-card").count(), 3);
-      const frozen = await page.evaluate(() => {
-        const t = window.__MR_TEST__,
-          before = t.state().time;
-        t.step(3);
-        return before === t.state().time;
-      });
-      assert.equal(frozen, true);
-      await page.evaluate(() => {
-        const t = window.__MR_TEST__,
-          r = t.runModel();
-        r.offers = ["magnet"];
-        t.choose("magnet");
-      });
-      assert.equal(await page.locator(".draft-card").count(), 4);
-      await page.locator(".draft-card").first().click();
-      assert.equal(
-        await page.evaluate(() => window.__MR_TEST__.systems().affixes.length),
-        4,
-      );
-      assert.equal(
-        await page.evaluate(() => window.__MR_TEST__.state().mode),
-        "playing",
-      );
-      await page.evaluate(() => window.__MR_TEST__.draft());
-      await page.locator("#skipDraft").click();
-      assert.equal(
-        await page.evaluate(() => window.__MR_TEST__.state().mode),
-        "playing",
-      );
-    },
-  );
-  await reset();
-  await check(
-    "Flanking enemies breach the defense and cause damage even during contact invulnerability",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.forcePlayerX(-4.8);
-        t.configure({ shootTimer: 999, hp: 100, invuln: 999 });
-        t.spawnEnemy("grunt", 4.8, 4.3);
-        t.step(0.025);
-        return {
-          hp: t.state().hp,
-          breaches: t.systems().totals.breaches,
-          enemies: t.state().enemies,
-        };
-      });
-      assert.ok(r.hp < 100);
-      assert.equal(r.breaches, 1);
-      assert.equal(r.enemies, 0);
-      return r;
-    },
-  );
-  await reset();
-  await check(
-    "Weapon crates use a generous swept pickup window consistent with their size",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.spawnCrate("machine", 1.45, 0.9);
-        t.updateGatesCrates(0.4);
-        return t.state();
-      });
-      assert.equal(r.weapon, "machine");
-      assert.equal(r.crates, 0);
-    },
-  );
-  await reset();
-  await check(
-    "Road event cycle produces rescues, pets, an armed truck and elite bounty",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__,
-          out = [];
-        t.configure({ shootTimer: 999 });
-        for (let i = 0; i < 4; i++) {
-          for (const c of t.supply().crates) c.z = 10;
-          t.updateGatesCrates(0.01);
-          t.runModel().eventTimer = 0;
-          t.step(0.025);
-          out.push({
-            event: t.systems().event,
-            kind: t.supply().crates.at(-1)?.system?.kind,
-            bounty: t.enemyList().some((e) => e.bounty),
-          });
-        }
-        return out;
-      });
-      assert.deepEqual(
-        r.map((x) => x.kind),
-        ["rescue", "pet", "truck", "armor"],
-      );
-      assert.equal(r[3].bounty, true);
-      return r;
-    },
-  );
-  await reset();
-  await check(
-    "Boss schedule follows 95, 180 and 270 seconds with escalating health",
-    async () => {
-      const out = [];
-      for (const time of [95, 180, 270]) {
-        await reset();
-        out.push(
-          await page.evaluate((time) => {
-            const t = window.__MR_TEST__;
-            t.configure({ time: time - 0.01, nextBoss: time });
-            t.step(0.025);
-            return { time, hp: t.boss()?.hp, nextBoss: t.state().boss };
-          }, time),
-        );
-      }
-      assert.ok(out.every((x) => x.nextBoss));
-      assert.ok(out[2].hp > out[1].hp && out[1].hp > out[0].hp);
-      return out;
-    },
-  );
-  await reset();
-  await check(
-    "Integrated 300-second formation/pet/armor/affix simulation stays within object limits",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.configure({ spawnTimer: 0.1, gateTimer: 1, crateTimer: 8 });
-        t.runModel().eventTimer = 8;
-        t.runModel().nextDraft = 18;
-        t.recruit("assault");
-        t.recruit("heavy");
-        t.recruit("guard");
-        t.recruit("assault");
-        t.equipPet("dragon");
-        t.setWeapon("plasma", true);
-        const max = { enemies: 0, bullets: 0, particles: 0, shots: 0 },
-          seen = { drafts: 0, boss: false, armor: false };
-        for (let i = 0; i < 3000; i++) {
-          if (t.state().mode === "draft") {
-            const r = t.runModel();
-            if (r.pendingReplacement) t.choose(r.affixes[0].id);
-            else t.choose(r.offers[0]);
-            seen.drafts++;
-          }
-          t.configure({ hp: 100, invuln: 1 });
-          if (i % 700 === 0)
-            t.armor(["thunder", "molten", "phantom"][Math.floor(i / 700) % 3]);
-          t.setTarget(Math.sin(i * 0.03) * 3.6);
-          t.step(0.1);
-          const s = t.state();
-          seen.boss ||= s.boss;
-          seen.armor ||= !!t.systems().armor;
-          max.enemies = Math.max(max.enemies, s.enemies);
-          max.bullets = Math.max(max.bullets, s.bullets);
-          max.particles = Math.max(max.particles, t.effects().active);
-          max.shots = Math.max(max.shots, s.enemyShots);
-        }
-        return {
-          time: t.state().time,
-          max,
-          seen,
-          systems: t.systems(),
-          drawCalls: t.metrics().drawCalls,
-        };
-      });
-      assert.ok(
-        r.time > 295 && r.seen.drafts > 5 && r.seen.boss && r.seen.armor,
-      );
-      assert.ok(
-        r.max.enemies <= 24 &&
-          r.max.bullets <= 220 &&
-          r.max.particles <= 110 &&
-          r.max.shots <= 60,
-      );
-      assert.ok(r.systems.team.length <= 4 && r.systems.affixes.length <= 4);
-      return { time: r.time, max: r.max, seen: r.seen };
-    },
-  );
-  await reset();
-  await reset();
-  await check(
-    "Pet road choice upgrades the current companion or replaces it, never both",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.equipPet("dragon");
-        t.runModel().eventIndex = 5;
-        t.runModel().eventTimer = 0;
-        t.step(0.025);
-        const boxes = t.supply().crates.filter((c) => c.system?.kind === "pet");
-        const upgrade = boxes.find((c) => c.system.value === "dragon");
-        t.forcePlayerX(upgrade.x);
-        for (const c of boxes) c.z = 1.3;
-        t.updateGatesCrates(0.025);
-        t.updateGatesCrates(0.025);
-        return {
-          pet: t.systems().pet,
-          unresolved: t.supply().crates.filter((c) => c.choiceId && !c.resolved)
-            .length,
-        };
-      });
-      assert.equal(r.pet.kind, "dragon");
-      assert.equal(r.pet.level, 2);
-      assert.equal(r.unresolved, 0);
-      return r;
-    },
-  );
-  await reset();
-  await check(
-    "Full squad and extreme player positions stay within the mobile camera",
-    async () => {
-      const all = [];
-      for (const width of [360, 393]) {
-        await page.setViewportSize({
-          width,
-          height: width === 360 ? 800 : 873,
-        });
-        await page.waitForTimeout(80);
-        for (const x of [-4.8, 0, 4.8])
-          all.push(
-            await page.evaluate((x) => {
-              const t = window.__MR_TEST__;
-              if (!t.systems().team.length)
-                for (let i = 0; i < 4; i++) t.recruit("assault");
-              t.forcePlayerX(x);
-              t.step(0.8);
-              const p = t.project(x, 1.2, 2.4);
-              return {
-                width: innerWidth,
-                x,
-                player: p,
-                team: t.systems().team.map((m) => t.project(m.x, 1.2, m.z)),
-                bounds: t.formationBounds(),
-              };
-            }, x),
-          );
-      }
-      for (const f of all) {
-        for (const p of [f.player, ...f.team])
-          assert.ok(p.x > 8 && p.x < f.width - 8, JSON.stringify(f));
-        for (const b of f.bounds)
-          assert.ok(b.minX >= -1 && b.maxX <= f.width + 1, JSON.stringify(f));
-      }
-      return all.map((f) => ({ width: f.width, x: f.x, playerX: f.player.x }));
-    },
-  );
-  await reset();
-  await check(
-    "Projectile instancing renders the maximum pool in two draws and restart releases actor resources",
-    async () => {
-      await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.collectReward({ type: "lanes", amount: 4 });
-        t.collectReward({ type: "pellets", amount: 7 });
-        for (let i = 0; i < 10; i++) t.fire();
-      });
-      await page.waitForTimeout(100);
-      const stress = await page.evaluate(() => window.__MR_TEST__.metrics());
-      assert.equal(stress.count, 220);
-      assert.ok(stress.drawCalls < 145, JSON.stringify(stress));
-      const memories = [];
-      for (let i = 0; i < 6; i++) {
-        await reset();
-        await page.evaluate((i) => {
-          const t = window.__MR_TEST__;
-          t.recruit("guard");
-          t.equipPet(["dragon", "owl", "drone", "fairy"][i % 4]);
-          t.armor(["thunder", "molten", "phantom"][i % 3]);
-          t.spawnEnemy("heavy", 0, -12);
-          t.step(0.1);
-        }, i);
-        await page.waitForTimeout(50);
-        await reset();
-        await page.waitForTimeout(50);
-        memories.push(
-          await page.evaluate(() => window.__MR_TEST__.metrics().memory),
-        );
-      }
-      assert.ok(
-        memories.at(-1).textures <= memories[2].textures + 5,
-        JSON.stringify(memories),
-      );
-      assert.ok(
-        memories.at(-1).geometries <= memories[2].geometries + 5,
-        JSON.stringify(memories),
-      );
-      return { active: stress.count, drawCalls: stress.drawCalls, memories };
-    },
-  );
-  await reset();
-  await reset();
-  await check(
-    "All five weapons defeat the Boss through actual fire and both shield transitions",
-    async () => {
-      const out = [];
-      for (const weapon of ["rifle", "machine", "shotgun", "plasma", "laser"]) {
-        await reset();
-        out.push(
-          await page.evaluate((weapon) => {
-            const t = window.__MR_TEST__;
-            t.setWeapon(weapon, true);
-            for (const reward of [
-              { type: "lanes", amount: 2 },
-              { type: "pellets", amount: 5 },
-              { type: "rate", amount: 1.5 },
-              { type: "damage", amount: 2 },
-              { type: "speed", amount: 1.2 },
-            ])
-              t.collectReward(reward);
-            t.configure({ invuln: 999 });
-            t.spawnBoss();
-            for (let i = 0; i < 250 && t.boss() && !t.boss().dead; i++) {
-              t.forcePlayerX(t.boss().x);
-              t.step(0.1);
-            }
-            return {
-              weapon,
-              time: t.state().time,
-              dead: !!t.boss()?.dead,
-              phase: t.boss()?.armorPhase,
-              score: t.state().score,
-            };
-          }, weapon),
-        );
-      }
-      assert.ok(
-        out.every((x) => x.dead && x.phase === 2 && x.score >= 1400),
-        JSON.stringify(out),
-      );
-      return out;
-    },
-  );
-  await reset();
-  await check(
-    "Boss phases use distinct warning widths and attack patterns; execution affects low-health Boss",
-    async () => {
-      const out = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.configure({ shootTimer: 999, invuln: 999 });
-        t.spawnBoss();
-        const b = t.boss(),
-          phases = [];
-        for (const phase of [0, 1, 2]) {
-          b.armorPhase = phase;
-          b.shield = 0;
-          b.phase = "idle";
-          b.attack = 0;
-          b.skillCycle = 1;
-          t.step(0.025);
-          const width = b.warnMesh.geometry.parameters.width;
-          const expected = b.sweep;
-          const before = new Set(t.hostileShots());
-          t.step(1.1);
-          phases.push({
-            phase,
-            width,
-            sweep: expected,
-            shots: t.hostileShots().filter((shot) => !before.has(shot)).length,
-          });
-        }
-        t.affix("execution");
-        b.shield = 0;
-        b.armorPhase = 2;
-        b.hp = 100;
-        b.maxHp = 1000;
-        t.damageBoss(10);
-        return { phases, hp: b.hp };
-      });
-      assert.deepEqual(
-        out.phases.map((x) => x.width),
-        [2.8, 4.2, 5.2],
-      );
-      assert.deepEqual(
-        out.phases.map((x) => x.shots),
-        [3, 5, 5],
-      );
-      assert.equal(out.phases[2].sweep, true);
-      assert.equal(out.hp, 88);
-      return out;
-    },
-  );
-  await reset();
-  await reset();
-  await check(
-    "Full-team and max-level gates show an effective promotion, team buff or repair",
-    async () => {
-      const r = await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        for (let i = 0; i < 4; i++) t.recruit("assault");
-        for (let i = 0; i < 8; i++) t.promote();
-        t.collectReward({ type: "recruit", role: "heavy" });
-        const power = t.systems().teamPower;
-        t.runModel().teamPower = 5;
-        t.configure({ hp: 50 });
-        for (const m of t.runModel().team) m.hp = 50;
-        t.collectReward({ type: "team" });
-        return {
-          power,
-          hp: t.state().hp,
-          crew: t.systems().team.map((m) => m.hp),
-          toast: document.querySelector("#upgradeToast").textContent,
-        };
-      });
-      assert.equal(r.power, 1);
-      assert.equal(r.hp, 62);
-      assert.ok(r.crew.every((hp) => hp === 62));
-      assert.ok(r.toast.includes("整备 +12"));
-      return r;
-    },
-  );
-  await reset();
-  await check(
-    "Final formation, draft, pet, armor and Boss screenshots at both phone sizes",
-    async () => {
-      for (const [width, height] of [
-        [360, 800],
-        [393, 873],
-      ]) {
-        await page.setViewportSize({ width, height });
-        await reset();
-        await page.evaluate(() => {
-          const t = window.__MR_TEST__;
-          t.setWeapon("plasma", true);
-          t.recruit("assault");
-          t.recruit("heavy");
-          t.recruit("guard");
-          t.recruit("assault");
-          t.equipPet("owl");
-          t.armor("thunder");
-          for (const id of ["burn", "arc", "rally", "barrier"]) t.affix(id);
-          for (const [type, x, z] of [
-            ["grunt", -3, -8],
-            ["charger", 2, -12],
-            ["heavy", -2, -17],
-            ["ranged", 3, -23],
-            ["elite", 0, -24],
-          ])
-            t.spawnEnemy(type, x, z);
-          t.step(0.1);
-        });
-        await page.waitForTimeout(250);
-        await page.screenshot({
-          path: path.join(artifacts, `formation-${width}.png`),
-        });
-        await page.evaluate(() => window.__MR_TEST__.draft());
-        await page.screenshot({
-          path: path.join(artifacts, `draft-${width}.png`),
-        });
-        await page.locator("#skipDraft").click();
-        await reset();
-        await page.evaluate(() => {
-          const t = window.__MR_TEST__;
-          t.setWeapon("laser", true);
-          t.recruit("heavy");
-          t.equipPet("dragon");
-          t.armor("molten");
-          t.spawnBoss();
-          t.step(2.5);
-        });
-        await page.waitForTimeout(200);
-        await page.screenshot({
-          path: path.join(artifacts, `final-boss-${width}.png`),
-        });
-        assert.ok(
-          await page.evaluate(
-            () =>
-              document.documentElement.scrollWidth <= innerWidth &&
-              document.documentElement.scrollHeight <= innerHeight,
-          ),
-        );
-      }
-    },
-  );
-
-  await check(
-    "Representative upgrade, heavy-weapon and Boss screenshots",
-    async () => {
-      await reset();
-      await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.previewGates(-14);
-        t.step(0.1);
-      });
-      await page.screenshot({ path: path.join(artifacts, "upgrade-393.png") });
-      await reset();
-      await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.setWeapon("laser", true);
-        t.configure({ time: 42 });
-        t.charge(6);
-        for (const [type, x, z] of [
-          ["grunt", -2, -9],
-          ["runner", 3, -12],
-          ["heavy", -4, -19],
-          ["ranged", 2, -25],
-          ["elite", 0, -20],
-        ])
-          t.spawnEnemy(type, x, z);
-        t.step(0.025);
-        t.fire();
-      });
-      await page.waitForTimeout(1050);
-      await page.screenshot({ path: path.join(artifacts, "battle-393.png") });
-      await reset();
-      await page.evaluate(() => {
-        const t = window.__MR_TEST__;
-        t.configure({ time: 78 });
-        t.spawnBoss();
-        t.setWeapon("plasma", true);
-        t.step(2.5);
-      });
-      await page.waitForTimeout(1050);
-      await page.screenshot({ path: path.join(artifacts, "boss-393.png") });
-    },
-  );
-  await check(
-    "Nested Pages path + normal mode + offline assets and PNG icons",
-    async () => {
-      await page.goto(base);
-      await page.evaluate(async () => navigator.serviceWorker.ready);
-      assert.equal(
-        await page.evaluate(() => typeof window.__MR_TEST__),
-        "undefined",
-      );
-      const manifest = await page.evaluate(async () =>
-        (await fetch("./manifest.webmanifest")).json(),
-      );
-      assert.equal(manifest.orientation, "portrait");
-      assert.ok(
-        manifest.icons.some((i) => i.sizes === "192x192") &&
-          manifest.icons.some((i) => i.sizes === "512x512"),
-      );
-      const cached = await page.evaluate(async () => {
-        const cache = await caches.open("monster-rush-road-squad-review-1");
-        return Promise.all(
-          [
-            "./",
-            "./game.js",
-            "./audio.js",
-            "./systems.js",
-            "./config/catalog.js",
-            "./assets/characters/player_soldier_back.webp",
-            "./assets/pets/dragon.svg",
-            "./vendor/three/three.module.min.js",
-            "./icons/icon-192.png",
-            "./icons/icon-512.png",
-          ].map(async (url) => !!(await cache.match(url))),
-        );
-      });
-      assert.ok(cached.every(Boolean));
-      await context.setOffline(true);
-      await page.reload();
-      assert.equal(await page.locator("#start").isVisible(), true);
-      await page.locator("#start").click();
-      assert.equal(await page.locator("#hud").isVisible(), true);
-      await context.setOffline(false);
-    },
-  );
   assert.deepEqual(errors, [], "Browser or WebGL errors");
   fs.writeFileSync(
     path.join(artifacts, "results.json"),

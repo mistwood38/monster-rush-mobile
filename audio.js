@@ -13,6 +13,7 @@ export class BattleAudio {
     this.enabled = false;
     this.boss = false;
     this.lastImpact = -1;
+    this.samples = new Map();this.sampleErrors=[];this.sampleVoices=0;this.sampleLoop=null;this.sampleLoad=null;
   }
   async start() {
     if (!this.context) {
@@ -40,6 +41,7 @@ export class BattleAudio {
     }
     await this.context.resume();
     this.enabled = true;
+    this.loadSamples();
     if (!this.timer) {
       this.step = 0;
       this.nextTime = this.context.currentTime + 0.06;
@@ -47,13 +49,33 @@ export class BattleAudio {
     }
     return true;
   }
+  loadSamples(){
+    if(this.sampleLoad)return this.sampleLoad;
+    const context=this.context,names=['normal_loop','boss_loop','weapon_assault_rifle','weapon_gatling','weapon_shotgun','weapon_plasma_cannon','weapon_laser_weapon','enemy_hit','enemy_death','pickup','boss_warning','pet_skill_fire','pet_skill_owl','pet_skill_shield','pet_skill_heal'];
+    this.sampleLoad=Promise.all(names.map(async name=>{try{
+      const response=await fetch(new URL('./assets/v17/audio_'+name+'.ogg',import.meta.url));if(!response.ok)throw Error(name);
+      const data=await context.decodeAudioData(await response.arrayBuffer());this.samples.set(name,data);
+    }catch{this.sampleErrors.push(name);}})).then(()=>{if(this.context===context)this.switchLoop();});return this.sampleLoad;
+  }
+  sample(name,volume=.5){
+    if(!this.enabled||!this.context||!this.samples.has(name)||this.sampleVoices>=24)return false;
+    const source=this.context.createBufferSource(),gain=this.context.createGain();source.buffer=this.samples.get(name);gain.gain.value=volume;source.connect(gain);gain.connect(this.sfxGain);this.sampleVoices++;
+    source.onended=()=>{this.sampleVoices--;source.disconnect();gain.disconnect();};source.start();return true;
+  }
+  switchLoop(){
+    const name=this.boss?'boss_loop':'normal_loop';if(!this.context||!this.samples.has(name)||this.sampleLoop?.name===name)return;
+    const t=this.context.currentTime,old=this.sampleLoop;
+    if(old){old.gain.gain.setTargetAtTime(.001,t,.04);old.source.stop(t+.2);old.source.onended=()=>{old.source.disconnect();old.gain.disconnect();};}
+    const source=this.context.createBufferSource(),gain=this.context.createGain();source.buffer=this.samples.get(name);source.loop=true;gain.gain.setValueAtTime(.001,t);gain.gain.linearRampToValueAtTime(.7,t+.2);source.connect(gain);gain.connect(this.musicGain);source.start(t);this.sampleLoop={source,gain,name};
+  }
+  pet(kind){this.sample('pet_skill_'+({dragon:'fire',owl:'owl',drone:'shield',fairy:'heal'}[kind]),.6);}
   schedule() {
     if (!this.enabled || !this.context) return;
     const c = this.context;
     const bpm = this.boss ? 142 : 124,
       dt = 60 / bpm / 4;
     while (this.nextTime < c.currentTime + 0.19) {
-      this.musicStep(this.step, this.nextTime, bpm);
+      if(!this.sampleLoop)this.musicStep(this.step, this.nextTime, bpm);
       this.step = (this.step + 1) % 64;
       this.nextTime += dt;
     }
@@ -161,6 +183,7 @@ export class BattleAudio {
   }
   shoot(kind = "rifle") {
     if (!this.enabled || !this.context) return;
+    if(this.sample('weapon_'+({rifle:'assault_rifle',machine:'gatling',shotgun:'shotgun',plasma:'plasma_cannon',laser:'laser_weapon'}[kind]),kind==='shotgun'?.55:.38))return;
     const t = this.context.currentTime + 0.002;
     switch (kind) {
       case "machine":
@@ -189,6 +212,7 @@ export class BattleAudio {
     const t = this.context.currentTime;
     if (t - this.lastImpact < (heavy ? 0.065 : 0.045)) return;
     this.lastImpact = t;
+    if(this.sample(heavy?"enemy_death":"enemy_hit",heavy?.4:.22))return;
     this.noiseHit(
       t,
       heavy ? 0.22 : 0.09,
@@ -206,6 +230,7 @@ export class BattleAudio {
     );
   }
   pickup() {
+    if(this.sample("pickup",.45))return;
     if (!this.enabled || !this.context) return;
     const t = this.context.currentTime;
     [523, 659, 784, 1046].forEach((f, i) =>
@@ -213,6 +238,7 @@ export class BattleAudio {
     );
   }
   bossAlert() {
+    if(this.sample("boss_warning",.5))return;
     if (!this.enabled || !this.context) return;
     const t = this.context.currentTime;
     this.osc(110, t, 0.9, 0.3, "sawtooth", this.sfxGain, 45);
@@ -246,6 +272,7 @@ export class BattleAudio {
   setBoss(on) {
     if (this.boss === on) return;
     this.boss = on;
+    this.switchLoop();
     this.step = Math.ceil(this.step / 16) * 16;
   }
   async pause() {
@@ -268,10 +295,11 @@ export class BattleAudio {
     if (this.timer) clearTimeout(this.timer);
     this.timer = 0;
     this.context?.close();
-    this.context = null;
+    this.context = null;this.sampleLoop=null;this.samples.clear();this.sampleLoad=null;
   }
   status() {
     return {
+      samples:this.samples.size,sampleErrors:[...this.sampleErrors],loop:this.sampleLoop?.name||"synth",voices:this.sampleVoices,
       initialized: !!this.context,
       playing: this.enabled,
       music: this.musicVolume,

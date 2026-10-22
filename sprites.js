@@ -25,7 +25,7 @@ export class SpriteLibrary {
   const body=new THREE.Mesh(new THREE.PlaneGeometry(width,height),material);body.position.set(width*(.5-def.anchor[0]),height*(def.anchor[1]-.5),0);billboard.add(body);
   const initial=def.clips.run?'run':def.clips.move?'move':def.clips.hover?'hover':'idle';
   const machine=new SpriteStateMachine(def.clips,initial);
-  const actor={root,body,billboard,material,map,key,machine,frame:-1,time:0,trigger:(state)=>machine.trigger(state),tick:(dt)=>{
+  const actor={root,body,billboard,material,map,key,machine,frame:-1,time:0,trigger:(state)=>(machine.state==='activate'&&state==='attack')?false:machine.state===state&&machine.elapsed<1000*def.clips[state].frames.length/(def.clips[state].fps||1)?false:machine.trigger(state),tick:(dt)=>{
    machine.tick(dt*1000);const f=machine.frame();const rect=def.clips[f.state].frames[f.index];
    map.repeat.set(rect[2]/def.size[0],rect[3]/def.size[1]);map.offset.set(rect[0]/def.size[0],1-(rect[1]+rect[3])/def.size[1]);
    actor.time+=dt;actor.frame=f.index;return f;
