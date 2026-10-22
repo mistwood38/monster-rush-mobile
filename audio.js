@@ -348,6 +348,14 @@ export class BattleAudio {
     this.noiseHit(t, 0.48, 0.55, 900);
     this.osc(68, t, 0.42, 0.4, "sine", this.sfxGain, 25);
   }
+  captureStream() {
+    if (!this.context) return null;
+    if (!this.recordingDestination) {
+      this.recordingDestination = this.context.createMediaStreamDestination();
+      this.master.connect(this.recordingDestination);
+    }
+    return this.recordingDestination.stream;
+  }
   setMusic(v) {
     this.musicVolume = Math.max(0, Math.min(1, v));
     if (this.musicGain && this.context)

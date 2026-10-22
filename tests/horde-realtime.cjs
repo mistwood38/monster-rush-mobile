@@ -1,21 +1,178 @@
 // Unfrozen rAF observation. Density diagnostics restore HP; this is explicitly NOT a survival run.
-const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');const {open,pilot}=require('./horde-harness.cjs');
-const dir=path.resolve(__dirname,'../test-results/horde');fs.mkdirSync(dir,{recursive:true});
-(async()=>{const h=await open({width:393,height:873});try{
- await h.page.evaluate('window.hordePilot='+pilot.toString());
- await h.page.evaluate(()=>{const t=__MR_TEST__;t.setQuality(0);const label=document.createElement('div');label.id='diagnostic';label.textContent='密度 / 性能诊断 · 恢复生命 · 非生存成绩';label.style='position:absolute;bottom:38px;left:0;right:0;text-align:center;font:10px sans-serif;color:#fff;background:#152d47cc;z-index:99;padding:4px';document.querySelector('#app').append(label);
- const c={},stages=new Set();window.liveProbe={frames:[],samples:[],start:performance.now(),last:performance.now(),restoredHp:0};
- function frame(now){const d=window.liveProbe;d.frames.push({wall:(now-d.start)/1000,ms:now-d.last});d.last=now;requestAnimationFrame(frame);}requestAnimationFrame(frame);
- window.probeTimer=setInterval(()=>{const s=t.state();window.liveProbe.restoredHp+=Math.max(0,100-s.hp);t.configure({hp:100});hordePilot(t,'expert','barrage',c);
- for(const at of [25,55,90,145,205,245])if(s.time>=at&&!stages.has(at)){stages.add(at);if(at===25){t.collectReward({type:'lanes',amount:1});t.recruit('assault');}if(at===55){t.setWeapon('machine',true);t.collectReward({type:'rate',amount:.25});t.recruit('guard');}if(at===90)t.setWeapon('plasma',true);if(at===145){t.setWeapon('laser',true);t.collectReward({type:'pellets',amount:1});t.recruit('heavy');}if(at===205){t.collectReward({type:'damage',amount:.25});t.recruit('assault');}if(at===245)t.armor('thunder');}
- },100);t.freeze(false);
- });
- const targets=[30,90,180,270,300],samples=[],wallStart=Date.now();let target=0,recording=false;
- while(target<targets.length){await h.page.waitForTimeout(1000);const row=await h.page.evaluate(()=>{const t=__MR_TEST__;const r={...t.hordeReport(),state:t.state(),render:t.metrics(),wall:(performance.now()-liveProbe.start)/1000};liveProbe.samples.push(r);return r;});samples.push(row);
- if(!recording&&row.time>=270){recording=true;await h.page.evaluate(()=>{const stream=document.querySelector('#game').captureStream(12),chunks=[];window.hordeRecorder=new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp8',videoBitsPerSecond:750000});hordeRecorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};window.videoDone=new Promise(resolve=>{hordeRecorder.onstop=async()=>{const blob=new Blob(chunks,{type:'video/webm'});const data=await new Promise(r=>{const reader=new FileReader();reader.onload=()=>r(reader.result.split(',')[1]);reader.readAsDataURL(blob);});resolve(data);};});hordeRecorder.start(1000);});}
- if(row.time>=targets[target]){await h.page.screenshot({path:path.join(dir,`realtime-${targets[target]}s-393.png`)});console.log('STAGE',targets[target],JSON.stringify(row));target++;}
- fs.writeFileSync(path.join(dir,'realtime-progress.json'),JSON.stringify({diagnostic:true,note:'Natural wave spawning and real elapsed rAF; HP restored at 10Hz and scheduled supplied upgrades. Not survival/performance on Android. Video is actual canvas, excludes DOM HUD.',samples},null,2));if(Date.now()-wallStart>600000)throw Error('Real-time run exceeded ten minutes; inspect clock drift');}
- const recordingData=await h.page.evaluate(async()=>{clearInterval(probeTimer);__MR_TEST__.freeze();if(window.hordeRecorder?.state==='recording')hordeRecorder.stop();return {video:await window.videoDone,probe:liveProbe,renderer:(()=>{const gl=document.querySelector('#game').getContext('webgl2'),e=gl.getExtension('WEBGL_debug_renderer_info');return gl.getParameter(e?e.UNMASKED_RENDERER_WEBGL:gl.RENDERER)})()};});
- if(recordingData.video)fs.writeFileSync(path.join(dir,'dense-horde-270-300.webm'),Buffer.from(recordingData.video,'base64'));delete recordingData.video;
- fs.writeFileSync(path.join(dir,'realtime-results.json'),JSON.stringify({...recordingData,diagnostic:true,note:'HP restored and scheduled upgrades; no forced spawning, time jumping or synchronous step. Actual canvas video, excludes DOM HUD.',samples,errors:h.errors},null,2));assert.deepEqual(h.errors,[]);console.log('Realtime observation complete');
- }finally{await h.close();}})().catch(e=>{console.error(e);process.exitCode=1});
+const fs = require("node:fs"),
+  path = require("node:path"),
+  assert = require("node:assert/strict");
+const { open, pilot } = require("./horde-harness.cjs");
+const dir = path.resolve(__dirname, "../test-results/horde");
+fs.mkdirSync(dir, { recursive: true });
+(async () => {
+  const h = await open({ width: 393, height: 873 });
+  try {
+    await h.page.evaluate("window.hordePilot=" + pilot.toString());
+    await h.page.evaluate(() => {
+      const t = __MR_TEST__;
+      t.setQuality(0);
+      const label = document.createElement("div");
+      label.id = "diagnostic";
+      label.textContent = "密度 / 性能诊断 · 恢复生命 · 非生存成绩";
+      label.style =
+        "position:absolute;bottom:38px;left:0;right:0;text-align:center;font:10px sans-serif;color:#fff;background:#152d47cc;z-index:99;padding:4px";
+      document.querySelector("#app").append(label);
+      const c = {},
+        stages = new Set();
+      window.liveProbe = {
+        frames: [],
+        samples: [],
+        start: performance.now(),
+        last: performance.now(),
+        restoredHp: 0,
+      };
+      function frame(now) {
+        const d = window.liveProbe;
+        d.frames.push({ wall: (now - d.start) / 1000, ms: now - d.last });
+        d.last = now;
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+      window.probeTimer = setInterval(() => {
+        const s = t.state();
+        window.liveProbe.restoredHp += Math.max(0, 100 - s.hp);
+        t.configure({ hp: 100 });
+        hordePilot(t, "expert", "barrage", c);
+        for (const at of [25, 55, 90, 145, 205, 245])
+          if (s.time >= at && !stages.has(at)) {
+            stages.add(at);
+            if (at === 25) {
+              t.collectReward({ type: "lanes", amount: 1 });
+              t.recruit("assault");
+            }
+            if (at === 55) {
+              t.setWeapon("machine", true);
+              t.collectReward({ type: "rate", amount: 0.25 });
+              t.recruit("guard");
+            }
+            if (at === 90) t.setWeapon("plasma", true);
+            if (at === 145) {
+              t.setWeapon("laser", true);
+              t.collectReward({ type: "pellets", amount: 1 });
+              t.recruit("heavy");
+            }
+            if (at === 205) {
+              t.collectReward({ type: "damage", amount: 0.25 });
+              t.recruit("assault");
+            }
+            if (at === 245) t.armor("thunder");
+          }
+      }, 100);
+      t.freeze(false);
+    });
+    const targets = [30, 90, 180, 270, 300],
+      samples = [],
+      wallStart = Date.now();
+    let target = 0,
+      recording = false;
+    while (target < targets.length) {
+      await h.page.waitForTimeout(1000);
+      const row = await h.page.evaluate(() => {
+        const t = __MR_TEST__;
+        const r = {
+          ...t.hordeReport(),
+          state: t.state(),
+          render: t.metrics(),
+          wall: (performance.now() - liveProbe.start) / 1000,
+        };
+        liveProbe.samples.push(r);
+        return r;
+      });
+      samples.push(row);
+      if (!recording && row.time >= 270) {
+        recording = true;
+        await h.page.evaluate(() => {
+          const stream = document.querySelector("#game").captureStream(12),
+            chunks = [];
+          window.hordeRecorder = new MediaRecorder(stream, {
+            mimeType: "video/webm;codecs=vp8",
+            videoBitsPerSecond: 750000,
+          });
+          hordeRecorder.ondataavailable = (e) => {
+            if (e.data.size) chunks.push(e.data);
+          };
+          window.videoDone = new Promise((resolve) => {
+            hordeRecorder.onstop = async () => {
+              const blob = new Blob(chunks, { type: "video/webm" });
+              const data = await new Promise((r) => {
+                const reader = new FileReader();
+                reader.onload = () => r(reader.result.split(",")[1]);
+                reader.readAsDataURL(blob);
+              });
+              resolve(data);
+            };
+          });
+          hordeRecorder.start(1000);
+        });
+      }
+      if (row.time >= targets[target]) {
+        await h.page.screenshot({
+          path: path.join(dir, `realtime-${targets[target]}s-393.png`),
+        });
+        console.log("STAGE", targets[target], JSON.stringify(row));
+        target++;
+      }
+      fs.writeFileSync(
+        path.join(dir, "realtime-progress.json"),
+        JSON.stringify(
+          {
+            diagnostic: true,
+            note: "Natural wave spawning and real elapsed rAF; HP restored at 10Hz and scheduled supplied upgrades. Not survival/performance on Android. Video is actual canvas, excludes DOM HUD.",
+            samples,
+          },
+          null,
+          2,
+        ),
+      );
+      if (Date.now() - wallStart > 600000)
+        throw Error("Real-time run exceeded ten minutes; inspect clock drift");
+    }
+    const recordingData = await h.page.evaluate(async () => {
+      clearInterval(probeTimer);
+      __MR_TEST__.freeze();
+      if (window.hordeRecorder?.state === "recording") hordeRecorder.stop();
+      return {
+        video: await window.videoDone,
+        probe: liveProbe,
+        renderer: (() => {
+          const gl = document.querySelector("#game").getContext("webgl2"),
+            e = gl.getExtension("WEBGL_debug_renderer_info");
+          return gl.getParameter(e ? e.UNMASKED_RENDERER_WEBGL : gl.RENDERER);
+        })(),
+      };
+    });
+    if (recordingData.video)
+      fs.writeFileSync(
+        path.join(dir, "dense-horde-270-300.webm"),
+        Buffer.from(recordingData.video, "base64"),
+      );
+    delete recordingData.video;
+    fs.writeFileSync(
+      path.join(dir, "realtime-results.json"),
+      JSON.stringify(
+        {
+          ...recordingData,
+          diagnostic: true,
+          note: "HP restored and scheduled upgrades; no forced spawning, time jumping or synchronous step. Actual canvas video, excludes DOM HUD.",
+          samples,
+          errors: h.errors,
+        },
+        null,
+        2,
+      ),
+    );
+    assert.deepEqual(h.errors, []);
+    console.log("Realtime observation complete");
+  } finally {
+    await h.close();
+  }
+})().catch((e) => {
+  console.error(e);
+  process.exitCode = 1;
+});

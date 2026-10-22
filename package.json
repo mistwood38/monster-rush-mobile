@@ -3,11 +3,15 @@
   "version": "3.0.0-review",
   "private": true,
   "scripts": {
-    "test": "node --test tests/systems.test.js tests/source-sprite-state.test.mjs && node tests/browser.cjs",
+    "test": "node --test tests/systems.test.js tests/source-sprite-state.test.mjs tests/horde.test.js && node tests/browser.cjs",
     "test:balance": "node tests/balance.cjs",
     "test:performance": "node tests/performance.cjs",
     "build:review": "python3 tools/build-review.py",
-    "test:review": "python3 tools/build-review.py && node tests/review.cjs"
+    "test:review": "python3 tools/build-review.py && node tests/review.cjs",
+    "test:horde-balance": "node tests/horde-balance.cjs",
+    "test:horde-realtime": "node tests/horde-realtime.cjs",
+    "test:horde-performance": "node tests/horde-performance.cjs",
+    "test:horde-showcase": "node tests/horde-showcase.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

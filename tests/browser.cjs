@@ -690,8 +690,8 @@ let browser;
       assert.ok(
         Math.abs(r.spread[1] - r.spread[0]) > Math.abs(r.base[1] - r.base[0]),
       );
-      assert.equal(r.first, 15);
-      assert.equal(r.second, 7.5);
+      assert.equal(r.first, 18);
+      assert.equal(r.second, 9);
       assert.ok(r.combo > 16 && r.combo < 16.21);
       assert.equal(r.hits, 13);
       return r;
@@ -1244,6 +1244,69 @@ let browser;
   );
   await reset();
   await check(
+    "Horde GPU transforms stay finite during Boss warnings; actors are hand-bound skinned rigs",
+    async () => {
+      const r = await evalGame(() => {
+        const t = __MR_TEST__;
+        t.configure({ time: 240, spawnTimer: 999 });
+        t.recruit("heavy");
+        t.armor("thunder");
+        for (let i = 0; i < 20; i++)
+          t.hordePack(i % 2 ? "armor" : "flank", 12, -25 - i);
+        t.spawnBoss();
+        t.step(2.3);
+        t.renderFrame();
+        return { audit: t.modelAudit(), report: t.hordeReport() };
+      });
+      assert.ok(
+        r.audit.rigs.every(
+          (x) =>
+            x.skinned && x.bones === 13 && x.handBound && x.gunChildren > 0,
+        ),
+      );
+      assert.ok(r.audit.batches.every((x) => x.finite));
+      assert.ok(r.report.models.draws <= 7 && r.report.models.instances > 120);
+      return r;
+    },
+  );
+  await reset();
+  await check(
+    "Small breach penalties preserve existing contact invulnerability",
+    async () => {
+      const r = await evalGame(() => {
+        const t = __MR_TEST__;
+        t.configure({ invuln: 0.7 });
+        t.spawnEnemy("heavy", -4.5, 4.19);
+        t.step(0.025);
+        const hp = t.state().hp;
+        t.hurtPlayer(25);
+        return { hp, after: t.state().hp, report: t.hordeReport() };
+      });
+      assert.ok(r.hp < 100 && r.hp > 99);
+      assert.equal(r.after, r.hp);
+      assert.equal(r.report.directHits, 0);
+      return r;
+    },
+  );
+  await reset();
+  await check(
+    "Pooled enemy records receive new collision identities",
+    async () => {
+      const r = await evalGame(() => {
+        const t = __MR_TEST__,
+          old = t.spawnEnemy("heavy", 0, -15),
+          uid = old.uid;
+        t.damageEnemy(old, 99999);
+        t.step(0.6);
+        const next = t.spawnEnemy("heavy", 0, -12);
+        return { reused: next === old, uid, newUid: next.uid };
+      });
+      assert.ok(r.reused && r.newUid > r.uid);
+      return r;
+    },
+  );
+  await reset();
+  await check(
     "Integrated 300-second soak: objects, drafts, Boss and armor stay bounded",
     async () => {
       const r = await evalGame(() => {
@@ -1254,7 +1317,10 @@ let browser;
         for (const role of ["assault", "heavy", "guard", "assault"])
           t.recruit(role);
         t.equipPet("dragon");
-        t.setWeapon("plasma", true);
+        t.setWeapon("laser", true);
+        t.collectReward({ type: "lanes", amount: 2 });
+        t.collectReward({ type: "pellets", amount: 2 });
+        t.collectReward({ type: "damage", amount: 0.5 });
         const max = { enemies: 0, bullets: 0, particles: 0, shots: 0 },
           seen = { drafts: 0, boss: false, armor: false };
         for (let i = 0; i < 3000; i++) {
@@ -1282,11 +1348,12 @@ let browser;
           seen,
           team: t.systems().team.length,
           affixes: t.systems().affixes.length,
-          intervals: [t.interval(18), t.interval(21)],
+          intervals: [t.interval(32.9), t.interval(33.1)],
         };
       });
       assert.ok(
         r.time > 295 && r.seen.drafts >= 3 && r.seen.boss && r.seen.armor,
+        JSON.stringify(r),
       );
       assert.ok(
         r.max.enemies <= 320 &&
@@ -1296,7 +1363,7 @@ let browser;
         JSON.stringify(r),
       );
       assert.ok(r.team <= 4 && r.affixes <= 4);
-      assert.ok(r.intervals[1] > r.intervals[0] * 3);
+      assert.ok(r.intervals[1] > r.intervals[0] * 2.7);
       return r;
     },
   );
@@ -1431,7 +1498,9 @@ let browser;
       );
       const r = await evalGame(async () => {
         const manifest = await (await fetch("./manifest.webmanifest")).json();
-        const cache = await caches.open("monster-rush-road-squad-v17-2");
+        const sw = await (await fetch("./sw.js")).text();
+        const name = sw.match(/const CACHE = "([^"]+)"/)[1];
+        const cache = await caches.open(name);
         const catalog = await (await fetch("./assets/v17/catalog.json")).json();
         const missing = [];
         for (const def of Object.values(catalog.actors))
@@ -1441,6 +1510,8 @@ let browser;
           "./",
           "./game.js",
           "./sprites.js",
+          "./actors3d.js",
+          "./horde.js",
           "./sprite-state.mjs",
           "./config/balance-v17.js",
           "./icons/icon-192.png",

@@ -1,6 +1,12 @@
 import * as THREE from "./vendor/three/three.module.min.js";
-import { CombatModels,roadPropGeometry } from "./actors3d.js";
-import { HORDE_LIMIT,hordeStage,enemyKind,SpatialGrid,qualityProfile } from "./horde.js";
+import { CombatModels, roadPropGeometry } from "./actors3d.js";
+import {
+  HORDE_LIMIT,
+  hordeStage,
+  enemyKind,
+  SpatialGrid,
+  qualityProfile,
+} from "./horde.js";
 import { BattleAudio } from "./audio.js";
 import { SpriteLibrary } from "./sprites.js";
 const sprites = await SpriteLibrary.load("./assets/v17/catalog.json").catch(
@@ -18,11 +24,46 @@ const sprites = await SpriteLibrary.load("./assets/v17/catalog.json").catch(
 import { RunSystems } from "./systems.js";
 import { RULES, ROLES, PETS, ARMORS, AFFIXES } from "./config/catalog.js";
 const run = new RunSystems();
-let models;const enemyGrid=new SpatialGrid(2.5),collisionCandidates=[],enemyPool=[];let gridDirty=true,enemySerial=0,qualityLevel=0;
-const telemetry={spawned:0,killed:0,breached:0,hits:0,damageTaken:0,damageDealt:0,killSeconds:0,engagementSeconds:0,breachHits:0,directHits:0,peakAlive:0,peakVisible:0,collisionTests:0,bossFights:[],stages:[],realSeconds:0};
-function ensureGrid(){if(gridDirty){enemyGrid.rebuild(state.threats);gridDirty=false;}return enemyGrid;}
-function queryEnemies(x0,z0,x1=x0,z1=z0,pad=1.6){return ensureGrid().query(x0,z0,x1,z1,pad,[]);}
-function retireEnemy(e){models.releaseProxy(e.group);enemyPool.push(e);gridDirty=true;}
+let models;
+const enemyGrid = new SpatialGrid(2.5),
+  collisionCandidates = [],
+  enemyPool = [];
+let gridDirty = true,
+  enemySerial = 0,
+  qualityLevel = 0;
+const telemetry = {
+  spawned: 0,
+  killed: 0,
+  breached: 0,
+  hits: 0,
+  damageTaken: 0,
+  damageDealt: 0,
+  killSeconds: 0,
+  engagementSeconds: 0,
+  breachHits: 0,
+  directHits: 0,
+  peakAlive: 0,
+  peakVisible: 0,
+  collisionTests: 0,
+  bossFights: [],
+  stages: [],
+  realSeconds: 0,
+};
+function ensureGrid() {
+  if (gridDirty) {
+    enemyGrid.rebuild(state.threats);
+    gridDirty = false;
+  }
+  return enemyGrid;
+}
+function queryEnemies(x0, z0, x1 = x0, z1 = z0, pad = 1.6) {
+  return ensureGrid().query(x0, z0, x1, z1, pad, []);
+}
+function retireEnemy(e) {
+  models.releaseProxy(e.group);
+  enemyPool.push(e);
+  gridDirty = true;
+}
 
 const teamVisuals = new Map();
 let petVisual = null,
@@ -224,7 +265,7 @@ function init() {
       130,
     );
     camera.position.set(0, 19, 24);
-    camera.lookAt(0, .8, -14);
+    camera.lookAt(0, 0.8, -14);
     scene.add(new THREE.HemisphereLight("#d5f7ff", "#334d65", 1.8));
     const sun = new THREE.DirectionalLight("#ffe0bb", 2.5);
     sun.position.set(-8, 16, 7);
@@ -242,7 +283,7 @@ function init() {
     const roadLight = new THREE.PointLight("#1daeb9", 4, 25, 2);
     roadLight.position.set(0, 3, -10);
     scene.add(roadLight);
-    models=new CombatModels(scene,sprites,HORDE_LIMIT);
+    models = new CombatModels(scene, sprites, HORDE_LIMIT);
     buildWorld();
     buildPlayer();
     setupUi();
@@ -254,11 +295,29 @@ function init() {
       "此浏览器未能启动 WebGL，请更新 Chrome 后重试。";
   }
 }
-function makeRoadTexture(){
- const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');x.fillStyle='#63768b';x.fillRect(0,0,256,256);
- for(let i=0;i<1200;i++){const a=(i*73)%256,b=(i*137)%256;x.fillStyle=i%2?'#ffffff08':'#12243c0d';x.fillRect(a,b,1,2);}
- x.strokeStyle='#334b6360';x.lineWidth=1;x.strokeRect(0,0,256,256);x.fillStyle='#a8c3d314';x.fillRect(3,0,3,256);
- const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(1,3);t.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());return t;
+function makeRoadTexture() {
+  const c = document.createElement("canvas");
+  c.width = c.height = 256;
+  const x = c.getContext("2d");
+  x.fillStyle = "#63768b";
+  x.fillRect(0, 0, 256, 256);
+  for (let i = 0; i < 1200; i++) {
+    const a = (i * 73) % 256,
+      b = (i * 137) % 256;
+    x.fillStyle = i % 2 ? "#ffffff08" : "#12243c0d";
+    x.fillRect(a, b, 1, 2);
+  }
+  x.strokeStyle = "#334b6360";
+  x.lineWidth = 1;
+  x.strokeRect(0, 0, 256, 256);
+  x.fillStyle = "#a8c3d314";
+  x.fillRect(3, 0, 3, 256);
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(1, 3);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+  return t;
 }
 function buildWorld() {
   const ground = mesh(
@@ -268,8 +327,11 @@ function buildWorld() {
     [0, -6, -35],
   );
   ground.rotation.x = -Math.PI / 2;
-  addBox(scene,[0,-.44,-36],[20,.6,126],'#7795a5');
-  for(const side of [-1,1]){addBox(scene,[side*8,-.07,-36],[3.3,.09,126],'#a6bdc8');addBox(scene,[side*9.8,.35,-36],[.16,.7,126],'#d5e7e5');}
+  addBox(scene, [0, -0.44, -36], [20, 0.6, 126], "#7795a5");
+  for (const side of [-1, 1]) {
+    addBox(scene, [side * 8, -0.07, -36], [3.3, 0.09, 126], "#a6bdc8");
+    addBox(scene, [side * 9.8, 0.35, -36], [0.16, 0.7, 126], "#d5e7e5");
+  }
   roadTexture = makeRoadTexture();
   roadMaterial = new THREE.MeshStandardMaterial({
     map: roadTexture,
@@ -342,7 +404,20 @@ function buildWorld() {
     "props/road_debris_cluster",
     "props/road_barrier",
   ];
-  worldObjects.decorBatches=choices.map((key,i)=>{const batch=new THREE.InstancedMesh(roadPropGeometry(i),new THREE.MeshStandardMaterial({vertexColors:true,roughness:.72,metalness:.14}),6);batch.frustumCulled=false;scene.add(batch);return batch;});
+  worldObjects.decorBatches = choices.map((key, i) => {
+    const batch = new THREE.InstancedMesh(
+      roadPropGeometry(i),
+      new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 0.72,
+        metalness: 0.14,
+      }),
+      6,
+    );
+    batch.frustumCulled = false;
+    scene.add(batch);
+    return batch;
+  });
   for (let i = 0; i < 24; i++) {
     const root = new THREE.Object3D(),
       side = i % 2 ? 1 : -1,
@@ -386,10 +461,19 @@ function syncEnemyOverlays() {
     d.scale.set(0.55 * scale, 0.38 * scale, 1);
     d.updateMatrix();
     o.shadow.setMatrixAt(shadows++, d.matrix);
-    if(e.dead||(e.z<-15&&e.type!=="elite")||(e.type==="grunt"&&e.hp>=e.maxHp))continue;
+    if (
+      e.dead ||
+      (e.z < -15 && e.type !== "elite") ||
+      (e.type === "grunt" && e.hp >= e.maxHp)
+    )
+      continue;
     const hp = clamp(e.hp / e.maxHp, 0, 1);
     d.quaternion.copy(camera.quaternion);
-    d.position.set(e.x, e.group.position.y + (e.type==="elite"?2.4:2.05)*scale, e.z);
+    d.position.set(
+      e.x,
+      e.group.position.y + (e.type === "elite" ? 2.4 : 2.05) * scale,
+      e.z,
+    );
     d.scale.set(0.9 * scale, 0.095 * scale, 1);
     d.updateMatrix();
     o.back.setMatrixAt(bars, d.matrix);
@@ -600,11 +684,13 @@ function armorGeometry() {
   return G.armor;
 }
 const enemyTextures = {};
-function createSoldier(kind='player'){
- if(kind==='player')return createAssetSoldier();
- return models.proxy(kind==='scout'?'grunt':kind);
+function createSoldier(kind = "player") {
+  if (kind === "player") return createAssetSoldier();
+  return models.proxy(kind === "scout" ? "grunt" : kind);
 }
-function buildGun(type){return models.gun(type);}
+function buildGun(type) {
+  return models.gun(type);
+}
 function setWeapon(type, quiet = false) {
   const valid = ["rifle", "machine", "shotgun", "plasma", "laser"];
   if (!valid.includes(type)) return;
@@ -667,7 +753,7 @@ const weaponInfo = {
     icon: "⌁",
     color: "#74eff0",
     interval: 0.25,
-    damage: 10,
+    damage: 12,
     speed: 32,
     count: 1,
     spread: 0.025,
@@ -679,7 +765,7 @@ const weaponInfo = {
     icon: "▤",
     color: "#ffd27f",
     interval: 0.12,
-    damage: 7,
+    damage: 8.2,
     speed: 36,
     count: 1,
     spread: 0.035,
@@ -691,7 +777,7 @@ const weaponInfo = {
     icon: "✣",
     color: "#ffad76",
     interval: 0.72,
-    damage: 6.8,
+    damage: 8.8,
     speed: 27,
     count: 7,
     spread: 0.27,
@@ -1196,7 +1282,11 @@ function disposeGroup(g) {
     for (const resource of o.userData.disposables || []) resource.dispose();
   });
   g.traverse?.((o) => {
-    if (o.geometry && !o.userData.sharedGeometry && !Object.values(G).includes(o.geometry))
+    if (
+      o.geometry &&
+      !o.userData.sharedGeometry &&
+      !Object.values(G).includes(o.geometry)
+    )
       o.geometry.dispose();
     if (o.material?.map?.image?.tagName === "CANVAS") {
       o.material.map.dispose();
@@ -1215,11 +1305,15 @@ function disposeSoldier(g) {
 }
 function spawnEnemy(type = "grunt", x = rand(-4.4, 4.4), z = -46) {
   if (state.threats.length >= RULES.enemyLimit) return;
-  const cfg={
-   grunt:{hp:26,speed:2.8,damage:5,scale:.88,score:10},runner:{hp:22,speed:4.1,damage:6,scale:.74,score:14},
-   heavy:{hp:130,speed:2.0,damage:12,scale:1.0,score:30},charger:{hp:60,speed:3.4,damage:10,scale:.94,score:24},
-   ranged:{hp:40,speed:2.3,damage:7,scale:.8,score:22},elite:{hp:260,speed:2.5,damage:16,scale:1.32,score:70},
-  }[type]||{hp:26,speed:2.8,damage:5,scale:.88,score:10};const stage=hordeStage(state.time);
+  const cfg = {
+    grunt: { hp: 26, speed: 2.8, damage: 5, scale: 0.88, score: 10 },
+    runner: { hp: 22, speed: 4.1, damage: 6, scale: 0.74, score: 14 },
+    heavy: { hp: 130, speed: 2.0, damage: 12, scale: 1.0, score: 30 },
+    charger: { hp: 60, speed: 3.4, damage: 10, scale: 0.94, score: 24 },
+    ranged: { hp: 40, speed: 2.3, damage: 7, scale: 0.8, score: 22 },
+    elite: { hp: 260, speed: 2.5, damage: 16, scale: 1.32, score: 70 },
+  }[type] || { hp: 26, speed: 2.8, damage: 5, scale: 0.88, score: 10 };
+  const stage = hordeStage(state.time);
   const group = createSoldier(
     type === "grunt" ? "scout" : type === "charger" ? "charger" : type,
   );
@@ -1233,10 +1327,50 @@ function spawnEnemy(type = "grunt", x = rand(-4.4, 4.4), z = -46) {
   const barGroup = new THREE.Object3D(),
     fill = new THREE.Object3D(),
     shadow = new THREE.Object3D();
-  const e=enemyPool.pop()||{};
-  Object.assign(e,{uid:++enemySerial,type,group,shadow,x,z,hp:cfg.hp*stage.hp,maxHp:cfg.hp*stage.hp,speed:cfg.speed*stage.speed,damage:cfg.damage,score:cfg.score,phase:rand(0,8),fire:rand(2.5,6),cooldown:0,stun:0,dead:0,bar:fill,barGroup,windup:0,dash:0,dashCooldown:rand(2,5),targetX:x,burnTime:0,burnTick:0,burnDamage:0,slow:0,slowTime:0,flash:0,spawnedAt:state.time,firstHitAt:-1,homeX:x,shotgunCD:0,bounty:false,flank:false,pack:0,visualDebt:0,visualStamp:-1});
-  state.threats.push(e);telemetry.spawned++;gridDirty=true;return e;
-
+  const e = enemyPool.pop() || {};
+  Object.assign(e, {
+    uid: ++enemySerial,
+    type,
+    group,
+    shadow,
+    x,
+    z,
+    hp: cfg.hp * stage.hp,
+    maxHp: cfg.hp * stage.hp,
+    speed: cfg.speed * stage.speed,
+    damage: cfg.damage,
+    score: cfg.score,
+    phase: rand(0, 8),
+    fire: rand(2.5, 6),
+    cooldown: 0,
+    stun: 0,
+    dead: 0,
+    bar: fill,
+    barGroup,
+    windup: 0,
+    dash: 0,
+    dashCooldown: rand(2, 5),
+    targetX: x,
+    burnTime: 0,
+    burnTick: 0,
+    burnDamage: 0,
+    slow: 0,
+    slowTime: 0,
+    flash: 0,
+    spawnedAt: state.time,
+    firstHitAt: -1,
+    homeX: x,
+    shotgunCD: 0,
+    bounty: false,
+    flank: false,
+    pack: 0,
+    visualDebt: 0,
+    visualStamp: -1,
+  });
+  state.threats.push(e);
+  telemetry.spawned++;
+  gridDirty = true;
+  return e;
 }
 function createDamageSprite(
   value,
@@ -1274,11 +1408,116 @@ function createDamageSprite(
   state.floating.push({ mesh: sp, texture: tex, life: 0.74, max: 0.74 });
 }
 const particlePool = [];
-let sparkBatch=null;
-function syncSparks(){
- if(!sparkBatch){const mesh=new THREE.InstancedMesh(G.smallSphere,new THREE.MeshBasicMaterial({vertexColors:false,transparent:true,opacity:.85,depthWrite:false,blending:THREE.AdditiveBlending}),RULES.particleLimit);mesh.frustumCulled=false;scene.add(mesh);sparkBatch={mesh,dummy:new THREE.Object3D(),color:new THREE.Color()};}
- let i=0;for(const p of state.effects){if(!p.userData.v)continue;const d=sparkBatch.dummy;d.position.copy(p.position);d.scale.copy(p.scale);d.updateMatrix();sparkBatch.mesh.setMatrixAt(i,d.matrix);sparkBatch.color.copy(p.material.color).multiplyScalar(Math.max(.08,p.userData.life/p.userData.max));sparkBatch.mesh.setColorAt(i,sparkBatch.color);i++;}
- sparkBatch.mesh.count=i;sparkBatch.mesh.instanceMatrix.needsUpdate=true;if(sparkBatch.mesh.instanceColor)sparkBatch.mesh.instanceColor.needsUpdate=true;
+let sparkBatch = null;
+let warningBatches = null;
+function syncWarnings() {
+  if (!warningBatches) {
+    warningBatches = [G.plane, new THREE.RingGeometry(0.59, 1, 24)].map((g) => {
+      const geometry = g === G.plane ? g.clone() : g,
+        alpha = new THREE.InstancedBufferAttribute(
+          new Float32Array(RULES.particleLimit),
+          1,
+        );
+      geometry.setAttribute("aWarningAlpha", alpha);
+      const material = basic("#ffffff", 0.4, false);
+      material.onBeforeCompile = (shader) => {
+        shader.vertexShader = shader.vertexShader
+          .replace(
+            "#include <common>",
+            "#include <common>\nattribute float aWarningAlpha;varying float vWarningAlpha;",
+          )
+          .replace(
+            "#include <begin_vertex>",
+            "#include <begin_vertex>\nvWarningAlpha=aWarningAlpha;",
+          );
+        shader.fragmentShader = shader.fragmentShader
+          .replace(
+            "#include <common>",
+            "#include <common>\nvarying float vWarningAlpha;",
+          )
+          .replace(
+            "#include <color_fragment>",
+            "#include <color_fragment>\ndiffuseColor.a=vWarningAlpha;",
+          );
+      };
+      material.customProgramCacheKey = () => "warning-alpha-1";
+      const batch = new THREE.InstancedMesh(
+        geometry,
+        material,
+        RULES.particleLimit,
+      );
+      batch.frustumCulled = false;
+      batch.renderOrder = 1;
+      scene.add(batch);
+      return { batch, alpha };
+    });
+  }
+  const counts = [0, 0],
+    dummy = worldObjects.enemyOverlay.dummy;
+  for (const p of state.effects) {
+    if (!p.userData.warning || !p.isMesh) continue;
+    const index = p.geometry.type === "RingGeometry" ? 1 : 0,
+      { batch, alpha } = warningBatches[index],
+      i = counts[index]++;
+    p.removeFromParent();
+    dummy.position.copy(p.position);
+    dummy.quaternion.copy(p.quaternion);
+    dummy.scale.copy(p.scale);
+    if (index === 0) {
+      dummy.scale.x *= p.geometry.parameters.width || 1;
+      dummy.scale.y *= p.geometry.parameters.height || 1;
+    } else dummy.scale.multiplyScalar(p.geometry.parameters.outerRadius || 1);
+    dummy.updateMatrix();
+    batch.setMatrixAt(i, dummy.matrix);
+    batch.setColorAt(i, p.material.color);
+    alpha.setX(i, Math.max(0.04, Math.min(0.8, p.material.opacity)));
+  }
+  warningBatches.forEach(({ batch, alpha }, i) => {
+    batch.count = counts[i];
+    batch.instanceMatrix.needsUpdate = true;
+    alpha.needsUpdate = true;
+    if (batch.instanceColor) batch.instanceColor.needsUpdate = true;
+  });
+}
+function syncSparks() {
+  if (!sparkBatch) {
+    const mesh = new THREE.InstancedMesh(
+      G.smallSphere,
+      new THREE.MeshBasicMaterial({
+        vertexColors: false,
+        transparent: true,
+        opacity: 0.85,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      }),
+      RULES.particleLimit,
+    );
+    mesh.frustumCulled = false;
+    scene.add(mesh);
+    sparkBatch = {
+      mesh,
+      dummy: new THREE.Object3D(),
+      color: new THREE.Color(),
+    };
+  }
+  let i = 0;
+  for (const p of state.effects) {
+    if (!p.userData.v) continue;
+    const d = sparkBatch.dummy;
+    d.position.copy(p.position);
+    d.scale.copy(p.scale);
+    d.updateMatrix();
+    sparkBatch.mesh.setMatrixAt(i, d.matrix);
+    sparkBatch.color
+      .copy(p.material.color)
+      .multiplyScalar(Math.max(0.08, p.userData.life / p.userData.max));
+    sparkBatch.mesh.setColorAt(i, sparkBatch.color);
+    i++;
+  }
+  sparkBatch.mesh.count = i;
+  sparkBatch.mesh.instanceMatrix.needsUpdate = true;
+  if (sparkBatch.mesh.instanceColor)
+    sparkBatch.mesh.instanceColor.needsUpdate = true;
 }
 
 // Telegraphs have priority over cosmetic sparks, with one global effect ceiling.
@@ -1312,7 +1551,8 @@ function burst3D(x, y, z, color, count = 12) {
   for (let i = 0; i < n; i++) {
     let p = particlePool.pop();
     if (!p) {
-      p=new THREE.Object3D();p.material={color:new THREE.Color(color),opacity:1};
+      p = new THREE.Object3D();
+      p.material = { color: new THREE.Color(color), opacity: 1 };
       p.userData.v = new THREE.Vector3();
     }
     p.visible = true;
@@ -1325,15 +1565,50 @@ function burst3D(x, y, z, color, count = 12) {
     registerEffect(p);
   }
 }
+const muzzleWorld = new THREE.Vector3();
+function shotOrigin(source = null) {
+  const root =
+    source?.rig?.userData.gun?.children[0] ||
+    (source ? null : armorVisual?.userData.gun?.children[0] || weaponRoot);
+  if (root) {
+    root.updateWorldMatrix(true, false);
+    muzzleWorld.set(0, 0, -1.04).applyMatrix4(root.matrixWorld);
+    return { x: muzzleWorld.x, y: muzzleWorld.y, z: muzzleWorld.z };
+  }
+  return {
+    x: (source?.x ?? state.playerX) + 0.22,
+    y: 1.65,
+    z: (source?.z ?? playerZ) - 1.7,
+  };
+}
 function muzzleFlash() {
   state.recoil = 1;
-  if (!muzzle) return;
-  const current = muzzle;
-  current.visible = true;
-  current.scale.y = rand(0.65, 1.5);
-  setTimeout(() => {
-    current.visible = false;
-  }, 55);
+  if (muzzle) {
+    muzzle.visible = true;
+    muzzle.userData.until = state.time + 0.065;
+  }
+  if (armorVisual) {
+    if (!armorVisual.userData.flash) {
+      const f = mesh(
+        G.plane,
+        new THREE.MeshBasicMaterial({
+          color: "#caf9ff",
+          transparent: true,
+          opacity: 0.85,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+          blending: THREE.AdditiveBlending,
+        }),
+        armorVisual.userData.gun,
+        [0, 0, -1.04],
+        [0.65, 0.65, 1],
+      );
+      f.quaternion.copy(camera.quaternion);
+      armorVisual.userData.flash = f;
+    }
+    armorVisual.userData.flash.visible = true;
+    armorVisual.userData.flash.userData.until = state.time + 0.065;
+  }
 }
 function acquireBullet() {
   let b = state.bullets.find((x) => !x.active);
@@ -1398,7 +1673,7 @@ function syncBulletInstances() {
   let index = 0;
   for (const b of state.bullets) {
     if (!b.active) continue;
-    dummy.position.set(b.x, 1.28, b.z);
+    dummy.position.set(b.x, b.y || 1.65, b.z);
     dummy.rotation.copy(b.group.rotation);
     dummy.scale.copy(b.core.scale);
     dummy.updateMatrix();
@@ -1430,8 +1705,9 @@ function createShot(type, target = aimTarget(), source = null) {
     stats = source?.stats || combatStats(),
     lanes = stats.lanes;
   const pellets = (type === "shotgun" ? info.count : 1) + stats.pellets - 1;
-  const muzzleX = (source?.x ?? state.playerX) + 0.63,
-    originZ = (source?.z ?? playerZ) - 1.16;
+  const origin = shotOrigin(source);
+  const muzzleX = origin.x,
+    originZ = origin.z;
   const baseAngle = Math.atan2(
     target.x - muzzleX,
     Math.max(2, originZ - target.z),
@@ -1464,6 +1740,7 @@ function createShot(type, target = aimTarget(), source = null) {
       b.prevX = b.x;
       b.prevZ = b.z;
       b.originZ = originZ;
+      b.y = origin.y;
       b.lastGateId = -1;
       b.vx = Math.sin(angle) * speed;
       b.vz = -Math.cos(angle) * speed;
@@ -1475,7 +1752,7 @@ function createShot(type, target = aimTarget(), source = null) {
       b.life = 3.2;
       b.color = info.color;
       b.radius = type === "plasma" ? 0.4 : type === "pellet" ? 0.12 : 0.14;
-      b.group.position.set(b.x, 1.27, b.z);
+      b.group.position.set(b.x, b.y, b.z);
       b.group.rotation.y = -angle;
       b.core.material = mat("bullet" + type, info.color, 0.2, 0.05, 1.4);
       b.tail.material = mat(
@@ -1538,8 +1815,9 @@ function chargeGate(g, amount) {
 function doLaser() {
   const s = combatStats(),
     target = aimTarget(),
-    originZ = playerZ - 1.16,
-    muzzleX = state.playerX + 0.63;
+    origin = shotOrigin(),
+    originZ = origin.z,
+    muzzleX = origin.x;
   const dx = target.x - muzzleX,
     dz = target.z - originZ,
     length = Math.hypot(dx, dz) || 1;
@@ -1573,7 +1851,7 @@ function doLaser() {
           (1 + run.value("spread_width", "spread_shot")),
       endX = x + vx * range,
       endZ = originZ + vz * range;
-    visual.ray.position.set((x + endX) / 2, 1.27, (originZ + endZ) / 2);
+    visual.ray.position.set((x + endX) / 2, origin.y, (originZ + endZ) / 2);
     visual.ray.quaternion.setFromUnitVectors(
       new THREE.Vector3(0, 1, 0),
       new THREE.Vector3(vx, 0, vz),
@@ -1583,8 +1861,29 @@ function doLaser() {
     visual.inner.scale.set(width, range, width);
     const damage =
       weaponInfo.laser.damage * s.damage * (1 + (s.pellets - 1) * 0.35) * 1;
-    const line=queryEnemies(x,originZ,endX,endZ,1.2).filter(e=>!e.dead&&segmentHit(x,originZ,endX,endZ,e.x,e.z,.55*e.group.scale.x,.65)!==null).sort((a,b)=>b.z-a.z).slice(0,8);
-    line.forEach((e,index)=>{damageEnemy(e,damage*Math.max(.25,Math.pow(.76,index)),false);e.burnTime=Math.max(e.burnTime,1);e.burnDamage=Math.max(e.burnDamage,damage*.06);if(index<2)nativeFlash(e.x,e.z,'laser_impact',.8);});
+    const line = queryEnemies(x, originZ, endX, endZ, 1.2)
+      .filter(
+        (e) =>
+          !e.dead &&
+          segmentHit(
+            x,
+            originZ,
+            endX,
+            endZ,
+            e.x,
+            e.z,
+            0.55 * e.group.scale.x,
+            0.65,
+          ) !== null,
+      )
+      .sort((a, b) => b.z - a.z)
+      .slice(0, 8);
+    line.forEach((e, index) => {
+      damageEnemy(e, damage * Math.max(0.25, Math.pow(0.76, index)), false);
+      e.burnTime = Math.max(e.burnTime, 1);
+      e.burnDamage = Math.max(e.burnDamage, damage * 0.06);
+      if (index < 2) nativeFlash(e.x, e.z, "laser_impact", 0.8);
+    });
     const b = state.boss;
     if (
       b &&
@@ -1693,7 +1992,7 @@ function processBulletCollisions(b, dt) {
     nearest = Infinity,
     isBoss = false,
     isCrate = false;
-  for (const e of queryEnemies(x0,z0,b.x,b.z,1.8)) {
+  for (const e of queryEnemies(x0, z0, b.x, b.z, 1.8)) {
     telemetry.collisionTests++;
     if (e.dead || b.hitTargets?.has(e.uid)) continue;
     const t = segmentHit(
@@ -1754,17 +2053,37 @@ function processBulletCollisions(b, dt) {
           1.4,
         )
       : 1);
-  if(b.kind==='pellet'&&!isBoss&&target.shotgunCD<=0){target.z-=.5;target.shotgunCD=.3;target.stun=.2;nativeFlash(target.x,target.z,'shotgun_impact',1.25);gridDirty=true;}
+  if (b.kind === "pellet" && !isBoss && target.shotgunCD <= 0) {
+    target.z -= 0.5;
+    target.shotgunCD = 0.3;
+    target.stun = 0.2;
+    nativeFlash(target.x, target.z, "shotgun_impact", 1.25);
+    groundPulse(target.x, target.z, "#ffc782", 0.8, 0.2);
+    gridDirty = true;
+  }
   if (b.kind === "plasma") {
-    const neighbors=queryEnemies(target.x,target.z,target.x,target.z,3).filter(e=>!e.dead&&Math.hypot(e.x-target.x,e.z-target.z)<3).sort((a,b)=>Math.hypot(a.x-target.x,a.z-target.z)-Math.hypot(b.x-target.x,b.z-target.z)).slice(0,8);
-    for(const e of neighbors){const distance=Math.hypot(e.x-target.x,e.z-target.z),power=e===target?damage:damage*.8*(1-distance/6);damageEnemy(e,power,true,e===target&&b.owner==='player');e.z-=.22;}
-    nativeFlash(target.x,target.z,'plasma_impact',3.6);
+    const neighbors = queryEnemies(target.x, target.z, target.x, target.z, 3)
+      .filter((e) => !e.dead && Math.hypot(e.x - target.x, e.z - target.z) < 3)
+      .sort(
+        (a, b) =>
+          Math.hypot(a.x - target.x, a.z - target.z) -
+          Math.hypot(b.x - target.x, b.z - target.z),
+      )
+      .slice(0, 8);
+    for (const e of neighbors) {
+      const distance = Math.hypot(e.x - target.x, e.z - target.z),
+        power = e === target ? damage : damage * 0.8 * (1 - distance / 6);
+      damageEnemy(e, power, true, e === target && b.owner === "player");
+      e.z -= 0.22;
+    }
+    nativeFlash(target.x, target.z, "plasma_impact", 3.6);
+    groundPulse(target.x, target.z, "#c7a0ff", 3);
     if (
       boss &&
       !boss.dead &&
       (isBoss || Math.hypot(boss.x - target.x, boss.z - target.z) < 3)
     )
-      damageBoss(damage,isBoss&&b.owner==="player");
+      damageBoss(damage, isBoss && b.owner === "player");
     burst3D(target.x, 1.3, target.z, weaponInfo.plasma.color, 24);
     audio.explosion();
     state.shake = Math.max(state.shake, 0.15);
@@ -1782,15 +2101,17 @@ function processBulletCollisions(b, dt) {
 
 function damageEnemy(e, dmg, heavy, procs = true) {
   if (e.dead) return;
-  if(e.firstHitAt<0)e.firstHitAt=state.time;
+  if (e.firstHitAt < 0) e.firstHitAt = state.time;
   if (procs) {
     const hit = run.directHit(e.uid, dmg);
     dmg = hit.damage;
     if (hit.burn) {
+      statusAccent(e, "fireFx");
       e.burnTime = 3;
       e.burnDamage = 4;
     }
     if (hit.slow) {
+      statusAccent(e, "frostFx");
       e.slowTime = 2;
       e.slow = Math.min(
         hit.slow,
@@ -1812,7 +2133,7 @@ function damageEnemy(e, dmg, heavy, procs = true) {
       secondaryDamage(e, dmg * 0.3, 1.8, 3, "#ffb679");
     }
   }
-  telemetry.damageDealt+=Math.min(e.hp,dmg);
+  telemetry.damageDealt += Math.min(e.hp, dmg);
   e.hp -= dmg;
   sprites.trigger(e.group, "hit");
   e.stun = 0.11;
@@ -1829,8 +2150,11 @@ function damageEnemy(e, dmg, heavy, procs = true) {
   state.lastHit = state.time;
   state.combo = Math.min(99, state.combo + 1);
   if (e.hp <= 0) {
-    telemetry.killed++;telemetry.killSeconds+=state.time-e.spawnedAt;telemetry.engagementSeconds+=state.time-e.firstHitAt;
-    e.dead = 0.48;gridDirty=true;
+    telemetry.killed++;
+    telemetry.killSeconds += state.time - e.spawnedAt;
+    telemetry.engagementSeconds += state.time - e.firstHitAt;
+    e.dead = 0.48;
+    gridDirty = true;
     nativeFlash(e.x, e.z, "enemy_impact", 2);
     e.group.userData.dead = true;
     sprites.trigger(e.group, "down");
@@ -1864,7 +2188,13 @@ function damageEnemy(e, dmg, heavy, procs = true) {
 }
 function secondaryDamage(origin, damage, radius, limit, color) {
   let hits = 0;
-  for (const target of queryEnemies(origin.x,origin.z,origin.x,origin.z,radius)) {
+  for (const target of queryEnemies(
+    origin.x,
+    origin.z,
+    origin.x,
+    origin.z,
+    radius,
+  )) {
     if (
       target !== origin &&
       !target.dead &&
@@ -1928,7 +2258,8 @@ function damageBoss(dmg, procs = true) {
     b.death = 1.35;
     b.shieldMesh.visible = false;
     state.score += 1400 + Math.floor(state.time * 2);
-    if(telemetry.bossFights.length)telemetry.bossFights.at(-1).ended=state.time;
+    if (telemetry.bossFights.length)
+      telemetry.bossFights.at(-1).ended = state.time;
     state.kills++;
     state.hp = Math.min(run.maxHp, state.hp + 25);
     audio.explosion();
@@ -2011,36 +2342,55 @@ function buildBoss() {
   state.bossHud = true;
   $("#bossHud").classList.remove("hidden");
   $("#bossLabel").textContent = "灾厄巨像";
-  telemetry.bossFights.push({started:state.time,maxHp:hp,ended:null});
+  telemetry.bossFights.push({ started: state.time, maxHp: hp, ended: null });
   audio.setBoss(true);
   audio.bossAlert();
   state.shake = 0.32;
   vibrate([40, 30, 70]);
   burst3D(0, 1.8, -30, "#ff604f", 35);
 }
-function spawnRoundEnemy(){spawnHordePack();}
-function spawnHordePack(forcedPattern=null,forcedCount=null,z=-48){
- const stage=hordeStage(state.time),pattern=forcedPattern||['line','armor','flank','stagger'][state.packSequence++%4];
- const count=Math.min(forcedCount||stage.batch,RULES.enemyLimit-state.threats.length);
- const gap=Math.sin(state.packSequence*.83)*3.5;
- for(let i=0;i<count;i++){
-  let x=-5.3+(i%10)*1.15;
-  if(pattern==='flank')x=(i%2?1:-1)*(4.2+(i%3)*.35);
-  if(pattern==='stagger')x=clamp(x+Math.sin(i*2.1)*.3,-5.4,5.4);
-  if(Math.abs(x-gap)<.6)x+=x<gap?-.65:.65;
-  const e=spawnEnemy(enemyKind(state.time,i,pattern),clamp(x,-5.5,5.5),z-Math.floor(i/10)*2.1-rand(0,.65));
-  if(e){e.pack=state.packSequence;e.flank=pattern==='flank';}
- }
- return count;
+function spawnRoundEnemy() {
+  spawnHordePack();
 }
-function spawnInterval(t){const stage=hordeStage(t);return stage.batch/stage.rate*(stage.relief?2.8:1);}
+function spawnHordePack(forcedPattern = null, forcedCount = null, z = -48) {
+  const stage = hordeStage(state.time),
+    pattern =
+      forcedPattern ||
+      ["line", "armor", "flank", "stagger"][state.packSequence++ % 4];
+  const count = Math.min(
+    forcedCount || stage.batch,
+    RULES.enemyLimit - state.threats.length,
+  );
+  const gap = Math.sin(state.packSequence * 0.83) * 3.5;
+  for (let i = 0; i < count; i++) {
+    let x = -5.3 + (i % 10) * 1.15;
+    if (pattern === "flank") x = (i % 2 ? 1 : -1) * (4.2 + (i % 3) * 0.35);
+    if (pattern === "stagger")
+      x = clamp(x + Math.sin(i * 2.1) * 0.3, -5.4, 5.4);
+    if (Math.abs(x - gap) < 0.6) x += x < gap ? -0.65 : 0.65;
+    const e = spawnEnemy(
+      enemyKind(state.time, i, pattern),
+      clamp(x, -5.5, 5.5),
+      z - Math.floor(i / 10) * 2.1 - rand(0, 0.65),
+    );
+    if (e) {
+      e.pack = state.packSequence;
+      e.flank = pattern === "flank";
+    }
+  }
+  return count;
+}
+function spawnInterval(t) {
+  const stage = hordeStage(t);
+  return (stage.batch / stage.rate) * (stage.relief ? 2.8 : 1);
+}
 function addHeat(amount) {
   state.heat = (state.heat + amount) % 10;
 }
 
 function updateDifficulty(dt) {
   const t = state.time,
-    interval = spawnInterval(t) * (state.boss ? .85 : 1),
+    interval = spawnInterval(t) * (state.boss ? 0.85 : 1),
     wave = Math.floor(t / 24) + 1;
   if (state.wave !== wave) {
     state.wave = wave;
@@ -2048,13 +2398,15 @@ function updateDifficulty(dt) {
   }
   state.spawnTimer -= dt;
   if (state.spawnTimer <= 0) {
-    const stage=hordeStage(t),occupancy=state.threats.filter(e=>!e.dead).length;
-    state.spawnTimer=interval*(occupancy<stage.target*.65?.72:1);
-    spawnHordePack();
+    const stage = hordeStage(t),
+      occupancy = state.threats.filter((e) => !e.dead).length;
+    state.spawnTimer = interval * (occupancy < stage.target * 0.65 ? 0.72 : 1);
+    if (occupancy < stage.target * 1.08) spawnHordePack();
+    else state.spawnTimer = Math.min(state.spawnTimer, 0.4);
   }
   if (t % 38 >= 33 && (t - dt) % 38 < 33) {
     showCombo("短暂喘息 · 搜寻补给");
-    if (state.hp < 75)
+    if (state.hp < 95)
       spawnCrate("medkit", state.playerX > 0 ? -2.4 : 2.4, -18);
   }
   state.gateTimer -= dt;
@@ -2062,7 +2414,7 @@ function updateDifficulty(dt) {
   state.crateTimer -= dt;
   if (state.crateTimer <= 0 && state.crates.length < 2) {
     const choices = ["machine", "shotgun", "plasma", "laser"],
-      type = choices[Math.min(3, Math.floor(Math.max(0, t - 20) / 35))];
+      type = choices[t < 30 ? 0 : t < 55 ? 1 : t < 90 ? 2 : 3];
     spawnCrate(
       type,
       (Math.floor(Math.max(0, t - 20) / 35) % 2 ? -1 : 1) * 2.75,
@@ -2090,8 +2442,12 @@ function moveThreats(dt) {
       }
       continue;
     }
-    if(e.z>-18||Math.floor(state.time*15)!==e.visualStamp){sprites.tick(e.group,Math.min(.08,dt+(e.visualDebt||0)));e.visualDebt=0;e.visualStamp=Math.floor(state.time*15);}else e.visualDebt=(e.visualDebt||0)+dt;
-    e.shotgunCD=Math.max(0,e.shotgunCD-dt);
+    if (e.z > -18 || Math.floor(state.time * 15) !== e.visualStamp) {
+      sprites.tick(e.group, Math.min(0.08, dt + (e.visualDebt || 0)));
+      e.visualDebt = 0;
+      e.visualStamp = Math.floor(state.time * 15);
+    } else e.visualDebt = (e.visualDebt || 0) + dt;
+    e.shotgunCD = Math.max(0, e.shotgunCD - dt);
     e.stun = Math.max(0, e.stun - dt);
     e.cooldown = Math.max(0, (e.cooldown || 0) - dt);
     if (e.burnTime > 0) {
@@ -2104,7 +2460,8 @@ function moveThreats(dt) {
       }
     }
     e.slowTime = Math.max(0, (e.slowTime || 0) - dt);
-    const moveDt = dt * (e.slowTime > 0 ? 1 - (e.slow || 0) : 1);
+    const moveDt =
+      dt * (e.slowTime > 0 ? 1 - (e.slow || 0) : 1) * (e.stun > 0 ? 0.15 : 1);
     e.flash = Math.max(0, (e.flash || 0) - dt);
     e.phase += dt;
     const dz = playerZ - e.z,
@@ -2124,7 +2481,13 @@ function moveThreats(dt) {
           e.group.userData.body.scale.y = 1;
         }
       } else {
-        e.x = mix(e.x,e.flank?state.playerX+Math.sign(e.homeX)*1.8:e.homeX*.5+state.playerX*.5,Math.min(1,dt*.28));
+        e.x = mix(
+          e.x,
+          e.flank
+            ? state.playerX + Math.sign(e.homeX) * 1.8
+            : e.homeX * 0.5 + state.playerX * 0.5,
+          Math.min(1, dt * 0.28),
+        );
         e.z += e.speed * moveDt;
         if (dist < 24 && e.dashCooldown <= 0) {
           e.windup = 0.75;
@@ -2152,7 +2515,7 @@ function moveThreats(dt) {
     } else {
       e.x = mix(
         e.x,
-        e.homeX*.72+state.playerX*.28+Math.sin(e.phase*1.5)*.25,
+        e.homeX * 0.72 + state.playerX * 0.28 + Math.sin(e.phase * 1.5) * 0.25,
         dt * (e.type === "heavy" ? 0.18 : 0.45),
       );
       e.z += e.speed * moveDt;
@@ -2183,8 +2546,8 @@ function moveThreats(dt) {
       .copy(e.group.quaternion)
       .invert()
       .multiply(camera.quaternion);
-    if (e.cooldown<=0&&dist<1.05&&Math.abs(e.x-state.playerX)<.7) {
-      e.cooldown = .8;
+    if (e.cooldown <= 0 && dist < 1.05 && Math.abs(e.x - state.playerX) < 0.7) {
+      e.cooldown = 0.8;
       sprites.trigger(e.group, "attack");
       hurtPlayer(e.damage, 0.8);
       e.z -= 2.1;
@@ -2205,9 +2568,14 @@ function moveThreats(dt) {
     }
     if (e.z > playerZ + 1.8) {
       run.totals.breaches++;
-      hurtPlayer(e.type==='elite'?1:e.type==='heavy'?.4:.18,0.15,true);
+      hurtPlayer(
+        e.type === "elite" ? 1 : e.type === "heavy" ? 0.4 : 0.18,
+        0.15,
+        true,
+      );
       showCombo("防线突破 · 装甲受损");
-      telemetry.breached++;retireEnemy(e);
+      telemetry.breached++;
+      retireEnemy(e);
       state.threats.splice(i, 1);
     }
   }
@@ -2215,10 +2583,16 @@ function moveThreats(dt) {
 function updateBoss(dt) {
   const b = state.boss;
   if (!b) return;
-  const machine=b.group.userData.actor.machine;
-  if(b.phase==='warn'&&!b.dead){machine.state='windup';machine.elapsed=Math.min(700,machine.elapsed);}
-  sprites.tick(b.group,dt);
-  if(b.phase==='warn'&&!b.dead&&machine.state!=='windup'){machine.state='windup';machine.elapsed=700;}
+  const machine = b.group.userData.actor.machine;
+  if (b.phase === "warn" && !b.dead) {
+    machine.state = "windup";
+    machine.elapsed = Math.min(700, machine.elapsed);
+  }
+  sprites.tick(b.group, dt);
+  if (b.phase === "warn" && !b.dead && machine.state !== "windup") {
+    machine.state = "windup";
+    machine.elapsed = 700;
+  }
   if (b.dead) {
     b.death -= dt;
     b.group.rotation.y += dt * 2;
@@ -2308,7 +2682,7 @@ function updateBoss(dt) {
         )
           spawnBossShot(b, i);
         if (b.armorPhase > 0 && b.skillCycle % 3 === 0) {
-          spawnHordePack("flank",18,b.z-10);
+          spawnHordePack("flank", 18, b.z - 10);
           showCombo("巨像呼援 · 两翼增援接近");
         }
       }
@@ -2321,13 +2695,8 @@ function updateBoss(dt) {
 }
 function spawnBossWave(b) {
   if (state.enemyShots.length >= 60) return;
-  const wave = mesh(
-    G.cube,
-    mat("shockwave", "#f47bcb", 0.3, 0.1, 1.3),
-    scene,
-    [b.targetX, 0.35, b.z + 1],
-    [5.2, 0.32, 0.55],
-  );
+  const wave = hostileVisual(true, true);
+  wave.position.set(b.targetX, 0.35, b.z + 1);
   state.enemyShots.push({
     mesh: wave,
     x: b.targetX,
@@ -2349,13 +2718,8 @@ function spawnBossShot(b, i) {
     z = b.z + 1,
     targetX = clamp(b.targetX + i * (b.sweep ? 0.95 : 0.7), -5.3, 5.3),
     travel = 1.35;
-  const meshObj = mesh(
-    G.sphere,
-    mat("bossShot", "#ff5667", 0.25, 0.1, 1.5),
-    scene,
-    [x, 1.3, z],
-    [0.26, 0.26, 0.5],
-  );
+  const meshObj = hostileVisual(false, true);
+  meshObj.position.set(x, 1.3, z);
   state.enemyShots.push({
     mesh: meshObj,
     x,
@@ -2370,6 +2734,48 @@ function spawnBossShot(b, i) {
   });
 }
 
+let hostileBatches = null;
+function hostileVisual(wave, boss) {
+  const o = new THREE.Object3D();
+  o.scale.set(
+    wave ? 5.2 : boss ? 0.26 : 0.16,
+    wave ? 0.32 : boss ? 0.26 : 0.16,
+    wave ? 0.55 : boss ? 0.5 : 0.3,
+  );
+  return o;
+}
+function syncHostileInstances() {
+  if (!hostileBatches) {
+    hostileBatches = [G.smallSphere, G.cube].map((g) => {
+      const m = new THREE.InstancedMesh(
+        g,
+        new THREE.MeshBasicMaterial({ color: "#ffffff" }),
+        60,
+      );
+      m.frustumCulled = false;
+      scene.add(m);
+      return m;
+    });
+  }
+  const counts = [0, 0],
+    color = new THREE.Color();
+  for (const s of state.enemyShots) {
+    if (!s.active || !s.mesh) continue;
+    const index = s.wave ? 1 : 0,
+      m = hostileBatches[index],
+      i = counts[index]++;
+    s.mesh.updateMatrix();
+    m.setMatrixAt(i, s.mesh.matrix);
+    color.set(s.boss ? "#ff4877" : "#ffac56");
+    m.setColorAt(i, color);
+  }
+  for (let i = 0; i < 2; i++) {
+    const m = hostileBatches[i];
+    m.count = counts[i];
+    m.instanceMatrix.needsUpdate = true;
+    if (m.instanceColor) m.instanceColor.needsUpdate = true;
+  }
+}
 function updateShots(dt) {
   for (let i = state.bullets.length - 1; i >= 0; i--) {
     const b = state.bullets[i];
@@ -2379,7 +2785,7 @@ function updateShots(dt) {
     b.x += b.vx * dt;
     b.z += b.vz * dt;
     b.life -= dt;
-    b.group.position.set(b.x, 1.28, b.z);
+    b.group.position.set(b.x, b.y || 1.65, b.z);
     b.group.rotation.y = Math.atan2(b.vx, -b.vz);
     if (processBulletCollisions(b, dt) || b.life <= 0 || b.z < -60)
       releaseBullet(b);
@@ -2394,13 +2800,7 @@ function updateShots(dt) {
     if (!s.active) {
       if (state.time < s.warningAt) continue;
       s.active = true;
-      s.mesh = mesh(
-        G.sphere,
-        mat("enemyShot", "#ff624d", 0.26, 0.2, 1.4),
-        scene,
-        [s.x, s.y, s.z],
-        [0.16, 0.16, 0.16],
-      );
+      s.mesh = hostileVisual(false, false);
     }
     const oldX = s.x,
       oldZ = s.z;
@@ -2461,17 +2861,27 @@ function hurtPlayer(
   bossSource = false,
 ) {
   if ((!breach && state.invuln > 0) || state.mode !== "playing") return;
-  const previousHP=state.hp;
-  const feedback=!breach||!state.breachFeedback||state.breachFeedback<=0;
+  const previousHP = state.hp;
+  const feedback =
+    !breach || !state.breachFeedback || state.breachFeedback <= 0;
   state.hp = Math.max(0, state.hp - run.absorb(amount, bossSource));
-  if(state.hp<previousHP){telemetry.hits++;telemetry[breach?"breachHits":"directHits"]++;telemetry.damageTaken+=previousHP-state.hp;}
+  if (state.hp < previousHP) {
+    telemetry.hits++;
+    telemetry[breach ? "breachHits" : "directHits"]++;
+    telemetry.damageTaken += previousHP - state.hp;
+  }
   // A small breach penalty must never shorten contact/shot invulnerability.
-  state.invuln=Math.max(state.invuln,breach?0:cooldown);
-  if(feedback){
-    sprites.trigger(playerRig,"hit");app.classList.remove("hurt");void app.offsetWidth;app.classList.add("hurt");
-    state.shake=Math.max(state.shake,breach?.04:.17);if(breach)state.breachFeedback=.7;
-    audio.impact(!breach);if(!breach)vibrate(26);
-    burst3D(state.playerX,.8,playerZ,"#ff685e",breach?3:12);
+  state.invuln = Math.max(state.invuln, breach ? 0 : cooldown);
+  if (feedback) {
+    sprites.trigger(playerRig, "hit");
+    app.classList.remove("hurt");
+    void app.offsetWidth;
+    app.classList.add("hurt");
+    state.shake = Math.max(state.shake, breach ? 0.04 : 0.17);
+    if (breach) state.breachFeedback = 0.7;
+    audio.impact(!breach);
+    if (!breach) vibrate(26);
+    burst3D(state.playerX, 0.8, playerZ, "#ff685e", breach ? 3 : 12);
   }
   const reaction = run.onPlayerHurt(state.hp);
   state.hp = Math.min(run.maxHp, state.hp + reaction.heal);
@@ -2621,7 +3031,7 @@ function energyLink(x, z, tx, tz, color = "#a7a3ff") {
     geometry,
     new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9 }),
   );
-  line.userData.warning = true;
+  line.userData.linkFx = true;
   line.userData.life = 0.23;
   scene.add(line);
   registerEffect(line);
@@ -2655,7 +3065,7 @@ function updateTeam(dt) {
     if (!v) {
       v = createAssetSoldier(m.role === "guard" ? "guardian" : m.role);
       v.userData.role = m.role;
-      v.scale.setScalar(0.76);
+      v.scale.setScalar(1.03);
       v.userData.gun.add(buildGun(ROLES[m.role].weapon));
       scene.add(v);
       teamVisuals.set(m.id, v);
@@ -2685,6 +3095,7 @@ function updateTeam(dt) {
         createShot(role.weapon, target, {
           x: m.x,
           z: m.z,
+          rig: v,
           stats: {
             lanes: 1,
             pellets: 1,
@@ -2860,6 +3271,7 @@ function updatePetArmor(dt, result) {
       playerZ - 0.3,
     );
     if (result.pet) {
+      groundPulse(state.playerX, playerZ, PETS[result.pet].color, 2.2, 0.5);
       nativeFlash(
         state.playerX,
         playerZ,
@@ -2888,12 +3300,25 @@ function updatePetArmor(dt, result) {
     const kind = run.armor?.kind || armorVisual?.userData.kind;
     if (kind && (!armorVisual || armorVisual.userData.kind !== kind)) {
       if (armorVisual) disposeGroup(armorVisual);
-      armorVisual = models.soldier("armor/"+kind);armorVisual.scale.setScalar(1.4);
+      armorVisual = models.soldier("armor/" + kind);
+      armorVisual.scale.setScalar(1.4);
       armorVisual.userData.kind = kind;
+      armorVisual.userData.weaponType = state.weapon;
+      armorVisual.userData.gun.add(buildGun(state.weapon));
       sprites.trigger(armorVisual, "activate");
+      groundPulse(state.playerX, playerZ, ARMORS[kind].color, 3.5, 0.7);
       scene.add(armorVisual);
     }
     if (armorVisual) {
+      if (armorVisual.userData.weaponType !== state.weapon) {
+        for (const child of [...armorVisual.userData.gun.children]) {
+          armorVisual.userData.gun.remove(child);
+          disposeGroup(child);
+        }
+        armorVisual.userData.flash = null;
+        armorVisual.userData.gun.add(buildGun(state.weapon));
+        armorVisual.userData.weaponType = state.weapon;
+      }
       armorVisual.position.set(state.playerX, -0.06, playerZ + 0.07);
       sprites.tick(armorVisual, dt);
       armorVisual.userData.body.material.opacity = run.armor
@@ -2909,11 +3334,15 @@ function updatePetArmor(dt, result) {
     playerRig.userData.body.visible = true;
   }
   if (result.armorEnded) {
+    groundPulse(state.playerX, playerZ, "#93dbe8", 2, 0.5);
     sprites.trigger(armorVisual, "deactivate");
     announce("战甲解除", "原武器与数字门强化保留");
     updateWeaponUi();
   }
-  if (result.armorPulse && armorVisual) sprites.trigger(armorVisual, "attack");
+  if (result.armorPulse && armorVisual) {
+    sprites.trigger(armorVisual, "attack");
+    groundPulse(state.playerX, playerZ, ARMORS[run.armor.kind].color, 1.5, 0.3);
+  }
 }
 function openDraft() {
   if (state.mode !== "playing") return;
@@ -3072,6 +3501,25 @@ function updateSystemsHud() {
 function worldSpeed() {
   return 6.3 + Math.min(2.7, state.time * 0.018);
 }
+function groundPulse(x, z, color, radius = 2, life = 0.32) {
+  const ring = mesh(
+    G.torus,
+    basic(color, 0.7, false),
+    scene,
+    [x, 0.06, z],
+    [0.3, 0.3, 0.3],
+  );
+  ring.rotation.x = -Math.PI / 2;
+  ring.userData = { waveFx: true, life, max: life, radius };
+  registerEffect(ring);
+}
+function statusAccent(e, key, interval = 0.5) {
+  if (qualityLevel > 1 && e.z < -14) return;
+  if (state.time - (e[key] || -1) < interval) return;
+  e[key] = state.time;
+  if (key === "frostFx") groundPulse(e.x, e.z, "#82ddff", 0.6, 0.24);
+  else if (key === "fireFx") burst3D(e.x, 0.7, e.z, "#ff9a4d", 2);
+}
 function nativeFlash(x, z, key, size = 1.8) {
   if (state.effects.length >= RULES.particleLimit) return;
   const f = mesh(
@@ -3095,6 +3543,18 @@ function updateEffects(dt) {
   for (let i = state.effects.length - 1; i >= 0; i--) {
     const p = state.effects[i];
     p.userData.life -= dt;
+    if (p.userData.waveFx) {
+      const age = 1 - p.userData.life / p.userData.max,
+        r = 0.3 + age * p.userData.radius;
+      p.scale.set(r, r, r);
+      p.material.opacity = (1 - age) * 0.65;
+      if (p.userData.life <= 0) {
+        scene.remove(p);
+        p.material.dispose();
+        state.effects.splice(i, 1);
+      }
+      continue;
+    }
     if (p.userData.native) {
       p.material.opacity = Math.max(0, p.userData.life / p.userData.max);
       p.scale.multiplyScalar(1 + dt);
@@ -3105,11 +3565,11 @@ function updateEffects(dt) {
       }
       continue;
     }
-    if (p.userData.warning) {
+    if (p.userData.warning || p.userData.linkFx) {
       p.material.opacity = Math.max(0, p.userData.life * 1.1);
       if (p.userData.life <= 0) {
         scene.remove(p);
-        p.geometry.dispose();
+        if (!Object.values(G).includes(p.geometry)) p.geometry.dispose();
         p.material.dispose();
         state.effects.splice(i, 1);
       }
@@ -3151,7 +3611,8 @@ function updateDecor(dt) {
     d.root.position.z = d.z;
     const dummy = worldObjects.cityMeshes.dummy;
     dummy.position.set(d.root.position.x, 0, d.z);
-    dummy.quaternion.identity();dummy.scale.set(1,1,1);
+    dummy.quaternion.identity();
+    dummy.scale.set(1, 1, 1);
     dummy.updateMatrix();
     worldObjects.decorBatches[d.batch].setMatrixAt(d.index, dummy.matrix);
   }
@@ -3165,7 +3626,7 @@ function updateDecor(dt) {
       b.z += worldSpeed() * dt * 0.7;
       if (b.z > 24) b.z -= 139.2;
       city.dummy.position.set(b.x, b.height / 2 - 3.1, b.z);
-      city.dummy.scale.set(b.width, b.height+5.6, 3.9);
+      city.dummy.scale.set(b.width, b.height + 5.6, 3.9);
       city.dummy.updateMatrix();
       city.buildings.setMatrixAt(i, city.dummy.matrix);
       city.dummy.position.y = b.height * 0.64;
@@ -3205,17 +3666,25 @@ function updateGame(dt) {
   if (W !== app.clientWidth || H !== app.clientHeight) resize();
   dt = Math.min(0.04, dt);
   state.time += dt;
+  if (muzzle) muzzle.visible = state.time < (muzzle.userData.until || 0);
+  if (armorVisual?.userData.flash)
+    armorVisual.userData.flash.visible =
+      state.time < (armorVisual.userData.flash.userData.until || 0);
   state.overdrive = Math.max(0, state.overdrive - dt);
   worldTime += dt;
   state.invuln = Math.max(0, state.invuln - dt);
-  state.breachFeedback=Math.max(0,(state.breachFeedback||0)-dt);
+  state.breachFeedback = Math.max(0, (state.breachFeedback || 0) - dt);
   state.shootTimer -= dt;
   state.playerX = mix(state.playerX, state.targetX, Math.min(1, dt * 10));
   playerRig.position.x = state.playerX;
   playerRig.position.y = -0.1 + Math.sin(state.time * 8) * 0.018;
   const moving = Math.abs(state.playerX - state.targetX) > 0.08;
-  const aim=aimTarget();
-  playerRig.userData.aim=clamp(-Math.atan2(aim.x-state.playerX,playerZ-aim.z),-.48,.48);
+  const aim = aimTarget();
+  playerRig.userData.aim = clamp(
+    -Math.atan2(aim.x - state.playerX, playerZ - aim.z),
+    -0.48,
+    0.48,
+  );
   state.recoil = Math.max(0, state.recoil - dt * 9);
   playerRig.rotation.z = mix(
     playerRig.rotation.z,
@@ -3227,13 +3696,14 @@ function updateGame(dt) {
   else playerRig.visible = true;
   playerShadow.position.x = state.playerX;
   camera.position.x = mix(camera.position.x, state.playerX * 0.17, dt * 1.8);
-  camera.lookAt(state.playerX * 0.08, .8, -14);
+  camera.lookAt(state.playerX * 0.08, 0.8, -14);
   state.shootTimer <= 0 && fireWeapon();
   updateRunSystems(dt);
   if (state.mode !== "playing") return;
   sprites.tick(playerRig, dt);
   updateDifficulty(dt);
-  moveThreats(dt);gridDirty=true;
+  moveThreats(dt);
+  gridDirty = true;
   if (state.mode !== "playing") return;
   updateBoss(dt);
   updateShots(dt);
@@ -3243,7 +3713,10 @@ function updateGame(dt) {
   updateDecor(dt);
   state.score = Math.max(0, state.score + dt * 1.15);
   state.hp = clamp(state.hp, 0, run.maxHp);
-  telemetry.peakAlive=Math.max(telemetry.peakAlive,state.threats.filter(e=>!e.dead).length);
+  telemetry.peakAlive = Math.max(
+    telemetry.peakAlive,
+    state.threats.filter((e) => !e.dead).length,
+  );
   if (state.time - state.lastHud > 0.1) {
     state.lastHud = state.time;
     updateHud();
@@ -3259,8 +3732,15 @@ function updateHud() {
     state.overdrive > 0
       ? "火力过载 · " + state.overdrive.toFixed(1) + " 秒"
       : "击杀充能 · " + state.heat + " / 10";
-  const frontline=state.threats.reduce((n,e)=>n+!e.dead,0);
-  $("#waveLabel").textContent=(state.boss?"首领战 · 躲开预警":hordeStage(state.time).relief?"喘息 · 搜寻补给":"第 "+state.wave+" 波")+" · 前线 "+frontline;
+  const frontline = state.threats.reduce((n, e) => n + !e.dead, 0);
+  $("#waveLabel").textContent =
+    (state.boss
+      ? "首领战 · 躲开预警"
+      : hordeStage(state.time).relief
+        ? "喘息 · 搜寻补给"
+        : "第 " + state.wave + " 波") +
+    " · 前线 " +
+    frontline;
   const mins = String(Math.floor(state.time / 60)).padStart(2, "0"),
     secs = String(Math.floor(state.time % 60)).padStart(2, "0");
   $("#clock").textContent = `${mins}:${secs}`;
@@ -3376,22 +3856,19 @@ function clearDynamic() {
   }
   run.reset();
   $("#draftPanel")?.classList.add("hidden");
-  for(const e of state.threats)retireEnemy(e);
+  for (const e of state.threats) retireEnemy(e);
   for (const g of state.gates) disposeGroup(g.group);
   for (const c of state.crates) disposeGroup(c.group);
   for (const s of state.enemyShots) if (s.mesh) scene.remove(s.mesh);
   for (const p of state.effects) {
     scene.remove(p);
-    if (p.userData.native) {
-      p.material.dispose();
-      continue;
-    }
-    if (p.userData.warning) {
-      p.geometry.dispose();
-      p.material.dispose();
-    } else {
+    if (p.userData.v) {
       p.visible = false;
       particlePool.push(p);
+    } else {
+      if (p.geometry && !Object.values(G).includes(p.geometry))
+        p.geometry.dispose();
+      p.material?.dispose();
     }
   }
   for (const f of state.floating) {
@@ -3434,15 +3911,32 @@ function resetRun() {
   clearTimeout(comboTimer);
   $("#upgradeToast").classList.remove("show");
   $("#comboToast").classList.remove("show");
-  state.packSequence=0;
-  Object.assign(telemetry,{spawned:0,killed:0,breached:0,hits:0,damageTaken:0,damageDealt:0,killSeconds:0,engagementSeconds:0,breachHits:0,directHits:0,peakAlive:0,peakVisible:0,collisionTests:0,bossFights:[],stages:[],realSeconds:0});
+  state.packSequence = 0;
+  Object.assign(telemetry, {
+    spawned: 0,
+    killed: 0,
+    breached: 0,
+    hits: 0,
+    damageTaken: 0,
+    damageDealt: 0,
+    killSeconds: 0,
+    engagementSeconds: 0,
+    breachHits: 0,
+    directHits: 0,
+    peakAlive: 0,
+    peakVisible: 0,
+    collisionTests: 0,
+    bossFights: [],
+    stages: [],
+    realSeconds: 0,
+  });
   state.time = 0;
   state.score = 0;
   state.kills = 0;
   state.hp = 100;
   state.playerX = state.targetX = 0;
   state.invuln = 0;
-  state.breachFeedback=0;
+  state.breachFeedback = 0;
   state.shootTimer = 0.1;
   state.spawnTimer = 0.7;
   state.gateTimer = 7;
@@ -3469,7 +3963,7 @@ function resetRun() {
   playerRig.position.set(0, -0.1, playerZ);
   playerRig.rotation.set(0, 0, 0);
   camera.position.x = 0;
-  camera.lookAt(0, .8, -14);
+  camera.lookAt(0, 0.8, -14);
   playerRig.visible = true;
   playerRig.userData.body.visible = true;
   playerRig.userData.body.material.opacity = 1;
@@ -3636,11 +4130,13 @@ function frame(now) {
     dt = Math.min(0.04, Math.max(0, elapsedFrame || 16) / 1000);
   lastFrame = now;
   if (W !== app.clientWidth || H !== app.clientHeight) resize();
-  if(state.mode==='playing'&&!testFrozen){
-    const elapsed=Math.min(.5,Math.max(0,elapsedFrame||16)/1000);telemetry.realSeconds+=elapsed;
-    const steps=Math.max(1,Math.ceil(elapsed/.025));for(let i=0;i<steps&&state.mode==='playing';i++)updateGame(elapsed/steps);
-  }
-  else if (playerRig) {
+  if (state.mode === "playing" && !testFrozen) {
+    const elapsed = Math.min(0.5, Math.max(0, elapsedFrame || 16) / 1000);
+    telemetry.realSeconds += elapsed;
+    const steps = Math.max(1, Math.ceil(elapsed / 0.025));
+    for (let i = 0; i < steps && state.mode === "playing"; i++)
+      updateGame(elapsed / steps);
+  } else if (playerRig) {
     playerRig.position.y = -0.1 + Math.sin(now * 0.0011) * 0.012;
     if (state.mode === "menu") {
       updateDecor(dt * 0.18);
@@ -3668,8 +4164,10 @@ function frame(now) {
   }
   syncBulletInstances();
   syncSparks();
+  syncHostileInstances();
+  syncWarnings();
   syncEnemyOverlays();
-  models.sync(state.threats,state.boss,state.time);
+  models.sync(state.threats, state.boss, state.time);
   renderer.render(scene, camera);
   camera.position.x = baseX;
   camera.position.y = baseY;
@@ -3678,7 +4176,14 @@ function frame(now) {
     const fps = (frameCount * 1000) / (now - fpsT);
     if (fps < 39) {
       lowFps++;
-      if(lowFps>=2&&qualityLevel<2){qualityLevel++;renderer.setPixelRatio(Math.min(devicePixelRatio||1,qualityProfile(qualityLevel).dpr));renderer.shadowMap.enabled=qualityProfile(qualityLevel).shadows;lowFps=0;}
+      if (lowFps >= 2 && qualityLevel < 2) {
+        qualityLevel++;
+        renderer.setPixelRatio(
+          Math.min(devicePixelRatio || 1, qualityProfile(qualityLevel).dpr),
+        );
+        renderer.shadowMap.enabled = qualityProfile(qualityLevel).shadows;
+        lowFps = 0;
+      }
     } else lowFps = Math.max(0, lowFps - 1);
     fpsT = now;
     frameCount = 0;
@@ -3700,12 +4205,86 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
 if (new URLSearchParams(location.search).get("test") === "1")
   window.__MR_TEST__ = {
     silence: () => audio.pause(),
+    resumeAudio: () => audio.resume(),
+    captureAudio: () => audio.captureStream(),
     systems: () => run.snapshot(),
-    hordePack:spawnHordePack,
+    modelAudit() {
+      const rigs = [
+        playerRig,
+        ...teamVisuals.values(),
+        ...(armorVisual ? [armorVisual] : []),
+      ];
+      return {
+        rigs: rigs.map((r) => ({
+          key: r.userData.actor.key,
+          bones: r.userData.bones?.length,
+          skinned: !!r.userData.body.isSkinnedMesh,
+          handBound: r.userData.gun.parent === r.userData.bones?.[9],
+          gunChildren: r.userData.gun.children.length,
+        })),
+        batches: [...models.batches.entries()].map(([type, b]) => ({
+          type,
+          count: b.mesh.count,
+          vertices: b.mesh.geometry.attributes.position.count,
+          finite: Array.from(b.motion.array.slice(0, b.mesh.count * 4)).every(
+            Number.isFinite,
+          ),
+        })),
+        sceneObjects: (() => {
+          let n = 0;
+          scene.traverse(() => n++);
+          return n;
+        })(),
+      };
+    },
+    hordePack: spawnHordePack,
     hordeStage,
-    setQuality(level){qualityLevel=clamp(level,0,2);renderer.setPixelRatio(Math.min(devicePixelRatio||1,qualityProfile(qualityLevel).dpr));renderer.shadowMap.enabled=qualityProfile(qualityLevel).shadows;},
-    renderFrame(){syncBulletInstances();syncSparks();syncEnemyOverlays();models.sync(state.threats,state.boss,state.time);renderer.render(scene,camera);},
-    hordeReport(){camera.updateMatrixWorld();const f=new THREE.Frustum().setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));const live=state.threats.filter(e=>!e.dead),visible=live.filter(e=>f.containsPoint(new THREE.Vector3(e.x,1,e.z)));telemetry.peakVisible=Math.max(telemetry.peakVisible,visible.length);return {...telemetry,time:state.time,alive:live.length,visible:visible.length,averageKillSeconds:telemetry.killed?telemetry.killSeconds/telemetry.killed:0,averageEngagementSeconds:telemetry.killed?telemetry.engagementSeconds/telemetry.killed:0,models:models.audit(),quality:qualityLevel,stats:combatStats(),crew:run.team.length};},
+    setQuality(level) {
+      qualityLevel = clamp(level, 0, 2);
+      renderer.setPixelRatio(
+        Math.min(devicePixelRatio || 1, qualityProfile(qualityLevel).dpr),
+      );
+      renderer.shadowMap.enabled = qualityProfile(qualityLevel).shadows;
+    },
+    renderFrame() {
+      syncBulletInstances();
+      syncSparks();
+      syncHostileInstances();
+      syncWarnings();
+      syncEnemyOverlays();
+      models.sync(state.threats, state.boss, state.time);
+      renderer.render(scene, camera);
+    },
+    hordeReport() {
+      camera.updateMatrixWorld();
+      const f = new THREE.Frustum().setFromProjectionMatrix(
+        new THREE.Matrix4().multiplyMatrices(
+          camera.projectionMatrix,
+          camera.matrixWorldInverse,
+        ),
+      );
+      const live = state.threats.filter((e) => !e.dead),
+        visible = live.filter((e) =>
+          f.containsPoint(new THREE.Vector3(e.x, 1, e.z)),
+        );
+      telemetry.peakVisible = Math.max(telemetry.peakVisible, visible.length);
+      return {
+        ...telemetry,
+        time: state.time,
+        alive: live.length,
+        visible: visible.length,
+        averageKillSeconds: telemetry.killed
+          ? telemetry.killSeconds / telemetry.killed
+          : 0,
+        averageEngagementSeconds: telemetry.killed
+          ? telemetry.engagementSeconds / telemetry.killed
+          : 0,
+        models: models.audit(),
+        quality: qualityLevel,
+        stats: combatStats(),
+        crew: run.team.length,
+      };
+    },
     recruit: (role) => run.recruit(role),
     promote: (role) => run.promote(role),
     hurtMember: (id, n) =>
@@ -3927,7 +4506,12 @@ if (new URLSearchParams(location.search).get("test") === "1")
         drawCalls: renderer.info.render.calls,
         memory: { ...renderer.info.memory },
         triangles: renderer.info.render.triangles,
-        heap:performance.memory?{used:performance.memory.usedJSHeapSize,total:performance.memory.totalJSHeapSize}:null,
+        heap: performance.memory
+          ? {
+              used: performance.memory.usedJSHeapSize,
+              total: performance.memory.totalJSHeapSize,
+            }
+          : null,
         laser: !!state.laserBeam?.group.visible,
       };
     },
