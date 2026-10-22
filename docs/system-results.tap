@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: catalog: 20 distinct affixes across five systems; no permanent combat progression
+ok 1 - catalog: 20 distinct affixes across five systems; no permanent combat progression
+  ---
+  duration_ms: 2.011399
+  type: 'test'
+  ...
+# Subtest: four permanent teammates retain roles, promote to 3, fall and refill
+ok 2 - four permanent teammates retain roles, promote to 3, fall and refill
+  ---
+  duration_ms: 1.374093
+  type: 'test'
+  ...
+# Subtest: pet dragon: single slot, level cap, cooldown
+ok 3 - pet dragon: single slot, level cap, cooldown
+  ---
+  duration_ms: 0.584237
+  type: 'test'
+  ...
+# Subtest: pet owl: single slot, level cap, cooldown
+ok 4 - pet owl: single slot, level cap, cooldown
+  ---
+  duration_ms: 0.322148
+  type: 'test'
+  ...
+# Subtest: pet drone: single slot, level cap, cooldown
+ok 5 - pet drone: single slot, level cap, cooldown
+  ---
+  duration_ms: 0.311433
+  type: 'test'
+  ...
+# Subtest: pet fairy: single slot, level cap, cooldown
+ok 6 - pet fairy: single slot, level cap, cooldown
+  ---
+  duration_ms: 0.226236
+  type: 'test'
+  ...
+# Subtest: armor thunder: expires at 12s without mutating base attributes
+ok 7 - armor thunder: expires at 12s without mutating base attributes
+  ---
+  duration_ms: 1.290016
+  type: 'test'
+  ...
+# Subtest: armor molten: expires at 12s without mutating base attributes
+ok 8 - armor molten: expires at 12s without mutating base attributes
+  ---
+  duration_ms: 0.271127
+  type: 'test'
+  ...
+# Subtest: armor phantom: expires at 12s without mutating base attributes
+ok 9 - armor phantom: expires at 12s without mutating base attributes
+  ---
+  duration_ms: 0.455699
+  type: 'test'
+  ...
+# Subtest: affix volley increases independent projectile property
+ok 10 - affix volley increases independent projectile property
+  ---
+  duration_ms: 0.458563
+  type: 'test'
+  ...
+# Subtest: affix burst increases independent projectile property
+ok 11 - affix burst increases independent projectile property
+  ---
+  duration_ms: 0.389214
+  type: 'test'
+  ...
+# Subtest: affix haste increases independent projectile property
+ok 12 - affix haste increases independent projectile property
+  ---
+  duration_ms: 0.378571
+  type: 'test'
+  ...
+# Subtest: affix velocity increases independent projectile property
+ok 13 - affix velocity increases independent projectile property
+  ---
+  duration_ms: 0.232137
+  type: 'test'
+  ...
+# Subtest: rally + drill have bounded team synergy; laststand activates under 35 hp
+ok 14 - rally + drill have bounded team synergy; laststand activates under 35 hp
+  ---
+  duration_ms: 0.369241
+  type: 'test'
+  ...
+# Subtest: medic heals real teammate hp; recovery heals on 6-second cadence
+ok 15 - medic heals real teammate hp; recovery heals on 6-second cadence
+  ---
+  duration_ms: 0.26961
+  type: 'test'
+  ...
+# Subtest: plating, owl and armor reduce received damage
+ok 16 - plating, owl and armor reduce received damage
+  ---
+  duration_ms: 0.133245
+  type: 'test'
+  ...
+# Subtest: barrier + capacitor cap replenishment; shield absorbs real damage
+ok 17 - barrier + capacitor cap replenishment; shield absorbs real damage
+  ---
+  duration_ms: 0.400464
+  type: 'test'
+  ...
+# Subtest: salvage cannot infinitely heal on simultaneous kills
+ok 18 - salvage cannot infinitely heal on simultaneous kills
+  ---
+  duration_ms: 0.343843
+  type: 'test'
+  ...
+# Subtest: overclock only boosts active overdrive; no stat accumulation
+ok 19 - overclock only boosts active overdrive; no stat accumulation
+  ---
+  duration_ms: 0.458506
+  type: 'test'
+  ...
+# Subtest: four-slot replacement, level cap and three unique offers
+ok 20 - four-slot replacement, level cap and three unique offers
+  ---
+  duration_ms: 0.36358
+  type: 'test'
+  ...
+# Subtest: dragon, drone and fairy provide real damage, shield and healing
+ok 21 - dragon, drone and fairy provide real damage, shield and healing
+  ---
+  duration_ms: 0.193755
+  type: 'test'
+  ...
+# Subtest: restart clears every run-only upgrade and companion
+ok 22 - restart clears every run-only upgrade and companion
+  ---
+  duration_ms: 0.182781
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 134.171973

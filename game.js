@@ -4,15 +4,34 @@ import { RunSystems } from "./systems.js";
 import { RULES, ROLES, PETS, ARMORS, AFFIXES } from "./config/catalog.js";
 const run = new RunSystems();
 const teamVisuals = new Map();
-let petVisual = null, armorVisual = null;
-const art = {}, assetErrors = [];
+let petVisual = null,
+  armorVisual = null;
+const art = {},
+  assetErrors = [];
 const assetLoader = new THREE.TextureLoader();
-for (const [key, path] of Object.entries({soldier:'characters/player_soldier_back',highway:'backgrounds/highway_day',gate:'gates/fire_rate_plus_20'})) {
-  art[key] = assetLoader.load('./assets/'+path+'.webp', texture=> {texture.colorSpace=THREE.SRGBColorSpace;},undefined,()=>assetErrors.push(path));
+for (const [key, path] of Object.entries({
+  soldier: "characters/player_soldier_back",
+  highway: "backgrounds/highway_day",
+  gate: "gates/fire_rate_plus_20",
+})) {
+  art[key] = assetLoader.load(
+    "./assets/" + path + ".webp",
+    (texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+    },
+    undefined,
+    () => assetErrors.push(path),
+  );
 }
-function vibrate(pattern){if(saved.get("mr-haptics","1")==="1")try{navigator.vibrate?.(pattern);}catch{}}
-function combatStats(){return run.stats(state.stats,state.overdrive>0,state.hp);}
-
+function vibrate(pattern) {
+  if (saved.get("mr-haptics", "1") === "1")
+    try {
+      navigator.vibrate?.(pattern);
+    } catch {}
+}
+function combatStats() {
+  return run.stats(state.stats, state.overdrive > 0, state.hp);
+}
 
 const $ = (s) => document.querySelector(s),
   clamp = (x, a, b) => Math.max(a, Math.min(b, x)),
@@ -319,11 +338,11 @@ function buildWorld() {
     );
     shoulder.receiveShadow = true;
   }
-  const deck = addBox(scene,[0,-.55,-36],[13.8,.7,125],'#bdd4de');
-  deck.receiveShadow=true;
-  for(const side of [-1,1]) {
-    addBox(scene,[side*6.5,.38,-36],[.18,.75,125],'#d5e5e9');
-    addBox(scene,[side*6.48,.8,-36],[.22,.12,125],'#6bdbe0');
+  const deck = addBox(scene, [0, -0.55, -36], [13.8, 0.7, 125], "#bdd4de");
+  deck.receiveShadow = true;
+  for (const side of [-1, 1]) {
+    addBox(scene, [side * 6.5, 0.38, -36], [0.18, 0.75, 125], "#d5e5e9");
+    addBox(scene, [side * 6.48, 0.8, -36], [0.22, 0.12, 125], "#6bdbe0");
   }
   const configs = [];
   for (const side of [-1, 1])
@@ -734,25 +753,67 @@ function armorGeometry() {
   G.armor.translate(0, 0, -0.4);
   return G.armor;
 }
-const enemyTextures={};
-function createSoldier(kind='player'){
-  if(kind==='player')return createAssetSoldier();
-  const root=new THREE.Group(),data={kind,asset:true};
-  if(!enemyTextures[kind]){const t=assetLoader.load('./assets/enemies/'+kind+'.svg',undefined,undefined,()=>assetErrors.push(kind));t.colorSpace=THREE.SRGBColorSpace;enemyTextures[kind]=t;}
-  const base=enemyTextures[kind];
-  const plane=(parent,x,y,w,h,offset,repeat)=>{
-    const texture=base.clone();texture.offset.set(...offset);texture.repeat.set(...repeat);
-    const material=new THREE.MeshStandardMaterial({map:texture,transparent:true,alphaTest:.1,roughness:.85,side:THREE.DoubleSide});
-    const part=mesh(new THREE.PlaneGeometry(w,h),material,parent,[x,y,0]);
-    part.quaternion.copy(camera.quaternion);return part;
-  };
-  data.body=plane(root,0,1.47,1.9,1.51,[0,90/280],[1,190/280]);
-  for(const [name,sign] of [['legL',-1],['legR',1]]){
-    const pivot=new THREE.Group();pivot.position.set(sign*.475,.74,0);root.add(pivot);
-    plane(pivot,0,-.36,.95,.72,[sign<0?0:.5,0],[.5,90/280]);data[name]=pivot;
+const enemyTextures = {};
+function createSoldier(kind = "player") {
+  if (kind === "player") return createAssetSoldier();
+  const root = new THREE.Group(),
+    data = { kind, asset: true };
+  if (!enemyTextures[kind]) {
+    const t = assetLoader.load(
+      "./assets/enemies/" + kind + ".svg",
+      undefined,
+      undefined,
+      () => assetErrors.push(kind),
+    );
+    t.colorSpace = THREE.SRGBColorSpace;
+    enemyTextures[kind] = t;
   }
-  for(const key of ['head','armL','armR','gun']){data[key]=new THREE.Group();root.add(data[key]);}
-  root.scale.setScalar(kind==='boss'?2.6:1);root.userData=data;return root;
+  const base = enemyTextures[kind];
+  const plane = (parent, x, y, w, h, offset, repeat) => {
+    const texture = base.clone();
+    texture.offset.set(...offset);
+    texture.repeat.set(...repeat);
+    const material = new THREE.MeshStandardMaterial({
+      map: texture,
+      transparent: true,
+      alphaTest: 0.1,
+      roughness: 0.85,
+      side: THREE.DoubleSide,
+    });
+    const part = mesh(new THREE.PlaneGeometry(w, h), material, parent, [
+      x,
+      y,
+      0,
+    ]);
+    part.quaternion.copy(camera.quaternion);
+    return part;
+  };
+  data.body = plane(root, 0, 1.47, 1.9, 1.51, [0, 90 / 280], [1, 190 / 280]);
+  for (const [name, sign] of [
+    ["legL", -1],
+    ["legR", 1],
+  ]) {
+    const pivot = new THREE.Group();
+    pivot.position.set(sign * 0.475, 0.74, 0);
+    root.add(pivot);
+    plane(
+      pivot,
+      0,
+      -0.36,
+      0.95,
+      0.72,
+      [sign < 0 ? 0 : 0.5, 0],
+      [0.5, 90 / 280],
+    );
+    data[name] = pivot;
+  }
+  for (const key of ["head", "armL", "armR", "gun"]) {
+    data[key] = new THREE.Group();
+    root.add(data[key]);
+  }
+  root.scale.setScalar(kind === "boss" ? 2.6 : 1);
+  root.userData = data;
+  return root;
 }
 
 function buildGun(type) {
@@ -969,16 +1030,47 @@ const weaponInfo = {
   },
 };
 function createAssetSoldier() {
-  const root=new THREE.Group();
-  const material=new THREE.MeshStandardMaterial({map:art.soldier,transparent:true,alphaTest:.09,roughness:.9,side:THREE.DoubleSide,depthWrite:true});
-  const body=mesh(new THREE.PlaneGeometry(1.85,2.8),material,root,[0,1.35,0]);
-  body.quaternion.copy(camera.quaternion);
-  const data={body,asset:true};
-  for(const key of ['gun','legL','legR','armL','armR','head']){data[key]=new THREE.Group();root.add(data[key]);}
-  data.gun.position.set(.63,1.5,-.25);
-  root.userData=data;
+  const root = new THREE.Group(),
+    billboard = new THREE.Group(),
+    data = { asset: true, disposables: [] };
+  billboard.position.y = 1.35;
+  billboard.quaternion.copy(camera.quaternion);
+  root.add(billboard);
+  const plane = (parent, x, y, w, h, offset, repeat) => {
+    const texture = art.soldier.clone();
+    texture.offset.set(...offset);
+    texture.repeat.set(...repeat);
+    const material = new THREE.MeshStandardMaterial({
+      map: texture,
+      transparent: true,
+      alphaTest: 0.09,
+      roughness: 0.9,
+      side: THREE.DoubleSide,
+    });
+    data.disposables.push(texture, material);
+    return mesh(new THREE.PlaneGeometry(w, h), material, parent, [x, y, 0]);
+  };
+  // Three UV regions of the supplied single pose: interpolation, not authored animation frames.
+  data.body = plane(billboard, 0, 0.532, 1.85, 1.736, [0, 0.38], [1, 0.62]);
+  for (const [key, sign] of [
+    ["legL", -1],
+    ["legR", 1],
+  ]) {
+    const pivot = new THREE.Group();
+    pivot.position.set(sign * 0.4625, -0.336, 0);
+    billboard.add(pivot);
+    plane(pivot, 0, -0.532, 0.925, 1.064, [sign < 0 ? 0 : 0.5, 0], [0.5, 0.38]);
+    data[key] = pivot;
+  }
+  for (const key of ["gun", "armL", "armR", "head"]) {
+    data[key] = new THREE.Group();
+    root.add(data[key]);
+  }
+  data.gun.position.set(0.63, 1.5, -0.25);
+  root.userData = data;
   return root;
 }
+
 function buildPlayer() {
   playerRig = createSoldier("player");
   scene.add(playerRig);
@@ -1074,7 +1166,7 @@ const gateDefs = [
   [
     {
       type: "rate",
-      amount: 0.20,
+      amount: 0.2,
       value: "射速 +20%",
       name: "高速供弹",
       color: "#ffbd65",
@@ -1153,6 +1245,48 @@ const gateDefs = [
   ],
 ];
 function buildGate(reward, x, z) {
+  if (
+    (reward.type === "recruit" && run.team.length >= 4) ||
+    (reward.type === "promote" && run.team.length === 0)
+  ) {
+    reward = run.team.length
+      ? {
+          type: "promote",
+          value: "职业 +1",
+          name: "编队整备",
+          amount: 1,
+          color: "#d5b9ff",
+        }
+      : {
+          type: "recruit",
+          role: "assault",
+          value: "队员 +1",
+          name: "紧急招募",
+          amount: 1,
+          color: "#83e5ff",
+        };
+  }
+  if (
+    reward.type === "promote" &&
+    run.team.length &&
+    run.team.every((m) => m.level === 3)
+  )
+    reward = {
+      type: "team",
+      value: "团队 +8%",
+      name: "协同强化",
+      amount: 1,
+      color: "#abb8ff",
+    };
+  if (reward.type === "team" && run.teamPower >= 5)
+    reward = {
+      type: "regroup",
+      value: "整备 +12",
+      name: "团队维修",
+      amount: 12,
+      color: "#a2edcf",
+    };
+
   const limits = {
     lanes: ["lanes", 5],
     pellets: ["pellets", 8],
@@ -1214,7 +1348,13 @@ function buildGate(reward, x, z) {
     [0, 1.2, 0.11],
   );
   const lbl = labelSprite(
-    { value: reward.value, name: reward.name, hint: ["recruit","team","promote"].includes(reward.type)?"选择路线 · 迎面穿越":"射击增幅 · 迎面穿越" },
+    {
+      value: reward.value,
+      name: reward.name,
+      hint: ["recruit", "team", "promote"].includes(reward.type)
+        ? "选择路线 · 迎面穿越"
+        : "射击增幅 · 迎面穿越",
+    },
     color,
   );
   group.add(lbl.sprite);
@@ -1224,9 +1364,17 @@ function buildGate(reward, x, z) {
       o.receiveShadow = true;
     }
   });
-  if(reward.type==='rate' && reward.amount===.2){
-    const sample=new THREE.Sprite(new THREE.SpriteMaterial({map:art.gate,transparent:true,depthWrite:false}));
-    sample.scale.set(3.3,2.47,1);sample.position.set(0,1.35,.15);group.add(sample);
+  if (reward.type === "rate" && reward.amount === 0.2) {
+    const sample = new THREE.Sprite(
+      new THREE.SpriteMaterial({
+        map: art.gate,
+        transparent: true,
+        depthWrite: false,
+      }),
+    );
+    sample.scale.set(3.3, 2.47, 1);
+    sample.position.set(0, 1.35, 0.15);
+    group.add(sample);
   }
   const light = new THREE.Object3D();
   light.intensity = 0;
@@ -1352,13 +1500,60 @@ function spawnCrate(type, x = rand(-3.7, 3.7), z = -29) {
   state.crates.push({ group, type, x, z, spin: rand(0, 6), light });
 }
 function spawnGateEvent() {
-  const systemPairs=[
-   [{type:'recruit',role:'assault',amount:1,value:'队员 +1',name:'突击招募',color:'#80eaff'},{type:'recruit',role:'guard',amount:1,value:'队员 +1',name:'护卫招募',color:'#a0eec7'}],
-   [{type:'team',amount:1,value:'团队 +8%',name:'协同强化',color:'#a5a5ff'},{type:'promote',amount:1,value:'职业 +1',name:'职业晋升',color:'#ffce85'}],
-   [{type:'recruit',role:'heavy',amount:1,value:'队员 +1',name:'重火力招募',color:'#ffcc86'},gateDefs[1][1]],
+  const systemPairs = [
+    [
+      {
+        type: "recruit",
+        role: "assault",
+        amount: 1,
+        value: "队员 +1",
+        name: "突击招募",
+        color: "#80eaff",
+      },
+      {
+        type: "recruit",
+        role: "guard",
+        amount: 1,
+        value: "队员 +1",
+        name: "护卫招募",
+        color: "#a0eec7",
+      },
+    ],
+    [
+      {
+        type: "team",
+        amount: 1,
+        value: "团队 +8%",
+        name: "协同强化",
+        color: "#a5a5ff",
+      },
+      {
+        type: "promote",
+        amount: 1,
+        value: "职业 +1",
+        name: "职业晋升",
+        color: "#ffce85",
+      },
+    ],
+    [
+      {
+        type: "recruit",
+        role: "heavy",
+        amount: 1,
+        value: "队员 +1",
+        name: "重火力招募",
+        color: "#ffcc86",
+      },
+      gateDefs[1][1],
+    ],
   ];
-  const index=state.gateSequence;
-  const pair = index===0 ? systemPairs[0] : index%3===1 ? systemPairs[Math.floor(index/3)%3] : gateDefs[index%gateDefs.length];
+  const index = state.gateSequence;
+  const pair =
+    index === 0
+      ? systemPairs[0]
+      : index % 3 === 1
+        ? systemPairs[Math.floor(index / 3) % 3]
+        : gateDefs[index % gateDefs.length];
   const pairId = ++state.gateSequence;
   for (let i = 0; i < 2; i++) {
     buildGate(pair[i], i === 0 ? -2.45 : 2.45, -34);
@@ -1368,12 +1563,22 @@ function spawnGateEvent() {
 }
 
 function acquireGate(g) {
-  const special=g.reward.type;
-  if(['recruit','team','promote'].includes(special)){
-    if(special==='recruit')run.recruit(g.reward.role||'assault');
-    if(special==='team')run.teamPower=Math.min(5,run.teamPower+1);
-    if(special==='promote'){if(!run.team.length)run.recruit('assault');else run.promote();}
-    announce(g.reward.value,'队员本局持续存在 · 职业武器保留');audio.pickup();state.score+=70;return;
+  const special = g.reward.type;
+  if (["recruit", "team", "promote", "regroup"].includes(special)) {
+    if (special === "recruit") run.recruit(g.reward.role || "assault");
+    if (special === "team") run.teamPower = Math.min(5, run.teamPower + 1);
+    if (special === "regroup") {
+      state.hp = Math.min(100, state.hp + 12);
+      run.team.forEach((m) => (m.hp = Math.min(m.maxHp, m.hp + 12)));
+    }
+    if (special === "promote") {
+      if (!run.team.length) run.recruit("assault");
+      else run.promote();
+    }
+    announce(g.reward.value, "队员本局持续存在 · 职业武器保留");
+    audio.pickup();
+    state.score += 70;
+    return;
   }
   if (g.reward.type === "repair") {
     const amount = g.reward.amount + (g.charge >= 8 ? 6 : 0);
@@ -1434,7 +1639,7 @@ function acquireGate(g) {
 }
 function disposeGroup(g) {
   scene.remove(g);
-  for(const resource of g.userData.disposables||[])resource.dispose();
+  for (const resource of g.userData.disposables || []) resource.dispose();
   g.traverse?.((o) => {
     if (o.geometry && !Object.values(G).includes(o.geometry))
       o.geometry.dispose();
@@ -1455,7 +1660,12 @@ function disposeSoldier(g) {
     if (o.geometry && !Object.values(G).includes(o.geometry))
       o.geometry.dispose();
   });
-  g.traverse(o=>{if(o.isMesh&&o.material?.map&&o.material.map!==art.soldier){o.material.map.dispose();o.material.dispose();}});
+  g.traverse((o) => {
+    if (o.isMesh && o.material?.map && o.material.map !== art.soldier) {
+      o.material.map.dispose();
+      o.material.dispose();
+    }
+  });
   g.userData.body?.material?.dispose();
   g.userData.shieldMaterial?.dispose();
 }
@@ -1469,7 +1679,9 @@ function spawnEnemy(type = "grunt", x = rand(-4.4, 4.4), z = -46) {
     ranged: { hp: 38, speed: 3.5, damage: 10, scale: 0.92, score: 22 },
     elite: { hp: 195, speed: 4.4, damage: 20, scale: 1.48, score: 65 },
   }[type] || { hp: 26, speed: 5, damage: 9, scale: 1, score: 12 };
-  const group = createSoldier(type === "grunt" ? "scout" : type === "charger" ? "charger" : type);
+  const group = createSoldier(
+    type === "grunt" ? "scout" : type === "charger" ? "charger" : type,
+  );
   group.scale.setScalar(cfg.scale);
   group.position.set(x, 0, z);
   group.traverse((o) => {
@@ -1572,7 +1784,11 @@ function burst3D(x, y, z, color, count = 12) {
   const n = Math.min(
     count,
     24,
-    Math.max(0, RULES.particleLimit - state.effects.filter((p) => !p.userData.warning).length),
+    Math.max(
+      0,
+      RULES.particleLimit -
+        state.effects.filter((p) => !p.userData.warning).length,
+    ),
   );
   for (let i = 0; i < n; i++) {
     let p = particlePool.pop();
@@ -1615,7 +1831,9 @@ function acquireBullet() {
   if (!b) {
     if (state.bullets.length >= RULES.bulletLimit) return null;
     // Reuse CPU records; all live projectiles render in two GPU instanced draws.
-    const group=new THREE.Group(),core={scale:new THREE.Vector3(.08,.08,.2),material:null},tail={scale:new THREE.Vector3(.05,.05,.2),material:null};
+    const group = new THREE.Group(),
+      core = { scale: new THREE.Vector3(0.08, 0.08, 0.2), material: null },
+      tail = { scale: new THREE.Vector3(0.05, 0.05, 0.2), material: null };
     b = {
       group,
       core,
@@ -1637,23 +1855,62 @@ function acquireBullet() {
   b.group.visible = true;
   return b;
 }
-let bulletInstances=null;
-function syncBulletInstances(){
-  if(!bulletInstances){
-    const core=new THREE.InstancedMesh(G.smallSphere,new THREE.MeshBasicMaterial({color:'#ffffff'}),RULES.bulletLimit);
-    const tail=new THREE.InstancedMesh(G.smallSphere,new THREE.MeshBasicMaterial({color:'#ffffff',transparent:true,opacity:.58,depthWrite:false}),RULES.bulletLimit);
-    for(const item of [core,tail]){item.frustumCulled=false;item.instanceMatrix.setUsage(THREE.DynamicDrawUsage);scene.add(item);}
-    bulletInstances={core,tail,dummy:new THREE.Object3D(),color:new THREE.Color()};
+let bulletInstances = null;
+function syncBulletInstances() {
+  if (!bulletInstances) {
+    const core = new THREE.InstancedMesh(
+      G.smallSphere,
+      new THREE.MeshBasicMaterial({ color: "#ffffff" }),
+      RULES.bulletLimit,
+    );
+    const tail = new THREE.InstancedMesh(
+      G.smallSphere,
+      new THREE.MeshBasicMaterial({
+        color: "#ffffff",
+        transparent: true,
+        opacity: 0.58,
+        depthWrite: false,
+      }),
+      RULES.bulletLimit,
+    );
+    for (const item of [core, tail]) {
+      item.frustumCulled = false;
+      item.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+      scene.add(item);
+    }
+    bulletInstances = {
+      core,
+      tail,
+      dummy: new THREE.Object3D(),
+      color: new THREE.Color(),
+    };
   }
-  const {core,tail,dummy,color}=bulletInstances;let index=0;
-  for(const b of state.bullets){
-    if(!b.active)continue;
-    dummy.position.set(b.x,1.28,b.z);dummy.rotation.copy(b.group.rotation);dummy.scale.copy(b.core.scale);dummy.updateMatrix();core.setMatrixAt(index,dummy.matrix);
-    dummy.position.x+=Math.sin(b.group.rotation.y)*.35;dummy.position.z+=Math.cos(b.group.rotation.y)*.35;dummy.scale.copy(b.tail.scale);dummy.updateMatrix();tail.setMatrixAt(index,dummy.matrix);
-    color.set(b.color);core.setColorAt(index,color);tail.setColorAt(index,color);index++;
+  const { core, tail, dummy, color } = bulletInstances;
+  let index = 0;
+  for (const b of state.bullets) {
+    if (!b.active) continue;
+    dummy.position.set(b.x, 1.28, b.z);
+    dummy.rotation.copy(b.group.rotation);
+    dummy.scale.copy(b.core.scale);
+    dummy.updateMatrix();
+    core.setMatrixAt(index, dummy.matrix);
+    dummy.position.x += Math.sin(b.group.rotation.y) * 0.35;
+    dummy.position.z += Math.cos(b.group.rotation.y) * 0.35;
+    dummy.scale.copy(b.tail.scale);
+    dummy.updateMatrix();
+    tail.setMatrixAt(index, dummy.matrix);
+    color.set(b.color);
+    core.setColorAt(index, color);
+    tail.setColorAt(index, color);
+    index++;
   }
-  core.count=tail.count=index;
-  if(index){for(const item of [core,tail]){item.instanceMatrix.needsUpdate=true;item.instanceColor.needsUpdate=true;}}
+  core.count = tail.count = index;
+  if (index) {
+    for (const item of [core, tail]) {
+      item.instanceMatrix.needsUpdate = true;
+      item.instanceColor.needsUpdate = true;
+    }
+  }
 }
 function releaseBullet(b) {
   b.active = false;
@@ -1743,7 +2000,12 @@ function segmentHit(x0, z0, x1, z1, x, z, rx, rz) {
   return lo;
 }
 function chargeGate(g, amount) {
-  if(!["lanes","pellets","rate","speed","damage","repair"].includes(g.reward.type))return;
+  if (
+    !["lanes", "pellets", "rate", "speed", "damage", "repair"].includes(
+      g.reward.type,
+    )
+  )
+    return;
   const charge = Math.min(16, g.charge + amount);
   if (charge === g.charge) return;
   g.charge = charge;
@@ -1981,19 +2243,37 @@ function processBulletCollisions(b, dt) {
 
 function damageEnemy(e, dmg, heavy, procs = true) {
   if (e.dead) return;
-  if(procs){
-    if(e.hp/e.maxHp<.3)dmg*=1+run.level('execution')*.2;
-    const burn=run.level('burn')+(run.armor?.kind==='molten'?2:0);
-    if(burn){e.burnTime=3;e.burnDamage=3*burn;}
-    if(run.level('frost')){e.slowTime=2;e.slow=run.level('frost')*.12;}
-    if(run.level('arc') && run.arcCD<=0){run.arcCD=.7;secondaryDamage(e,dmg*.22*run.level('arc'),3.6,2,'#b7b2ff');}
-    if(run.level('blast') && run.blastCD<=0){run.blastCD=.7;secondaryDamage(e,dmg*.18*run.level('blast')*(burn?1.12:1),1.8,3,'#ffc591');}
+  if (procs) {
+    if (e.hp / e.maxHp < 0.3) dmg *= 1 + run.level("execution") * 0.2;
+    const burn = run.level("burn") + (run.armor?.kind === "molten" ? 2 : 0);
+    if (burn) {
+      e.burnTime = 3;
+      e.burnDamage = 3 * burn;
+    }
+    if (run.level("frost")) {
+      e.slowTime = 2;
+      e.slow = run.level("frost") * 0.12;
+    }
+    if (run.level("arc") && run.arcCD <= 0) {
+      run.arcCD = 0.7;
+      secondaryDamage(e, dmg * 0.22 * run.level("arc"), 3.6, 2, "#b7b2ff");
+    }
+    if (run.level("blast") && run.blastCD <= 0) {
+      run.blastCD = 0.7;
+      secondaryDamage(
+        e,
+        dmg * 0.18 * run.level("blast") * (burn ? 1.12 : 1),
+        1.8,
+        3,
+        "#ffc591",
+      );
+    }
   }
   e.hp -= dmg;
   e.stun = 0.11;
   e.flash = 0.09;
   e.group.userData.body.material.emissive.set("#ffffff");
-  e.group.userData.body.material.emissiveIntensity = 0.55;
+  e.group.userData.body.material.emissiveIntensity = 0.2;
   createDamageSprite(
     Math.max(1, Math.round(dmg)),
     heavy ? "#ffc17b" : "#e9ffff",
@@ -2009,9 +2289,13 @@ function damageEnemy(e, dmg, heavy, procs = true) {
     e.dead = 0.48;
     e.group.userData.dead = true;
     state.kills++;
-    state.hp=Math.min(100,state.hp+run.onKill());
+    state.hp = Math.min(100, state.hp + run.onKill());
     state.score += e.score;
-    if(e.bounty){state.score+=300;spawnRoadReward("armor",e.x,e.z,"thunder");announce("精英悬赏完成","积分 +300 · 战甲补给投放");}
+    if (e.bounty) {
+      state.score += 300;
+      spawnRoadReward("armor", e.x, e.z, "thunder");
+      announce("精英悬赏完成", "积分 +300 · 战甲补给投放");
+    }
     addHeat(e.type === "elite" ? 3 : 1);
     state.combo++;
     audio.impact(e.type === "elite" || e.type === "heavy");
@@ -2032,8 +2316,19 @@ function damageEnemy(e, dmg, heavy, procs = true) {
       );
   }
 }
-function secondaryDamage(origin,damage,radius,limit,color){
-  let hits=0;for(const target of state.threats){if(target!==origin&&!target.dead&&Math.hypot(target.x-origin.x,target.z-origin.z)<radius){damageEnemy(target,damage,false,false);energyLink(origin.x,origin.z,target.x,target.z,color);if(++hits>=limit)break;}}
+function secondaryDamage(origin, damage, radius, limit, color) {
+  let hits = 0;
+  for (const target of state.threats) {
+    if (
+      target !== origin &&
+      !target.dead &&
+      Math.hypot(target.x - origin.x, target.z - origin.z) < radius
+    ) {
+      damageEnemy(target, damage, false, false);
+      energyLink(origin.x, origin.z, target.x, target.z, color);
+      if (++hits >= limit) break;
+    }
+  }
 }
 function damageBoss(dmg) {
   const b = state.boss;
@@ -2046,6 +2341,7 @@ function damageBoss(dmg) {
     }
     return;
   }
+  if (b.hp / b.maxHp < 0.3) dmg *= 1 + run.level("execution") * 0.2;
   const boundary = b.armorPhase < 2 ? (b.maxHp * (2 - b.armorPhase)) / 3 : 0;
   const previousHp = b.hp;
   b.hp = Math.max(boundary, b.hp - dmg);
@@ -2076,7 +2372,7 @@ function damageBoss(dmg) {
 }
 
 function spawnEnemyShot(enemy) {
-  if(state.enemyShots.length>=60)return;
+  if (state.enemyShots.length >= 60) return;
   const warning = mesh(
     new THREE.RingGeometry(0.16, 0.27, 24),
     new THREE.MeshBasicMaterial({
@@ -2098,7 +2394,7 @@ function spawnEnemyShot(enemy) {
     x: start.x,
     z: start.z,
     y: start.y,
-    vx: (state.playerX - start.x) / Math.max(.8,(playerZ-start.z)/11),
+    vx: (state.playerX - start.x) / Math.max(0.8, (playerZ - start.z) / 11),
     vz: 11,
     life: 6,
     damage: enemy.damage,
@@ -2161,7 +2457,15 @@ function spawnRoundEnemy() {
   else if (t < 40) type = r < 0.22 ? "runner" : r < 0.32 ? "ranged" : "grunt";
   else if (t < 70)
     type =
-      r < 0.22 ? "runner" : r < 0.42 ? "heavy" : r < 0.57 ? "ranged" : r < .72 ? "charger" : "grunt";
+      r < 0.22
+        ? "runner"
+        : r < 0.42
+          ? "heavy"
+          : r < 0.57
+            ? "ranged"
+            : r < 0.72
+              ? "charger"
+              : "grunt";
   else
     type =
       r < 0.22
@@ -2172,14 +2476,31 @@ function spawnRoundEnemy() {
             ? "runner"
             : r < 0.78
               ? "ranged"
-              : r < .9 ? "charger" : "grunt";
+              : r < 0.9
+                ? "charger"
+                : "grunt";
   spawnEnemy(type, rand(-5.1, 5.1), -44 - rand(0, 12));
 }
 function spawnInterval(t) {
-  const points=[[0,1.7],[15,1.35],[40,.95],[70,.78],[95,.76],[180,.58],[270,.46],[400,.40]];
-  let base=.4;
-  for(let i=1;i<points.length;i++)if(t<=points[i][0]){const a=points[i-1],b=points[i];base=mix(a[1],b[1],clamp((t-a[0])/(b[0]-a[0]),0,1));break;}
-  return t%24>=20?base*3.8:base;
+  const points = [
+    [0, 1.7],
+    [15, 1.35],
+    [40, 0.95],
+    [70, 0.78],
+    [95, 0.76],
+    [180, 0.58],
+    [270, 0.46],
+    [400, 0.4],
+  ];
+  let base = 0.4;
+  for (let i = 1; i < points.length; i++)
+    if (t <= points[i][0]) {
+      const a = points[i - 1],
+        b = points[i];
+      base = mix(a[1], b[1], clamp((t - a[0]) / (b[0] - a[0]), 0, 1));
+      break;
+    }
+  return t % 24 >= 20 ? base * 3.8 : base;
 }
 
 function addHeat(amount) {
@@ -2224,7 +2545,7 @@ function updateDifficulty(dt) {
   }
   if (t >= state.nextBoss && !state.boss) {
     buildBoss();
-    state.nextBoss = RULES.bosses.find(n=>n>t+1) || state.nextBoss + 90;
+    state.nextBoss = RULES.bosses.find((n) => n > t + 1) || state.nextBoss + 90;
   }
 }
 
@@ -2244,28 +2565,53 @@ function moveThreats(dt) {
       continue;
     }
     e.stun = Math.max(0, e.stun - dt);
-    if(e.burnTime>0){e.burnTime-=dt;e.burnTick=(e.burnTick||0)+dt;if(e.burnTick>=.5){e.burnTick-=.5;damageEnemy(e,e.burnDamage*.5,false,false);if(e.dead)continue;}}
-    e.slowTime=Math.max(0,(e.slowTime||0)-dt);
-    const moveDt=dt*(e.slowTime>0?1-(e.slow||0):1);
+    e.cooldown = Math.max(0, (e.cooldown || 0) - dt);
+    if (e.burnTime > 0) {
+      e.burnTime -= dt;
+      e.burnTick = (e.burnTick || 0) + dt;
+      if (e.burnTick >= 0.5) {
+        e.burnTick -= 0.5;
+        damageEnemy(e, e.burnDamage * 0.5, false, false);
+        if (e.dead) continue;
+      }
+    }
+    e.slowTime = Math.max(0, (e.slowTime || 0) - dt);
+    const moveDt = dt * (e.slowTime > 0 ? 1 - (e.slow || 0) : 1);
     e.flash = Math.max(0, (e.flash || 0) - dt);
-    e.group.userData.body.material.emissiveIntensity = e.flash > 0 ? 0.6 : 0;
+    e.group.userData.body.material.emissiveIntensity = e.flash > 0 ? 0.22 : 0;
     e.phase += dt;
     const dz = playerZ - e.z,
       dist = Math.abs(dz);
     if (e.type === "runner" || e.type === "charger") {
-      e.dashCooldown=(e.dashCooldown??1.7)-dt;
-      if(e.dash>0){
-        e.dash-=dt;e.x=mix(e.x,e.targetX,Math.min(1,dt*3));e.z+=e.speed*1.8*moveDt;
-      }else if(e.windup>0){
-        e.windup-=dt;
-        e.group.userData.body.scale.y=.87;
-        if(e.windup<=0){e.dash=.65;e.dashCooldown=2.8;e.group.userData.body.scale.y=1;}
-      }else{
-        e.x=mix(e.x,state.playerX,Math.min(1,dt*.4));e.z+=e.speed*moveDt;
-        if(dist<24&&e.dashCooldown<=0){
-          e.windup=.75;e.targetX=clamp(state.playerX,-PLAYER_LIMIT,PLAYER_LIMIT);
-          const warning=mesh(new THREE.PlaneGeometry(1.5,Math.max(2,dist)),basic('#ffbc70',.2,false),scene,[e.targetX,.015,(e.z+playerZ)/2]);
-          warning.rotation.x=-Math.PI/2;warning.userData.warning=true;warning.userData.life=.75;state.effects.push(warning);
+      e.dashCooldown = (e.dashCooldown ?? 1.7) - dt;
+      if (e.dash > 0) {
+        e.dash -= dt;
+        e.x = mix(e.x, e.targetX, Math.min(1, dt * 3));
+        e.z += e.speed * 1.8 * moveDt;
+      } else if (e.windup > 0) {
+        e.windup -= dt;
+        e.group.userData.body.scale.y = 0.87;
+        if (e.windup <= 0) {
+          e.dash = 0.65;
+          e.dashCooldown = 2.8;
+          e.group.userData.body.scale.y = 1;
+        }
+      } else {
+        e.x = mix(e.x, state.playerX, Math.min(1, dt * 0.4));
+        e.z += e.speed * moveDt;
+        if (dist < 24 && e.dashCooldown <= 0) {
+          e.windup = 0.75;
+          e.targetX = clamp(state.playerX, -PLAYER_LIMIT, PLAYER_LIMIT);
+          const warning = mesh(
+            new THREE.PlaneGeometry(1.5, Math.max(2, dist)),
+            basic("#ffbc70", 0.2, false),
+            scene,
+            [e.targetX, 0.015, (e.z + playerZ) / 2],
+          );
+          warning.rotation.x = -Math.PI / 2;
+          warning.userData.warning = true;
+          warning.userData.life = 0.75;
+          state.effects.push(warning);
         }
       }
     } else if (e.type === "ranged") {
@@ -2284,9 +2630,12 @@ function moveThreats(dt) {
       );
       e.z += e.speed * moveDt;
     }
-    if(e.type==='elite'){
-      e.fire-=dt;
-      if(e.fire<=0&&dist<30){e.fire=4.5;spawnEnemyShot(e);}
+    if (e.type === "elite") {
+      e.fire -= dt;
+      if (e.fire <= 0 && dist < 30) {
+        e.fire = 4.5;
+        spawnEnemyShot(e);
+      }
     }
     if (e.stun > 0) e.z -= e.stun * 0.8 * dt;
     e.group.position.set(
@@ -2299,6 +2648,7 @@ function moveThreats(dt) {
     e.group.userData.armL.rotation.x = -0.22 + Math.sin(e.phase * 8) * 0.28;
     e.group.userData.armR.rotation.x = -0.38 - Math.sin(e.phase * 8) * 0.25;
     e.group.userData.body.rotation.z = Math.sin(e.phase * 4) * 0.025;
+    e.group.userData.body.position.z = e.cooldown > 0 ? 0.22 : 0;
     e.shadow.position.set(e.x, -0.08, e.z);
     e.bar.scale.x = Math.max(0.02, e.hp / e.maxHp);
     e.bar.position.x = -(1 - e.hp / e.maxHp) * 0.44;
@@ -2307,19 +2657,27 @@ function moveThreats(dt) {
       .invert()
       .multiply(camera.quaternion);
     if (dist < 1.25 && Math.abs(e.x - state.playerX) < 0.9) {
+      e.cooldown = 0.24;
       hurtPlayer(e.damage, 0.8);
       e.z -= 2.1;
       e.x += Math.sign(e.x - state.playerX || 1) * 0.45;
     }
-    for(const member of [...run.team]) {
-      if(Math.abs(e.z-member.z)<.95 && Math.abs(e.x-member.x)<.8 && member.invuln<=0){
-        run.hurtMember(member,e.damage);e.z-=.9;burst3D(member.x,1,member.z,'#ffba98',8);
+    for (const member of [...run.team]) {
+      if (
+        Math.abs(e.z - member.z) < 0.95 &&
+        Math.abs(e.x - member.x) < 0.8 &&
+        member.invuln <= 0
+      ) {
+        e.cooldown = 0.24;
+        run.hurtMember(member, e.damage);
+        e.z -= 0.9;
+        burst3D(member.x, 1, member.z, "#ffba98", 8);
       }
     }
     if (e.z > playerZ + 1.8) {
       run.totals.breaches++;
-      hurtPlayer(Math.max(7,e.damage*.8),.15,true);
-      showCombo('防线突破 · 装甲受损');
+      hurtPlayer(Math.max(7, e.damage * 0.8), 0.15, true);
+      showCombo("防线突破 · 装甲受损");
       disposeSoldier(e.group);
       removeShadow(e.shadow);
       state.threats.splice(i, 1);
@@ -2349,26 +2707,30 @@ function updateBoss(dt) {
   $("#bossLabel").textContent = b.shield > 0 ? "巨像 · 护盾" : "灾厄巨像";
   b.flash = Math.max(0, b.flash - dt);
   b.group.userData.body.material.emissive.set("#ffe1a6");
-  b.group.userData.body.material.emissiveIntensity = b.flash > 0 ? 0.9 : 0;
+  b.group.userData.body.material.emissiveIntensity = b.flash > 0 ? 0.3 : 0;
   b.move += dt;
   b.x = Math.sin(b.move * 0.45) * 3.25;
   b.z = mix(b.z, -18, Math.min(1, dt * 0.5));
   b.group.position.set(b.x, -0.12 + Math.sin(b.move * 1.6) * 0.04, b.z);
-  b.group.rotation.y = Math.sin(b.move * .4)*.08;
+  b.group.rotation.y = Math.sin(b.move * 0.4) * 0.08;
   b.group.userData.legL.rotation.x = Math.sin(b.move * 3) * 0.08;
   b.attack -= dt;
   if (b.attack <= 0 && b.phase === "idle") {
     b.phase = "warn";
-    b.skillCycle=(b.skillCycle||0)+1;
-    b.sweep=b.armorPhase===2 && b.skillCycle%2===0;
-    b.warning = b.armorPhase>0?1.05:.85;
-    b.attack = b.armorPhase===2?2.85:3.2;
-    const target = b.sweep?(state.playerX>0?2.6:-2.6):clamp(state.playerX,-4.7,4.7);
-    if(b.sweep)showCombo('巨像侧翼扫射 · 转移另一侧');
-    else if(b.armorPhase>0)showCombo('巨像扩散齐射 · 离开预警区域');
+    b.skillCycle = (b.skillCycle || 0) + 1;
+    b.sweep = b.armorPhase === 2 && b.skillCycle % 2 === 0;
+    b.warning = b.armorPhase > 0 ? 1.05 : 0.85;
+    b.attack = b.armorPhase === 2 ? 2.85 : 3.2;
+    const target = b.sweep
+      ? state.playerX > 0
+        ? 2.6
+        : -2.6
+      : clamp(state.playerX, -4.7, 4.7);
+    if (b.sweep) showCombo("巨像侧翼扫射 · 转移另一侧");
+    else if (b.armorPhase > 0) showCombo("巨像扩散齐射 · 离开预警区域");
     b.targetX = target;
     const warn = mesh(
-      new THREE.PlaneGeometry(b.sweep?5.2:b.armorPhase>0?4.2:2.8, 21),
+      new THREE.PlaneGeometry(b.sweep ? 5.2 : b.armorPhase > 0 ? 4.2 : 2.8, 21),
       new THREE.MeshBasicMaterial({
         color: "#ff2846",
         transparent: true,
@@ -2395,7 +2757,12 @@ function updateBoss(dt) {
       b.phase = "idle";
       b.warnMesh?.parent?.remove(b.warnMesh);
       b.warnMesh = null;
-      for (let i = -(b.armorPhase>0?2:1); i <= (b.armorPhase>0?2:1); i++) spawnBossShot(b, i);
+      for (
+        let i = -(b.armorPhase > 0 ? 2 : 1);
+        i <= (b.armorPhase > 0 ? 2 : 1);
+        i++
+      )
+        spawnBossShot(b, i);
       state.shake = 0.12;
     }
   }
@@ -2404,10 +2771,10 @@ function updateBoss(dt) {
   $("#bossBar").style.width = `${Math.max(0, (b.hp / b.maxHp) * 100)}%`;
 }
 function spawnBossShot(b, i) {
-  if(state.enemyShots.length>=60)return;
+  if (state.enemyShots.length >= 60) return;
   const x = b.x + i * 0.65,
     z = b.z + 1,
-    targetX = clamp(b.targetX + i * (b.sweep?.95:.7), -5.3, 5.3),
+    targetX = clamp(b.targetX + i * (b.sweep ? 0.95 : 0.7), -5.3, 5.3),
     travel = 1.35;
   const meshObj = mesh(
     G.sphere,
@@ -2462,14 +2829,16 @@ function updateShots(dt) {
         [0.16, 0.16, 0.16],
       );
     }
-    const oldX=s.x, oldZ=s.z;
+    const oldX = s.x,
+      oldZ = s.z;
     s.x += s.vx * dt;
     s.z += s.vz * dt;
     s.life -= dt;
     s.mesh.position.set(s.x, s.y, s.z);
     s.mesh.rotation.x += dt * 4;
     if (
-      segmentHit(oldX,oldZ,s.x,s.z,state.playerX,playerZ,.72,.65)!==null
+      segmentHit(oldX, oldZ, s.x, s.z, state.playerX, playerZ, 0.72, 0.65) !==
+      null
     ) {
       hurtPlayer(s.damage, 0.8);
       burst3D(s.x, 0.8, s.z, "#ff745b", 9);
@@ -2477,18 +2846,31 @@ function updateShots(dt) {
       state.enemyShots.splice(i, 1);
       continue;
     }
-    const member=run.team.find(m=>m.invuln<=0 && segmentHit(oldX,oldZ,s.x,s.z,m.x,m.z,.6,.65)!==null);
-    if(member){run.hurtMember(member,s.damage);burst3D(member.x,1,member.z,'#ff9f9c',6);scene.remove(s.mesh);state.enemyShots.splice(i,1);continue;}
+    const member = run.team.find(
+      (m) =>
+        m.invuln <= 0 &&
+        segmentHit(oldX, oldZ, s.x, s.z, m.x, m.z, 0.6, 0.65) !== null,
+    );
+    if (member) {
+      run.hurtMember(member, s.damage);
+      burst3D(member.x, 1, member.z, "#ff9f9c", 6);
+      scene.remove(s.mesh);
+      state.enemyShots.splice(i, 1);
+      continue;
+    }
     if (s.life <= 0 || s.z > playerZ + 2) {
       scene.remove(s.mesh);
       state.enemyShots.splice(i, 1);
     }
   }
 }
-function hurtPlayer(amount, cooldown = .8, breach = false) {
+function hurtPlayer(amount, cooldown = 0.8, breach = false) {
   if ((!breach && state.invuln > 0) || state.mode !== "playing") return;
-  const guards=run.team.filter(m=>m.role==='guard').length;
-  state.hp = Math.max(0, state.hp - run.absorb(amount*(1-Math.min(.2,guards*.08))));
+  const guards = run.team.filter((m) => m.role === "guard").length;
+  state.hp = Math.max(
+    0,
+    state.hp - run.absorb(amount * (1 - Math.min(0.2, guards * 0.08))),
+  );
   app.classList.remove("hurt");
   void app.offsetWidth;
   app.classList.add("hurt");
@@ -2535,20 +2917,31 @@ function updateGatesCrates(dt) {
     }
   for (let i = state.crates.length - 1; i >= 0; i--) {
     const c = state.crates[i];
-    if(c.resolved){disposeGroup(c.group);state.crates.splice(i,1);continue;}
-    const previousZ=c.z;
+    if (c.resolved) {
+      disposeGroup(c.group);
+      state.crates.splice(i, 1);
+      continue;
+    }
+    const previousZ = c.z;
     c.z += worldSpeed() * dt;
     c.group.position.z = c.z;
     c.spin += dt;
     c.group.rotation.y = Math.sin(c.spin) * 0.07;
     c.group.position.y = 0.42 + Math.sin(c.spin * 2) * 0.09;
     if (
-      previousZ <= playerZ+1.6 && c.z >= playerZ-1.7 &&
-      Math.abs(c.x - state.playerX) < 1.55+run.level("magnet")*.2
+      previousZ <= playerZ + 1.6 &&
+      c.z >= playerZ - 1.7 &&
+      Math.abs(c.x - state.playerX) < 1.55 + run.level("magnet") * 0.2
     ) {
-      if(c.choiceId)for(const other of state.crates)if(other!==c&&other.choiceId===c.choiceId){other.resolved=true;other.group.visible=false;}
-      if(c.system){collectRoadReward(c);}
-      else if (c.type === "medkit") {
+      if (c.choiceId)
+        for (const other of state.crates)
+          if (other !== c && other.choiceId === c.choiceId) {
+            other.resolved = true;
+            other.group.visible = false;
+          }
+      if (c.system) {
+        collectRoadReward(c);
+      } else if (c.type === "medkit") {
         state.hp = Math.min(100, state.hp + 25);
         announce("装甲修复 +25", "调整路线 · 继续突围");
         audio.pickup();
@@ -2583,188 +2976,526 @@ function updateGatesCrates(dt) {
   }
 }
 
-function energyLink(x,z,tx,tz,color='#a7a3ff') {
-  if(state.effects.filter(p=>p.userData.warning).length>=18)return;
-  const points=[new THREE.Vector3(x,1.4,z),new THREE.Vector3((x+tx)/2+.16,1.6,(z+tz)/2),new THREE.Vector3(tx,1.2,tz)];
-  const geometry=new THREE.BufferGeometry().setFromPoints(points);
-  const line=new THREE.Line(geometry,new THREE.LineBasicMaterial({color,transparent:true,opacity:.9}));
-  line.userData.warning=true;line.userData.life=.23;scene.add(line);state.effects.push(line);
+function energyLink(x, z, tx, tz, color = "#a7a3ff") {
+  if (state.effects.filter((p) => p.userData.warning).length >= 18) return;
+  const points = [
+    new THREE.Vector3(x, 1.4, z),
+    new THREE.Vector3((x + tx) / 2 + 0.16, 1.6, (z + tz) / 2),
+    new THREE.Vector3(tx, 1.2, tz),
+  ];
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  const line = new THREE.Line(
+    geometry,
+    new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9 }),
+  );
+  line.userData.warning = true;
+  line.userData.life = 0.23;
+  scene.add(line);
+  state.effects.push(line);
 }
 function updateTeam(dt) {
-  const slots=[[-1.3,.3],[1.3,.3],[-2.45,.7],[2.45,.7]];
-  for(const [id,visual] of teamVisuals)if(!run.team.some(m=>m.id===id)){
-    burst3D(visual.position.x,1,visual.position.z,'#ffc2a1',12);disposeGroup(visual);visual.userData.body.material.dispose();teamVisuals.delete(id);
-    showCombo('队员阵亡 · 寻找救援招募');
-  }
-  run.team.forEach((member,i)=>{
-    let visual=teamVisuals.get(member.id);
-    if(!visual){
-      visual=createAssetSoldier();visual.scale.setScalar(.8);
+  const slots = [
+    [-1.3, 0.3],
+    [1.3, 0.3],
+    [-2.45, 0.7],
+    [2.45, 0.7],
+  ];
+  for (const [id, visual] of teamVisuals)
+    if (!run.team.some((m) => m.id === id)) {
+      burst3D(visual.position.x, 1, visual.position.z, "#ffc2a1", 12);
+      disposeGroup(visual);
+      visual.userData.body.material.dispose();
+      teamVisuals.delete(id);
+      showCombo("队员阵亡 · 寻找救援招募");
+    }
+  run.team.forEach((member, i) => {
+    let visual = teamVisuals.get(member.id);
+    if (!visual) {
+      visual = createAssetSoldier();
+      visual.scale.setScalar(0.8);
       visual.userData.body.material.color.set(ROLES[member.role].color);
-      const gun=buildGun(ROLES[member.role].weapon);visual.userData.gun.add(gun);
-      const ring=mesh(G.torus,mat('squadRing',ROLES[member.role].color,.5,.1,.6),visual,[0,.12,0],[.54,.54,.54]);ring.rotation.x=Math.PI/2;
-      scene.add(visual);teamVisuals.set(member.id,visual);
-      member.x=clamp(state.playerX+slots[i][0],-4.5,4.5);member.z=playerZ+slots[i][1];
+      const gun = buildGun(ROLES[member.role].weapon);
+      visual.userData.gun.add(gun);
+      const ring = mesh(
+        G.torus,
+        mat("squadRing", ROLES[member.role].color, 0.5, 0.1, 0.6),
+        visual,
+        [0, 0.12, 0],
+        [0.54, 0.54, 0.54],
+      );
+      ring.rotation.x = Math.PI / 2;
+      scene.add(visual);
+      teamVisuals.set(member.id, visual);
+      member.x = clamp(state.playerX + slots[i][0], -4.5, 4.5);
+      member.z = playerZ + slots[i][1];
     }
-    member.x=mix(member.x,clamp(state.playerX+slots[i][0],-4.5,4.5),Math.min(1,dt*7));
-    member.z=mix(member.z,playerZ+slots[i][1],Math.min(1,dt*7));
-    visual.position.set(member.x,-.05+Math.sin(state.time*11+i)*.035,member.z);
-    visual.rotation.z=Math.sin(state.time*10+i)*.02;
-    visual.visible=member.invuln>0?Math.floor(member.invuln*16)%2===0:true;
-    visual.userData.body.material.emissive.set(member.level===3?'#56417f':member.level===2?'#1c485a':'#000000');
-    visual.userData.body.material.emissiveIntensity=.25;
-    member.fire-=dt;
-    if(member.fire<=0){
-      const role=ROLES[member.role],targets=[...state.threats,...(state.boss?[state.boss]:[])].filter(e=>!e.dead&&e.z<member.z&&Math.abs(e.x-member.x)<5).sort((a,b)=>b.z-a.z);
-      if(targets.length){
-        const bonus=run.teamDamage(member),info=weaponInfo[role.weapon];
-        createShot(role.weapon,targets[0],{x:member.x,z:member.z,stats:{lanes:1,pellets:1,fireRate:1,bulletSpeed:1,damage:role.damage/info.damage*bonus}});
-        visual.userData.gun.position.z=-.1;
-        if(Math.random()<.2)audio.shoot(role.weapon);
+    member.x = mix(
+      member.x,
+      clamp(state.playerX + slots[i][0], -4.5, 4.5),
+      Math.min(1, dt * 7),
+    );
+    member.z = mix(member.z, playerZ + slots[i][1], Math.min(1, dt * 7));
+    visual.position.set(
+      member.x,
+      -0.05 + Math.sin(state.time * 11 + i) * 0.035,
+      member.z,
+    );
+    visual.rotation.z = Math.sin(state.time * 10 + i) * 0.02;
+    visual.userData.legL.rotation.x = Math.sin(state.time * 11 + i) * 0.35;
+    visual.userData.legR.rotation.x = -Math.sin(state.time * 11 + i) * 0.35;
+    visual.visible =
+      member.invuln > 0 ? Math.floor(member.invuln * 16) % 2 === 0 : true;
+    visual.userData.body.material.emissive.set(
+      member.level === 3
+        ? "#56417f"
+        : member.level === 2
+          ? "#1c485a"
+          : "#000000",
+    );
+    visual.userData.body.material.emissiveIntensity = 0.25;
+    member.fire -= dt;
+    if (member.fire <= 0) {
+      const role = ROLES[member.role],
+        targets = [...state.threats, ...(state.boss ? [state.boss] : [])]
+          .filter(
+            (e) => !e.dead && e.z < member.z && Math.abs(e.x - member.x) < 5,
+          )
+          .sort((a, b) => b.z - a.z);
+      if (targets.length) {
+        const bonus = run.teamDamage(member, state.hp),
+          info = weaponInfo[role.weapon];
+        createShot(role.weapon, targets[0], {
+          x: member.x,
+          z: member.z,
+          stats: {
+            lanes: 1,
+            pellets: 1,
+            fireRate: 1,
+            bulletSpeed: 1,
+            damage: (role.damage / info.damage) * bonus,
+          },
+        });
+        visual.userData.gun.position.z = -0.1;
+        if (Math.random() < 0.2) audio.shoot(role.weapon);
       }
-      member.fire=role.interval/(1+run.level('drill')*.12)/(1+(member.level-1)*.08);
+      member.fire =
+        role.interval /
+        (1 + run.level("drill") * 0.12) /
+        (1 + (member.level - 1) * 0.08);
     }
-    visual.userData.gun.position.z=mix(visual.userData.gun.position.z,-.25,Math.min(1,dt*10));
+    visual.userData.gun.position.z = mix(
+      visual.userData.gun.position.z,
+      -0.25,
+      Math.min(1, dt * 10),
+    );
   });
 }
-function spawnRoadReward(kind,x=rand(-3.5,3.5),z=-30,value=null){
-  if(state.crates.length>=3)return null;
-  const descriptors={
-    rescue:{name:'队员救援',value:'招募 +1',color:'#83e5ff'},
-    pet:{name:'伙伴信标',value:PETS[value]?.name||'宠物支援',color:PETS[value]?.color||'#c6acff'},
-    armor:{name:'稀有战甲',value:ARMORS[value]?.name||'战甲补给',color:ARMORS[value]?.color||'#bfa9ff'},
-    truck:{name:'武装运输车',value:(weaponInfo[value]||weaponInfo.machine).name,color:'#ffe2a0'},
+function spawnRoadReward(kind, x = rand(-3.5, 3.5), z = -30, value = null) {
+  if (state.crates.length >= 3) return null;
+  const descriptors = {
+    rescue: {
+      name: "队员救援",
+      value: run.team.length < 4 ? "招募 +1" : "编队整备",
+      color: "#83e5ff",
+    },
+    pet: {
+      name: "伙伴信标",
+      value: PETS[value]?.name || "宠物支援",
+      color: PETS[value]?.color || "#c6acff",
+    },
+    armor: {
+      name: "稀有战甲",
+      value: ARMORS[value]?.name || "战甲补给",
+      color: ARMORS[value]?.color || "#bfa9ff",
+    },
+    truck: {
+      name: "武装运输车",
+      value: (weaponInfo[value] || weaponInfo.machine).name,
+      color: "#ffe2a0",
+    },
   };
-  const descriptor=descriptors[kind];if(!descriptor)return null;
-  spawnCrate('medkit',x,z);
-  const c=state.crates.at(-1);c.system={kind,value};
-  c.group.children.filter(o=>o.isSprite).forEach(o=>{o.material.map.dispose();o.material.dispose();c.group.remove(o);});
-  const label=labelSprite({value:descriptor.value,name:descriptor.name,hint:kind==='pet'?'同伴升级 · 可替换':kind==='rescue'?'持续编队 · 阵亡可补员':'左右移动 · 靠近领取'},descriptor.color);
-  label.sprite.position.y=2.5;label.sprite.scale.set(3,2.05,1);c.group.add(label.sprite);
-  if(kind==='truck'){
-    addBox(c.group,[0,-.08,0],[1.7,.65,1.65],'#69859d');addBox(c.group,[0,.48,-.46],[1.35,.6,.7],'#8cc8db');
-    for(const a of [-1,1])for(const b of [-1,1]){const wheel=mesh(G.smallSphere,mat('truckTyre','#26374b'),c.group,[a*.8,-.35,b*.55],[.18,.32,.32]);}
+  const descriptor = descriptors[kind];
+  if (!descriptor) return null;
+  spawnCrate("medkit", x, z);
+  const c = state.crates.at(-1);
+  c.system = { kind, value };
+  c.group.children
+    .filter((o) => o.isSprite)
+    .forEach((o) => {
+      o.material.map.dispose();
+      o.material.dispose();
+      c.group.remove(o);
+    });
+  const label = labelSprite(
+    {
+      value: descriptor.value,
+      name: descriptor.name,
+      hint:
+        kind === "pet"
+          ? "同伴升级 · 可替换"
+          : kind === "rescue"
+            ? "持续编队 · 阵亡可补员"
+            : "左右移动 · 靠近领取",
+    },
+    descriptor.color,
+  );
+  label.sprite.position.y = 2.5;
+  label.sprite.scale.set(3, 2.05, 1);
+  c.group.add(label.sprite);
+  if (kind === "truck") {
+    addBox(c.group, [0, -0.08, 0], [1.7, 0.65, 1.65], "#69859d");
+    addBox(c.group, [0, 0.48, -0.46], [1.35, 0.6, 0.7], "#8cc8db");
+    for (const a of [-1, 1])
+      for (const b of [-1, 1]) {
+        const wheel = mesh(
+          G.smallSphere,
+          mat("truckTyre", "#26374b"),
+          c.group,
+          [a * 0.8, -0.35, b * 0.55],
+          [0.18, 0.32, 0.32],
+        );
+      }
   }
-  const beacon=mesh(G.torus,mat('reward'+kind,descriptor.color,.3,.15,1),c.group,[0,1.05,0],[.75,.75,.75]);beacon.rotation.x=Math.PI/2;
+  const beacon = mesh(
+    G.torus,
+    mat("reward" + kind, descriptor.color, 0.3, 0.15, 1),
+    c.group,
+    [0, 1.05, 0],
+    [0.75, 0.75, 0.75],
+  );
+  beacon.rotation.x = Math.PI / 2;
   return c;
 }
-function collectRoadReward(c){
-  const {kind,value}=c.system;
-  if(kind==='rescue'){run.recruit(value||'assault');announce('队员归队',ROLES[value||'assault'].name+' · 本局持续作战');}
-  if(kind==='pet'){run.equipPet(value);announce(PETS[value].name+' Lv.'+run.pet.level,PETS[value].description);}
-  if(kind==='armor'){run.activateArmor(value);announce(ARMORS[value].name+' · 变身', '持续12秒 · '+ARMORS[value].description);state.shake=.22;}
-  if(kind==='truck'){
-    const order=['rifle','machine','shotgun','plasma','laser'];
-    if(order.indexOf(value)>order.indexOf(state.weapon))setWeapon(value);else{state.stats.damage=Math.min(3,state.stats.damage*1.12);announce('运输补给 · 当前武器校准','保留高阶武器');}
+function collectRoadReward(c) {
+  const { kind, value } = c.system;
+  if (kind === "rescue") {
+    run.recruit(value || "assault");
+    announce("队员归队", ROLES[value || "assault"].name + " · 本局持续作战");
+  }
+  if (kind === "pet") {
+    run.equipPet(value);
+    announce(
+      PETS[value].name + " Lv." + run.pet.level,
+      PETS[value].description,
+    );
+  }
+  if (kind === "armor") {
+    run.activateArmor(value);
+    announce(
+      ARMORS[value].name + " · 变身",
+      "持续12秒 · " + ARMORS[value].description,
+    );
+    state.shake = 0.22;
+  }
+  if (kind === "truck") {
+    const order = ["rifle", "machine", "shotgun", "plasma", "laser"];
+    if (order.indexOf(value) > order.indexOf(state.weapon)) setWeapon(value);
+    else {
+      state.stats.damage = Math.min(3, state.stats.damage * 1.12);
+      announce("运输补给 · 当前武器校准", "保留高阶武器");
+    }
     run.addShield(10);
   }
-  audio.pickup();updateWeaponUi();updateSystemsHud();
+  audio.pickup();
+  updateWeaponUi();
+  updateSystemsHud();
 }
-function updatePetArmor(dt,result){
-  if(run.pet){
-    const pet=run.pet,kind=pet.kind;
-    if(!petVisual||petVisual.userData.kind!==kind){
-      if(petVisual)disposeGroup(petVisual);
-      petVisual=new THREE.Group();petVisual.userData.kind=kind;
-      const tex=assetLoader.load('./assets/pets/'+kind+'.svg');tex.colorSpace=THREE.SRGBColorSpace;
-      const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false}));sprite.scale.set(.95,.95,1);petVisual.add(sprite);petVisual.userData.disposables=[tex,sprite.material];scene.add(petVisual);
+function updatePetArmor(dt, result) {
+  if (run.pet) {
+    const pet = run.pet,
+      kind = pet.kind;
+    if (!petVisual || petVisual.userData.kind !== kind) {
+      if (petVisual) disposeGroup(petVisual);
+      petVisual = new THREE.Group();
+      petVisual.userData.kind = kind;
+      const tex = assetLoader.load("./assets/pets/" + kind + ".svg");
+      tex.colorSpace = THREE.SRGBColorSpace;
+      const sprite = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+          map: tex,
+          transparent: true,
+          depthWrite: false,
+        }),
+      );
+      sprite.scale.set(0.95, 0.95, 1);
+      petVisual.add(sprite);
+      petVisual.userData.disposables = [tex, sprite.material];
+      scene.add(petVisual);
     }
-    petVisual.position.set(clamp(state.playerX-1.1,-5.5,5.5),2.3+Math.sin(state.time*3)*.18,playerZ+.3);
-    petVisual.scale.setScalar(pet.flash>0?1.12:1);
-    if(result.pet){
-      const target=state.threats.filter(e=>!e.dead).sort((a,b)=>b.z-a.z)[0]||state.boss;
-      if(target && ['dragon','owl'].includes(result.pet)){
-        energyLink(petVisual.position.x,playerZ,target.x,target.z,PETS[kind].color);
-        if(result.pet==='owl')for(const e of state.threats){e.slowTime=2;e.slow=.25;}
-        if(target===state.boss)damageBoss((kind==='dragon'?20:12)*pet.level);
-        else damageEnemy(target,(kind==='dragon'?20:12)*pet.level,true,false);
+    petVisual.position.set(
+      clamp(state.playerX - 1.1, -5.5, 5.5),
+      2.3 + Math.sin(state.time * 3) * 0.18,
+      playerZ + 0.3,
+    );
+    petVisual.scale.setScalar(pet.flash > 0 ? 1.12 : 1);
+    if (result.pet) {
+      const target =
+        state.threats.filter((e) => !e.dead).sort((a, b) => b.z - a.z)[0] ||
+        state.boss;
+      if (target && ["dragon", "owl"].includes(result.pet)) {
+        energyLink(
+          petVisual.position.x,
+          playerZ,
+          target.x,
+          target.z,
+          PETS[kind].color,
+        );
+        if (result.pet === "owl")
+          for (const e of state.threats) {
+            e.slowTime = 2;
+            e.slow = 0.25;
+          }
+        if (target === state.boss)
+          damageBoss((kind === "dragon" ? 20 : 12) * pet.level);
+        else
+          damageEnemy(
+            target,
+            (kind === "dragon" ? 20 : 12) * pet.level,
+            true,
+            false,
+          );
       }
-      burst3D(state.playerX,1.8,playerZ,PETS[kind].color,15);audio.pickup();
+      burst3D(state.playerX, 1.8, playerZ, PETS[kind].color, 15);
+      audio.pickup();
     }
   }
-  if(run.armor||run.armorFade>0){
-    const kind=run.armor?.kind||armorVisual?.userData.kind;
-    if(kind && (!armorVisual||armorVisual.userData.kind!==kind)){
-      if(armorVisual)disposeGroup(armorVisual);
-      armorVisual=new THREE.Group();armorVisual.userData.kind=kind;
-      const color=ARMORS[kind].color;
-      const platingTexture=assetLoader.load('./assets/armors/'+kind+'.svg');platingTexture.colorSpace=THREE.SRGBColorSpace;
-      const plating=mesh(new THREE.PlaneGeometry(2.2,1.47),new THREE.MeshStandardMaterial({map:platingTexture,transparent:true,alphaTest:.1,side:THREE.DoubleSide,roughness:.5,metalness:.2}),armorVisual,[0,1.25,.25]);plating.quaternion.copy(camera.quaternion);
-      const ring=mesh(G.torus,mat('armorRing'+kind,color,.25,.25,1),armorVisual,[0,1.25,0],[1.08,1.18,1.08]);ring.rotation.x=Math.PI/2;
-      const shield=mesh(new THREE.SphereGeometry(1,16,12),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.08,wireframe:true,depthWrite:false}),armorVisual,[0,1.2,0],[1.05,1.5,.8]);
-      armorVisual.userData.disposables=[shield.material,plating.material,platingTexture];
+  if (run.armor || run.armorFade > 0) {
+    const kind = run.armor?.kind || armorVisual?.userData.kind;
+    if (kind && (!armorVisual || armorVisual.userData.kind !== kind)) {
+      if (armorVisual) disposeGroup(armorVisual);
+      armorVisual = new THREE.Group();
+      armorVisual.userData.kind = kind;
+      const color = ARMORS[kind].color;
+      const platingTexture = assetLoader.load(
+        "./assets/armors/" + kind + ".svg",
+      );
+      platingTexture.colorSpace = THREE.SRGBColorSpace;
+      const plating = mesh(
+        new THREE.PlaneGeometry(2.2, 1.47),
+        new THREE.MeshStandardMaterial({
+          map: platingTexture,
+          transparent: true,
+          alphaTest: 0.1,
+          side: THREE.DoubleSide,
+          roughness: 0.5,
+          metalness: 0.2,
+        }),
+        armorVisual,
+        [0, 1.25, 0.25],
+      );
+      plating.quaternion.copy(camera.quaternion);
+      const ring = mesh(
+        G.torus,
+        mat("armorRing" + kind, color, 0.25, 0.25, 1),
+        armorVisual,
+        [0, 1.25, 0],
+        [1.08, 1.18, 1.08],
+      );
+      ring.rotation.x = Math.PI / 2;
+      const shield = mesh(
+        new THREE.SphereGeometry(1, 16, 12),
+        new THREE.MeshBasicMaterial({
+          color,
+          transparent: true,
+          opacity: 0.08,
+          wireframe: true,
+          depthWrite: false,
+        }),
+        armorVisual,
+        [0, 1.2, 0],
+        [1.05, 1.5, 0.8],
+      );
+      armorVisual.userData.disposables = [
+        shield.material,
+        plating.material,
+        platingTexture,
+      ];
       scene.add(armorVisual);
     }
-    if(armorVisual){armorVisual.position.set(state.playerX,0,playerZ);armorVisual.rotation.y=Math.sin(state.time*3)*.2;armorVisual.scale.setScalar(run.armor?1+Math.sin(state.time*5)*.03:Math.max(.05,run.armorFade/.8));}
-  }else if(armorVisual){disposeGroup(armorVisual);armorVisual=null;}
-  if(result.armorEnded){announce('战甲解除','原武器与强化完整保留');audio.pickup();updateWeaponUi();}
-  if(result.armorPulse){
-    const kind=result.armorPulse;
-    if(kind==='thunder'){
-      for(const e of state.threats.filter(e=>!e.dead).slice(0,3)){energyLink(state.playerX,playerZ,e.x,e.z,ARMORS[kind].color);damageEnemy(e,24,true,false);}
-      if(state.boss)damageBoss(20);
-    }else if(kind==='molten'){
-      const t=state.threats.filter(e=>!e.dead).sort((a,b)=>b.z-a.z)[0];if(t){damageEnemy(t,32,true,false);secondaryDamage(t,16,2.5,3,ARMORS[kind].color);}
-    }else if(kind==='phantom'){createShot(state.weapon==='laser'?'rifle':state.weapon);}
-  }
-}
-function openDraft(){
-  if(state.mode!=='playing')return;
-  run.rollOffers();state.mode='draft';activeTouches=0;audio.pause();
-  $('#draftPanel').classList.remove('hidden');renderDraft();
-}
-function renderDraft(){
-  $('#draftTitle').textContent=run.pendingReplacement?'替换一项现有词条':'选择本局战术';
-  $('#draftCopy').textContent=run.pendingReplacement?'已有四项词条，选择要替换的一项。':'每局最多四项 · 同词条最高三级';
-  const ids=run.pendingReplacement?run.affixes.map(a=>a.id):run.offers;
-  $('#draftChoices').innerHTML=ids.map(id=>{
-    const a=AFFIXES.find(a=>a.id===id),level=run.level(id);
-    return `<button class="draft-card" data-affix="${id}"><small>${a.category} · ${run.pendingReplacement?'替换 Lv.'+level:level?'升级 Lv.'+level+' → '+(level+1):'新战术'}</small><b>${a.name}</b><span>${a.description}</span></button>`;
-  }).join('');
-  $('#draftChoices').querySelectorAll('button').forEach(b=>b.onclick=()=>chooseAffix(b.dataset.affix));
-}
-function chooseAffix(id){
-  if(state.mode!=='draft')return false;
-  if(run.pendingReplacement){if(!run.affixes.some(a=>a.id===id))return false;run.selectAffix(run.pendingReplacement,id);}
-  else {if(!run.offers.includes(id))return false;if(run.selectAffix(id)==='replace'){renderDraft();return false;}}
-  finishDraft();return true;
-}
-function finishDraft(){
-  run.pendingReplacement=null;run.offers=[];$('#draftPanel').classList.add('hidden');state.mode='playing';lastFrame=performance.now();updateWeaponUi();audio.resume().catch(()=>{});
-  if(document.hidden)pauseRun();
-}
-function updateRunSystems(dt){
-  const result=run.tick(dt);state.hp=Math.min(100,state.hp+result.heal);
-  updateTeam(dt);updatePetArmor(dt,result);
-  if(state.time>=run.nextDraft){run.nextDraft+=26;openDraft();return;}
-  run.eventTimer-=dt;
-  if(run.eventTimer<=0 && state.crates.length<3){
-    const i=run.eventIndex++,n=Math.floor(i/4),cycle=i%4;run.eventTimer=19;
-    const x=(i%2?1:-1)*2.6;
-    if(cycle===0){spawnRoadReward('rescue',x,-30,['assault','heavy','guard'][n%3]);run.event='队员救援';}
-    if(cycle===1){
-      const pet=['dragon','owl','drone','fairy'][n%4];
-      const first=spawnRoadReward('pet',x,-30,pet);
-      if(run.pet && run.pet.kind!==pet && state.crates.length<3){
-        const second=spawnRoadReward('pet',-x,-30,run.pet.kind);
-        if(first&&second){first.choiceId=second.choiceId='pet-'+i;}
-      }
-      run.event=run.pet?'伙伴抉择 · 升级或更换':'伙伴信标';
+    if (armorVisual) {
+      armorVisual.position.set(state.playerX, 0, playerZ);
+      armorVisual.rotation.y = Math.sin(state.time * 3) * 0.2;
+      armorVisual.scale.setScalar(
+        run.armor
+          ? Math.max(0.05, Math.min(1, (12 - run.armor.remaining) / 0.55)) *
+              (1 + Math.sin(state.time * 5) * 0.03)
+          : Math.max(0.05, run.armorFade / 0.8),
+      );
     }
-    if(cycle===2){spawnRoadReward('truck',x,-30,['machine','shotgun','plasma','laser'][Math.min(3,n)]);run.event='武装运输车';}
-    if(cycle===3){spawnEnemy('elite',x,-33);const e=state.threats.at(-1);if(e){e.bounty=true;e.hp*=1.25;e.maxHp=e.hp;}spawnRoadReward('armor',-x,-35,['thunder','molten','phantom'][n%3]);run.event='精英悬赏 · 稀有战甲';}
-    showCombo(run.event+' · 留意道路信标');
+  } else if (armorVisual) {
+    disposeGroup(armorVisual);
+    armorVisual = null;
+  }
+  if (result.armorEnded) {
+    announce("战甲解除", "原武器与强化完整保留");
+    audio.pickup();
+    updateWeaponUi();
+  }
+  if (result.armorPulse) {
+    const kind = result.armorPulse;
+    if (kind === "thunder") {
+      for (const e of state.threats.filter((e) => !e.dead).slice(0, 3)) {
+        energyLink(state.playerX, playerZ, e.x, e.z, ARMORS[kind].color);
+        damageEnemy(e, 24, true, false);
+      }
+      if (state.boss) damageBoss(20);
+    } else if (kind === "molten") {
+      const t = state.threats
+        .filter((e) => !e.dead)
+        .sort((a, b) => b.z - a.z)[0];
+      if (t) {
+        damageEnemy(t, 32, true, false);
+        secondaryDamage(t, 16, 2.5, 3, ARMORS[kind].color);
+      }
+    } else if (kind === "phantom") {
+      createShot(state.weapon === "laser" ? "rifle" : state.weapon);
+    }
   }
 }
-function updateSystemsHud(){
-  $('#teamStatus').innerHTML=`<span>编队 ${run.team.length+1}/5</span>`+run.team.map(m=>`<div class="crew-chip" style="--crew:${ROLES[m.role].color}"><b>${ROLES[m.role].name} ${'ⅠⅡⅢ'[m.level-1]}</b><i style="width:${m.hp/m.maxHp*100}%"></i></div>`).join('');
-  $('#petStatus').textContent=run.pet?`${PETS[run.pet.kind].name} ${'ⅠⅡⅢ'[run.pet.level-1]} · ${Math.ceil(run.pet.cooldown)}s`:'伙伴 · 等待信标';
-  $('#shieldText').textContent=run.shield>0?'护盾 '+Math.ceil(run.shield):'';
-  $('#armorStatus').textContent=run.armor?`${ARMORS[run.armor.kind].name} ${run.armor.remaining.toFixed(1)}s`:run.armorFade>0?'战甲解除':'';
-  $('#armorStatus').classList.toggle('active',!!run.armor);
-  $('#affixStatus').textContent=run.affixes.length?run.affixes.map(a=>AFFIXES.find(d=>d.id===a.id).name+' '+a.level).join(' · '):'战术词条 · 18秒首次选择';
-  $('#runDetail').textContent=`救援 ${run.totals.recruits} · 阵亡 ${run.totals.fallen} · 突破防线 ${run.totals.breaches}`;
-  $('#collectionText').textContent=`出击 ${saved.get('mr-runs','0')} 次 · 外观徽章 ${saved.get('mr-collection','[]')==='[]'?'尚未解锁':'曙光行者'}（无属性加成）`;
+function openDraft() {
+  if (state.mode !== "playing") return;
+  run.rollOffers();
+  state.mode = "draft";
+  activeTouches = 0;
+  audio.pause();
+  $("#draftPanel").classList.remove("hidden");
+  renderDraft();
+}
+function renderDraft() {
+  $("#draftTitle").textContent = run.pendingReplacement
+    ? "替换一项现有词条"
+    : "选择本局战术";
+  $("#draftCopy").textContent = run.pendingReplacement
+    ? "已有四项词条，选择要替换的一项。"
+    : "每局最多四项 · 同词条最高三级";
+  const ids = run.pendingReplacement
+    ? run.affixes.map((a) => a.id)
+    : run.offers;
+  $("#draftChoices").innerHTML = ids
+    .map((id) => {
+      const a = AFFIXES.find((a) => a.id === id),
+        level = run.level(id);
+      return `<button class="draft-card" data-affix="${id}"><small>${a.category} · ${run.pendingReplacement ? "替换 Lv." + level : level ? "升级 Lv." + level + " → " + (level + 1) : "新战术"}</small><b>${a.name}</b><span>${a.description}</span></button>`;
+    })
+    .join("");
+  $("#draftChoices")
+    .querySelectorAll("button")
+    .forEach((b) => (b.onclick = () => chooseAffix(b.dataset.affix)));
+}
+function chooseAffix(id) {
+  if (state.mode !== "draft") return false;
+  if (run.pendingReplacement) {
+    if (!run.affixes.some((a) => a.id === id)) return false;
+    run.selectAffix(run.pendingReplacement, id);
+  } else {
+    if (!run.offers.includes(id)) return false;
+    if (run.selectAffix(id) === "replace") {
+      renderDraft();
+      return false;
+    }
+  }
+  finishDraft();
+  return true;
+}
+function finishDraft() {
+  run.pendingReplacement = null;
+  run.offers = [];
+  $("#draftPanel").classList.add("hidden");
+  state.mode = "playing";
+  lastFrame = performance.now();
+  updateWeaponUi();
+  audio.resume().catch(() => {});
+  if (document.hidden) pauseRun();
+}
+function updateRunSystems(dt) {
+  const result = run.tick(dt);
+  state.hp = Math.min(100, state.hp + result.heal);
+  updateTeam(dt);
+  updatePetArmor(dt, result);
+  if (state.time >= run.nextDraft) {
+    run.nextDraft += 26;
+    openDraft();
+    return;
+  }
+  run.eventTimer -= dt;
+  if (run.eventTimer <= 0 && state.crates.length < 3) {
+    const i = run.eventIndex++,
+      n = Math.floor(i / 4),
+      cycle = i % 4;
+    run.eventTimer = 19;
+    const x = (i % 2 ? 1 : -1) * 2.6;
+    if (cycle === 0) {
+      spawnRoadReward("rescue", x, -30, ["assault", "heavy", "guard"][n % 3]);
+      run.event = "队员救援";
+    }
+    if (cycle === 1) {
+      const pet = ["dragon", "owl", "drone", "fairy"][n % 4];
+      const first = spawnRoadReward("pet", x, -30, pet);
+      if (run.pet && run.pet.kind !== pet && state.crates.length < 3) {
+        const second = spawnRoadReward("pet", -x, -30, run.pet.kind);
+        if (first && second) {
+          first.choiceId = second.choiceId = "pet-" + i;
+        }
+      }
+      run.event = run.pet ? "伙伴抉择 · 升级或更换" : "伙伴信标";
+    }
+    if (cycle === 2) {
+      spawnRoadReward(
+        "truck",
+        x,
+        -30,
+        ["machine", "shotgun", "plasma", "laser"][Math.min(3, n)],
+      );
+      run.event = "武装运输车";
+    }
+    if (cycle === 3) {
+      spawnEnemy("elite", x, -33);
+      const e = state.threats.at(-1);
+      if (e) {
+        e.bounty = true;
+        e.hp *= 1.25;
+        e.maxHp = e.hp;
+      }
+      spawnRoadReward(
+        "armor",
+        -x,
+        -35,
+        ["thunder", "molten", "phantom"][n % 3],
+      );
+      run.event = "精英悬赏 · 稀有战甲";
+    }
+    showCombo(run.event + " · 留意道路信标");
+  }
+}
+function updateSystemsHud() {
+  $("#teamStatus").innerHTML =
+    `<span>编队 ${run.team.length + 1}/5</span>` +
+    run.team
+      .map(
+        (m) =>
+          `<div class="crew-chip" style="--crew:${ROLES[m.role].color}"><b>${ROLES[m.role].name} ${"ⅠⅡⅢ"[m.level - 1]}</b><i style="width:${(m.hp / m.maxHp) * 100}%"></i></div>`,
+      )
+      .join("");
+  $("#petStatus").textContent = run.pet
+    ? `${PETS[run.pet.kind].name} ${"ⅠⅡⅢ"[run.pet.level - 1]} · ${Math.ceil(run.pet.cooldown)}s`
+    : "伙伴 · 等待信标";
+  $("#shieldText").textContent =
+    run.shield > 0 ? "护盾 " + Math.ceil(run.shield) : "";
+  $("#armorStatus").textContent = run.armor
+    ? `${ARMORS[run.armor.kind].name} ${run.armor.remaining.toFixed(1)}s`
+    : run.armorFade > 0
+      ? "战甲解除"
+      : "";
+  $("#armorStatus").classList.toggle("active", !!run.armor);
+  $("#affixStatus").textContent = run.affixes.length
+    ? run.affixes
+        .map((a) => AFFIXES.find((d) => d.id === a.id).name + " " + a.level)
+        .join(" · ")
+    : "战术词条 · 18秒首次选择";
+  $("#runDetail").textContent =
+    `救援 ${run.totals.recruits} · 阵亡 ${run.totals.fallen} · 突破防线 ${run.totals.breaches}`;
+  $("#collectionText").textContent =
+    `出击 ${saved.get("mr-runs", "0")} 次 · 外观徽章 ${saved.get("mr-collection", "[]") === "[]" ? "尚未解锁" : "曙光行者"}（无属性加成）`;
 }
 
 function worldSpeed() {
@@ -2813,7 +3544,9 @@ function updateDecor(dt) {
   worldTime += dt;
   if (roadTexture)
     roadTexture.offset.y =
-      (roadTexture.offset.y + (worldSpeed() * dt) / 120) % 1;
+      (roadTexture.offset.y +
+        (worldSpeed() * dt * roadTexture.repeat.y) / 125) %
+      1;
   let dirty = false;
   for (const b of worldObjects.buildings) {
     b.z += worldSpeed() * dt;
@@ -2834,6 +3567,7 @@ function updateDecor(dt) {
 }
 function updateGame(dt) {
   if (state.mode !== "playing") return;
+  if (W !== app.clientWidth || H !== app.clientHeight) resize();
   dt = Math.min(0.04, dt);
   state.time += dt;
   state.overdrive = Math.max(0, state.overdrive - dt);
@@ -2875,13 +3609,13 @@ function updateGame(dt) {
   camera.lookAt(state.playerX * 0.08, 1.2, -15);
   state.shootTimer <= 0 && fireWeapon();
   updateRunSystems(dt);
-  if(state.mode!=="playing")return;
+  if (state.mode !== "playing") return;
   updateDifficulty(dt);
   moveThreats(dt);
-  if(state.mode!=="playing")return;
+  if (state.mode !== "playing") return;
   updateBoss(dt);
   updateShots(dt);
-  if(state.mode!=="playing")return;
+  if (state.mode !== "playing") return;
   updateGatesCrates(dt);
   updateEffects(dt);
   updateDecor(dt);
@@ -2989,10 +3723,19 @@ function showCombo(text) {
 function endGame() {
   if (state.mode !== "playing") return;
   state.mode = "ended";
-  burst3D(state.playerX,1.1,playerZ,'#b3e9ff',28);
-  playerRig.rotation.z=.9;playerRig.position.y=-.5;
-  const runs=+saved.get('mr-runs','0')+1;saved.set('mr-runs',runs);
-  let collection=[];try{const value=JSON.parse(saved.get('mr-collection','[]'));if(Array.isArray(value))collection=value;}catch{}if(state.time>=95&&!collection.includes('曙光行者'))collection.push('曙光行者');saved.set('mr-collection',JSON.stringify(collection));
+  burst3D(state.playerX, 1.1, playerZ, "#b3e9ff", 28);
+  playerRig.rotation.z = 0.9;
+  playerRig.position.y = -0.5;
+  const runs = +saved.get("mr-runs", "0") + 1;
+  saved.set("mr-runs", runs);
+  let collection = [];
+  try {
+    const value = JSON.parse(saved.get("mr-collection", "[]"));
+    if (Array.isArray(value)) collection = value;
+  } catch {}
+  if (state.time >= 95 && !collection.includes("曙光行者"))
+    collection.push("曙光行者");
+  saved.set("mr-collection", JSON.stringify(collection));
   audio.pause();
   state.best = Math.max(state.best, Math.floor(state.score));
   saved.set("mr2-best", state.best);
@@ -3006,11 +3749,21 @@ function endGame() {
   $("#endPanel").classList.remove("hidden");
 }
 function clearDynamic() {
-  for(const v of teamVisuals.values()){disposeGroup(v);v.userData.body?.material.dispose();}teamVisuals.clear();
-  if(petVisual){disposeGroup(petVisual);petVisual=null;}
-  if(armorVisual){disposeGroup(armorVisual);armorVisual=null;}
+  for (const v of teamVisuals.values()) {
+    disposeGroup(v);
+    v.userData.body?.material.dispose();
+  }
+  teamVisuals.clear();
+  if (petVisual) {
+    disposeGroup(petVisual);
+    petVisual = null;
+  }
+  if (armorVisual) {
+    disposeGroup(armorVisual);
+    armorVisual = null;
+  }
   run.reset();
-  $('#draftPanel')?.classList.add('hidden');
+  $("#draftPanel")?.classList.add("hidden");
   for (const e of state.threats) {
     disposeSoldier(e.group);
     removeShadow(e.shadow);
@@ -3096,8 +3849,9 @@ function resetRun() {
     damage: 1,
   };
   playerRig.position.set(0, -0.1, playerZ);
-  playerRig.rotation.set(0,0,0);
-  camera.position.x=0;camera.lookAt(0,1.2,-15);
+  playerRig.rotation.set(0, 0, 0);
+  camera.position.x = 0;
+  camera.lookAt(0, 1.2, -15);
   playerRig.visible = true;
   setWeapon("rifle", true);
   updateWeaponUi();
@@ -3196,9 +3950,10 @@ function setupUi() {
     $("#settingsPanel").classList.add("hidden"),
   );
   $("#best").textContent = state.best;
-  $("#skipDraft").onclick=finishDraft;
-  $("#haptics").checked=saved.get("mr-haptics","1")==="1";
-  $("#haptics").onchange=e=>saved.set("mr-haptics",e.target.checked?"1":"0");
+  $("#skipDraft").onclick = finishDraft;
+  $("#haptics").checked = saved.get("mr-haptics", "1") === "1";
+  $("#haptics").onchange = (e) =>
+    saved.set("mr-haptics", e.target.checked ? "1" : "0");
   updateSystemsHud();
   canvas.addEventListener("pointerdown", (e) => {
     if (state.mode !== "playing") return;
@@ -3256,10 +4011,11 @@ function frame(now) {
   const elapsedFrame = now - lastFrame,
     dt = Math.min(0.04, Math.max(0, elapsedFrame || 16) / 1000);
   lastFrame = now;
+  if (W !== app.clientWidth || H !== app.clientHeight) resize();
   if (state.mode === "playing" && !testFrozen) updateGame(dt);
   else if (playerRig) {
     playerRig.position.y = -0.1 + Math.sin(now * 0.0011) * 0.012;
-    if(state.mode === "menu")updateDecor(dt * 0.18);
+    if (state.mode === "menu") updateDecor(dt * 0.18);
   }
   const shake = state.shake,
     baseX = camera.position.x,
@@ -3294,30 +4050,68 @@ function frame(now) {
   frameCount++;
 }
 addEventListener("resize", resize, { passive: true });
+if ("ResizeObserver" in window) new ResizeObserver(() => resize()).observe(app);
 document.addEventListener("contextmenu", (e) => e.preventDefault());
 init();
 if ("serviceWorker" in navigator && location.protocol.startsWith("http"))
   addEventListener("load", () =>
     navigator.serviceWorker.register("./sw.js").catch(() => {}),
   );
-if (new URLSearchParams(location.search).has("test"))
+if (new URLSearchParams(location.search).get("test") === "1")
   window.__MR_TEST__ = {
     silence: () => audio.pause(),
-    systems:()=>run.snapshot(),
-    recruit:role=>run.recruit(role),
-    promote:role=>run.promote(role),
-    hurtMember:(id,n)=>run.hurtMember(run.team.find(m=>m.id===id),n),
-    equipPet:kind=>run.equipPet(kind),
-    armor:kind=>run.activateArmor(kind),
-    affix:(id,replace)=>run.selectAffix(id,replace),
-    draft:()=>openDraft(),
-    choose:chooseAffix,
-    roadReward:spawnRoadReward,
-    runModel:()=>run,
+    systems: () => run.snapshot(),
+    recruit: (role) => run.recruit(role),
+    promote: (role) => run.promote(role),
+    hurtMember: (id, n) =>
+      run.hurtMember(
+        run.team.find((m) => m.id === id),
+        n,
+      ),
+    equipPet: (kind) => run.equipPet(kind),
+    armor: (kind) => run.activateArmor(kind),
+    affix: (id, replace) => run.selectAffix(id, replace),
+    draft: () => openDraft(),
+    choose: chooseAffix,
+    roadReward: spawnRoadReward,
+    runModel: () => run,
     combatStats,
-    project(x,y,z){const p=new THREE.Vector3(x,y,z).project(camera);return {x:(p.x+1)*W/2,y:(1-p.y)*H/2};},
-    artStatus:()=>({errors:assetErrors,loaded:Object.values(art).every(t=>!!t.image?.width)}),
-    roadOffset:()=>roadTexture.offset.y,
+    formationBounds() {
+      return [playerRig, ...teamVisuals.values()].map((rig) => {
+        rig.updateMatrixWorld(true);
+        const points = [];
+        rig.traverse((o) => {
+          if (
+            !o.isMesh ||
+            !o.geometry?.attributes.position ||
+            o.material?.map?.source !== art.soldier.source
+          )
+            return;
+          const a = o.geometry.attributes.position;
+          for (let i = 0; i < a.count; i++) {
+            const p = new THREE.Vector3()
+              .fromBufferAttribute(a, i)
+              .applyMatrix4(o.matrixWorld)
+              .project(camera);
+            points.push({ x: ((p.x + 1) * W) / 2, y: ((1 - p.y) * H) / 2 });
+          }
+        });
+        return {
+          minX: Math.min(...points.map((p) => p.x)),
+          maxX: Math.max(...points.map((p) => p.x)),
+          maxY: Math.max(...points.map((p) => p.y)),
+        };
+      });
+    },
+    project(x, y, z) {
+      const p = new THREE.Vector3(x, y, z).project(camera);
+      return { x: ((p.x + 1) * W) / 2, y: ((1 - p.y) * H) / 2 };
+    },
+    artStatus: () => ({
+      errors: assetErrors,
+      loaded: Object.values(art).every((t) => !!t.image?.width),
+    }),
+    roadOffset: () => roadTexture.offset.y,
     updateRunSystems,
 
     configure(values) {
@@ -3363,6 +4157,7 @@ if (new URLSearchParams(location.search).has("test"))
     clearDynamic,
     enemyList: () => state.threats,
     boss: () => state.boss,
+    hostileShots: () => state.enemyShots,
     start: startRun,
     reset: resetRun,
     update: updateGame,

@@ -64,7 +64,14 @@
           </div>
           <div class="overdrive-track"><i id="overdriveFill"></i></div>
         </div>
-        <div class="systems-hud"><div id="teamStatus"></div><div class="support-row"><span id="petStatus"></span><span id="shieldText"></span></div><div id="armorStatus" aria-live="polite"></div><div id="affixStatus"></div></div>
+        <div class="systems-hud">
+          <div id="teamStatus"></div>
+          <div class="support-row">
+            <span id="petStatus"></span><span id="shieldText"></span>
+          </div>
+          <div id="armorStatus" aria-live="polite"></div>
+          <div id="affixStatus"></div>
+        </div>
         <div id="upgradeToast" class="upgrade-toast"></div>
         <div id="comboToast" class="combo-toast"></div>
         <div class="touch-hint" id="touchHint">
@@ -89,7 +96,8 @@
           <button id="start" class="start-btn">
             <span>开始突围</span><b>→</b>
           </button>
-          <p id="collectionText" class="collection"></p><div class="menu-footer">
+          <p id="collectionText" class="collection"></p>
+          <div class="menu-footer">
             <div>最高纪录 <strong id="best">0</strong></div>
             <button id="openSettings" class="small-icon" aria-label="音频设置">
               ♫ 音频设置</button
@@ -106,7 +114,8 @@
           class="build-stats"
           aria-label="当前战斗属性"
         ></div>
-        <p id="runDetail" class="modal-copy"></p><div class="audio-controls">
+        <p id="runDetail" class="modal-copy"></p>
+        <div class="audio-controls">
           <label
             >战斗音乐
             <input
@@ -167,12 +176,25 @@
             /><b id="menuSfxValue">75%</b></label
           >
         </div>
-        <label class="haptic-setting"><input id="haptics" type="checkbox" checked> 短促触觉反馈（设备支持时）</label><button id="closeSettings" class="start-btn">
+        <label class="haptic-setting"
+          ><input id="haptics" type="checkbox" checked />
+          短促触觉反馈（设备支持时）</label
+        ><button id="closeSettings" class="start-btn">
           <span>完成</span><b>✓</b>
         </button>
       </section>
-      <section id="draftPanel" class="overlay modal hidden" role="dialog" aria-modal="true" aria-labelledby="draftTitle">
-        <div class="modal-kicker">TACTICAL UPLINK</div><h2 id="draftTitle">选择本局战术</h2><p id="draftCopy" class="modal-copy"></p><div id="draftChoices"></div><button id="skipDraft" class="flat-btn">保留当前配置 · 继续战斗</button>
+      <section
+        id="draftPanel"
+        class="overlay modal hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="draftTitle"
+      >
+        <div class="modal-kicker">TACTICAL UPLINK</div>
+        <h2 id="draftTitle">选择本局战术</h2>
+        <p id="draftCopy" class="modal-copy"></p>
+        <div id="draftChoices"></div>
+        <button id="skipDraft" class="flat-btn">保留当前配置 · 继续战斗</button>
       </section>
       <div id="landscape" class="landscape">请旋转手机，使用竖屏进入战场</div>
     </main>

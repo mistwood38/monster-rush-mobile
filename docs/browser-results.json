@@ -1,0 +1,608 @@
+{
+  "passed": 40,
+  "results": [
+    {
+      "name": "360×800 and 393×873 layouts + menu",
+      "passed": true
+    },
+    {
+      "name": "Audio starts on a real user click, pauses and resumes",
+      "passed": true
+    },
+    {
+      "name": "Drag is relative, moves smoothly and stays within road",
+      "passed": true
+    },
+    {
+      "name": "Every upgrade changes real combat output independently",
+      "passed": true,
+      "detail": {
+        "lanes": {
+          "count": 2,
+          "damage": 24,
+          "interval": 0.3,
+          "speed": 32
+        },
+        "pellets": {
+          "count": 3,
+          "damage": 28.799999999999997,
+          "interval": 0.3,
+          "speed": 32
+        },
+        "rate": {
+          "count": 1,
+          "damage": 12,
+          "interval": 0.24,
+          "speed": 32
+        },
+        "speed": {
+          "count": 1,
+          "damage": 12,
+          "interval": 0.3,
+          "speed": 43.2
+        },
+        "damage": {
+          "count": 1,
+          "damage": 18,
+          "interval": 0.3,
+          "speed": 32
+        }
+      }
+    },
+    {
+      "name": "All five weapons kill an off-center target",
+      "passed": true,
+      "detail": {
+        "rifle": 1,
+        "machine": 1,
+        "shotgun": 1,
+        "plasma": 1,
+        "laser": 1
+      }
+    },
+    {
+      "name": "Fast projectile swept collision + target-positioned damage text",
+      "passed": true
+    },
+    {
+      "name": "Plasma splash kills adjacent enemies",
+      "passed": true
+    },
+    {
+      "name": "Portals charge without blocking shots; one reward per pair",
+      "passed": true
+    },
+    {
+      "name": "Laser damages Boss; lane/pellet/speed upgrades affect beams",
+      "passed": true,
+      "detail": {
+        "base": 7.2000000000000455,
+        "upgraded": 45.35999999999967,
+        "lanes": 3,
+        "range": 37.1806401235912
+      }
+    },
+    {
+      "name": "Kill-charge overdrive boosts output, then expires; medkit heals",
+      "passed": true,
+      "detail": {
+        "base": 0.3,
+        "boosted": 0.19999999999999998,
+        "damage": 15,
+        "active": 6,
+        "expired": 0,
+        "hp": 75
+      }
+    },
+    {
+      "name": "Boss arrives at 95 seconds, warns, attacks, hurts and can die",
+      "passed": true,
+      "detail": {
+        "spawned": true,
+        "warned": true,
+        "shots": 3,
+        "hp": 82,
+        "cleared": true,
+        "score": 1620.6499999999967
+      }
+    },
+    {
+      "name": "Recycled impact particles remain attached and are bounded",
+      "passed": true,
+      "detail": {
+        "initial": 12,
+        "pooled": 90,
+        "reused": 8,
+        "capped": 90
+      }
+    },
+    {
+      "name": "Weapon noise goes to effects volume, drum noise to music volume",
+      "passed": true
+    },
+    {
+      "name": "Death, score persistence, restart and both mixer readouts",
+      "passed": true
+    },
+    {
+      "name": "180-second combat soak: bounds, wave relief and automatic Boss",
+      "passed": true,
+      "detail": {
+        "time": 180.0000000000238,
+        "kills": 174,
+        "cap": {
+          "enemies": 6,
+          "bullets": 113,
+          "particles": 89
+        },
+        "sawBoss": true,
+        "activeInterval": 1.302,
+        "reliefInterval": 4.7652
+      }
+    },
+    {
+      "name": "Boss phase shields prevent a maximum-damage instant kill",
+      "passed": true,
+      "detail": {
+        "full": 1200,
+        "guarded": 1200,
+        "first": 800,
+        "blocked": 800,
+        "second": 400,
+        "phase": 2
+      }
+    },
+    {
+      "name": "Normal-health simulation rewards movement and collecting upgrades",
+      "passed": true,
+      "detail": [
+        {
+          "active": false,
+          "seconds": 64.1,
+          "kills": 41,
+          "hp": 0,
+          "sawBoss": false
+        },
+        {
+          "active": true,
+          "seconds": 120,
+          "kills": 105,
+          "hp": 100,
+          "sawBoss": true
+        }
+      ]
+    },
+    {
+      "name": "Lower-tier supplies cannot downgrade weapons; capped gates become repairs",
+      "passed": true,
+      "detail": {
+        "weapon": "laser",
+        "damage": 1.12,
+        "lanes": 5,
+        "hp": 62,
+        "toast": "装甲修复 +12满阶强化转为战地维修"
+      }
+    },
+    {
+      "name": "Uploaded art decodes; scrolling road changes without moving the camera",
+      "passed": true,
+      "detail": {
+        "art": {
+          "errors": [],
+          "loaded": true
+        },
+        "before": 0.8690428052008735,
+        "after": 0.3233070052008735,
+        "projection": {
+          "headY": 606.5934046535926,
+          "feetY": 658.4533016034612,
+          "headNdc": -0.389675612035722,
+          "feetNdc": -0.5084840815657762
+        }
+      }
+    },
+    {
+      "name": "Four teammates persist, fire role weapons, promote, collide, fall and refill",
+      "passed": true,
+      "detail": {
+        "roles": [
+          [
+            "assault",
+            1
+          ],
+          [
+            "heavy",
+            3
+          ],
+          [
+            "guard",
+            1
+          ],
+          [
+            "assault",
+            1
+          ]
+        ],
+        "dealt": 202.08891152941078,
+        "shots": 4,
+        "fallen": true,
+        "team": 4,
+        "totals": {
+          "recruits": 5,
+          "fallen": 1,
+          "petSkills": 0,
+          "armors": 0,
+          "breaches": 0
+        }
+      }
+    },
+    {
+      "name": "Recruit, team and promotion gates change real squad attributes",
+      "passed": true
+    },
+    {
+      "name": "Every pet has actual skills, bounded levels, cooldown and replacement",
+      "passed": true,
+      "detail": [
+        {
+          "kind": "dragon",
+          "level": 3,
+          "cooldown": 6,
+          "hpAfterSkill": 50,
+          "hpAfterHit": 40,
+          "shield": 0,
+          "slow": 0,
+          "damage": 60
+        },
+        {
+          "kind": "owl",
+          "level": 3,
+          "cooldown": 7,
+          "hpAfterSkill": 50,
+          "hpAfterHit": 42.1,
+          "shield": 0,
+          "slow": 2,
+          "damage": 0
+        },
+        {
+          "kind": "drone",
+          "level": 3,
+          "cooldown": 8,
+          "hpAfterSkill": 50,
+          "hpAfterHit": 50,
+          "shield": 26,
+          "slow": 0,
+          "damage": 0
+        },
+        {
+          "kind": "fairy",
+          "level": 3,
+          "cooldown": 9,
+          "hpAfterSkill": 67,
+          "hpAfterHit": 67,
+          "shield": 16,
+          "slow": 0,
+          "damage": 0
+        }
+      ]
+    },
+    {
+      "name": "All three armors transform firepower, expire and restore the exact base weapon/stats",
+      "passed": true,
+      "detail": [
+        {
+          "kind": "thunder",
+          "active": 11.899999999999999,
+          "restored": true
+        },
+        {
+          "kind": "molten",
+          "active": 11.899999999999999,
+          "restored": true
+        },
+        {
+          "kind": "phantom",
+          "active": 11.899999999999999,
+          "restored": true
+        }
+      ]
+    },
+    {
+      "name": "Elemental affixes apply DOT, movement slow, bounded chain and splash without recursion",
+      "passed": true,
+      "detail": {
+        "direct": {
+          "a": 990,
+          "b": 995.784,
+          "c": 995.784,
+          "burn": 3,
+          "slow": 0.12
+        },
+        "after": {
+          "a": 988.5,
+          "b": 995.784,
+          "c": 995.784
+        },
+        "cd": {
+          "arc": 0.09999999999999962,
+          "blast": 0.09999999999999962
+        }
+      }
+    },
+    {
+      "name": "Survival and tech affixes heal on cadence, absorb damage, execute and expand pickup range",
+      "passed": true,
+      "detail": {
+        "healed": 42,
+        "shield": 13,
+        "blocked": 42,
+        "killHeal": 43,
+        "secondKill": 43,
+        "execution": 8,
+        "before": 50,
+        "after": 75
+      }
+    },
+    {
+      "name": "Three-choice UI freezes combat; four-slot replacement and skip resume safely",
+      "passed": true
+    },
+    {
+      "name": "Flanking enemies breach the defense and cause damage even during contact invulnerability",
+      "passed": true,
+      "detail": {
+        "hp": 92.8,
+        "breaches": 1,
+        "enemies": 0
+      }
+    },
+    {
+      "name": "Weapon crates use a generous swept pickup window consistent with their size",
+      "passed": true
+    },
+    {
+      "name": "Road event cycle produces rescues, pets, an armed truck and elite bounty",
+      "passed": true,
+      "detail": [
+        {
+          "event": "队员救援",
+          "kind": "rescue",
+          "bounty": false
+        },
+        {
+          "event": "伙伴信标",
+          "kind": "pet",
+          "bounty": false
+        },
+        {
+          "event": "武装运输车",
+          "kind": "truck",
+          "bounty": false
+        },
+        {
+          "event": "精英悬赏 · 稀有战甲",
+          "kind": "armor",
+          "bounty": true
+        }
+      ]
+    },
+    {
+      "name": "Boss schedule follows 95, 180 and 270 seconds with escalating health",
+      "passed": true,
+      "detail": [
+        {
+          "time": 95,
+          "hp": 1580.06,
+          "nextBoss": true
+        },
+        {
+          "time": 180,
+          "hp": 1920.06,
+          "nextBoss": true
+        },
+        {
+          "time": 270,
+          "hp": 2280.06,
+          "nextBoss": true
+        }
+      ]
+    },
+    {
+      "name": "Integrated 300-second formation/pet/armor/affix simulation stays within object limits",
+      "passed": true,
+      "detail": {
+        "time": 299.20000000000175,
+        "max": {
+          "enemies": 9,
+          "bullets": 220,
+          "particles": 91,
+          "shots": 7
+        },
+        "seen": {
+          "drafts": 18,
+          "boss": true,
+          "armor": true
+        }
+      }
+    },
+    {
+      "name": "Pet road choice upgrades the current companion or replaces it, never both",
+      "passed": true,
+      "detail": {
+        "pet": {
+          "kind": "dragon",
+          "level": 2,
+          "cooldown": 1.975,
+          "flash": 0
+        },
+        "unresolved": 0
+      }
+    },
+    {
+      "name": "Full squad and extreme player positions stay within the mobile camera",
+      "passed": true,
+      "detail": [
+        {
+          "width": 360,
+          "x": -4.8,
+          "playerX": 48.45736840582871
+        },
+        {
+          "width": 360,
+          "x": 0,
+          "playerX": 181.9047663707028
+        },
+        {
+          "width": 360,
+          "x": 4.8,
+          "playerX": 311.9604316484138
+        },
+        {
+          "width": 393,
+          "x": -4.8,
+          "playerX": 51.07209928249197
+        },
+        {
+          "width": 393,
+          "x": 0,
+          "playerX": 198.12730726769465
+        },
+        {
+          "width": 393,
+          "x": 4.8,
+          "playerX": 340.4028761670823
+        }
+      ]
+    },
+    {
+      "name": "Projectile instancing renders the maximum pool in two draws and restart releases actor resources",
+      "passed": true,
+      "detail": {
+        "active": 220,
+        "drawCalls": 122,
+        "memories": [
+          {
+            "geometries": 31,
+            "textures": 4
+          },
+          {
+            "geometries": 31,
+            "textures": 4
+          },
+          {
+            "geometries": 31,
+            "textures": 4
+          },
+          {
+            "geometries": 31,
+            "textures": 4
+          },
+          {
+            "geometries": 31,
+            "textures": 4
+          },
+          {
+            "geometries": 31,
+            "textures": 4
+          }
+        ]
+      }
+    },
+    {
+      "name": "All five weapons defeat the Boss through actual fire and both shield transitions",
+      "passed": true,
+      "detail": [
+        {
+          "weapon": "rifle",
+          "time": 6.500000000000025,
+          "dead": true,
+          "phase": 2,
+          "score": 1645.4750000000006
+        },
+        {
+          "weapon": "machine",
+          "time": 6.500000000000025,
+          "dead": true,
+          "phase": 2,
+          "score": 1644.4750000000004
+        },
+        {
+          "weapon": "shotgun",
+          "time": 8.900000000000059,
+          "dead": true,
+          "phase": 2,
+          "score": 1652.2350000000006
+        },
+        {
+          "weapon": "plasma",
+          "time": 6.9000000000000306,
+          "dead": true,
+          "phase": 2,
+          "score": 1645.9350000000004
+        },
+        {
+          "weapon": "laser",
+          "time": 6.600000000000026,
+          "dead": true,
+          "phase": 2,
+          "score": 1645.5900000000004
+        }
+      ]
+    },
+    {
+      "name": "Boss phases use distinct warning widths and attack patterns; execution affects low-health Boss",
+      "passed": true,
+      "detail": {
+        "phases": [
+          {
+            "phase": 0,
+            "width": 2.8,
+            "sweep": false,
+            "shots": 3
+          },
+          {
+            "phase": 1,
+            "width": 4.2,
+            "sweep": false,
+            "shots": 5
+          },
+          {
+            "phase": 2,
+            "width": 5.2,
+            "sweep": true,
+            "shots": 5
+          }
+        ],
+        "hp": 88
+      }
+    },
+    {
+      "name": "Full-team and max-level gates show an effective promotion, team buff or repair",
+      "passed": true,
+      "detail": {
+        "power": 1,
+        "hp": 62,
+        "crew": [
+          62,
+          62,
+          62,
+          62
+        ],
+        "toast": "整备 +12队员本局持续存在 · 职业武器保留"
+      }
+    },
+    {
+      "name": "Final formation, draft, pet, armor and Boss screenshots at both phone sizes",
+      "passed": true
+    },
+    {
+      "name": "Representative upgrade, heavy-weapon and Boss screenshots",
+      "passed": true
+    },
+    {
+      "name": "Nested Pages path + normal mode + offline assets and PNG icons",
+      "passed": true
+    }
+  ],
+  "errors": []
+}
