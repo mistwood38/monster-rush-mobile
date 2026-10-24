@@ -466,6 +466,7 @@ function syncEnemyOverlays() {
   const d = o.dummy;
   let bars = 0,
     shadows = 0;
+  const candidates = [];
   for (const e of state.threats) {
     const scale = e.group.scale.x;
     d.quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
@@ -475,10 +476,18 @@ function syncEnemyOverlays() {
     o.shadow.setMatrixAt(shadows++, d.matrix);
     if (
       e.dead ||
-      (e.z < -15 && e.type !== "elite") ||
-      (e.type === "grunt" && e.hp >= e.maxHp)
-    )
-      continue;
+      e.z < -20 ||
+      (e.hp >= e.maxHp && !(e.z > -5 && ["heavy", "elite"].includes(e.type)))
+    ) continue;
+    candidates.push(e);
+  }
+  // Keep the combat lane readable: show nearby damaged threats first.
+  candidates.sort((a, b) => (playerZ - a.z + Math.abs(a.x - state.playerX)) -
+    (playerZ - b.z + Math.abs(b.x - state.playerX)) || a.uid - b.uid);
+  const visibleBars = candidates.slice(0, qualityProfile(qualityLevel).healthBars);
+  o.visibleIds = visibleBars.map(e => e.uid);
+  for (const e of visibleBars) {
+    const scale = e.group.scale.x;
     const hp = clamp(e.hp / e.maxHp, 0, 1);
     d.quaternion.copy(camera.quaternion);
     d.position.set(
@@ -1099,12 +1108,13 @@ function spawnGateEvent() {
     ],
   ];
   const index = state.gateSequence,
-    pair =
-      index === 0
-        ? systemPairs[0]
-        : index % 3 === 1
-          ? systemPairs[Math.floor(index / 3) % 3]
-          : gateDefs[index % 3];
+    // Separate the numeric cycle from squad events. The former modulo-3 branch
+    // swallowed gateDefs[1], making rate/pellet rewards unreachable in real runs.
+    pair = index === 0
+      ? systemPairs[0]
+      : (index - 1) % 4 === 3
+        ? systemPairs[(Math.floor((index - 1) / 4) + 1) % systemPairs.length]
+        : gateDefs[((index - 1) % 4 + 1) % gateDefs.length];
   const pairId = ++state.gateSequence;
   pair.forEach((reward, i) => {
     buildGate(reward, i === 0 ? -2.45 : 2.45, -34);
@@ -2262,7 +2272,7 @@ function damageBoss(dmg, procs = true) {
     b.armorPhase++;
     b.shield = 2.2;
     b.attack = Math.min(b.attack, 0.65);
-    showCombo("巨像护盾重组 · 准备躲避齐射");
+    showCombo("巨像护盾重组 · 准备躲避齐射", 2);
     audio.bossAlert();
   }
   if (b.hp <= 0) {
@@ -2662,8 +2672,9 @@ function updateBoss(dt) {
         ? 2.6
         : -2.6
       : clamp(state.playerX, -4.7, 4.7);
-    if (b.sweep) showCombo("巨像冲击波 · 转移另一侧");
-    else if (b.armorPhase > 0) showCombo("巨像扩散齐射 · 离开预警区域");
+    if (b.sweep) showCombo("巨像冲击波 · 转移另一侧", 2);
+    else if (b.armorPhase > 0) showCombo("巨像扩散齐射 · 离开预警区域", 2);
+    else showCombo("巨像锁定 · 横向移出红区", 2);
     b.targetX = target;
     const warn = mesh(
       new THREE.PlaneGeometry(b.sweep ? 5.2 : b.armorPhase > 0 ? 4.2 : 2.8, 21),
@@ -3830,7 +3841,9 @@ let testFrozen = false,
   dragPlayerX = 0;
 let gateSerial = 0;
 let toastTimer = 0,
-  comboTimer = 0;
+  comboTimer = 0,
+  comboUntil = 0,
+  comboPriority = 0;
 function announce(title, sub = "") {
   const el = $("#upgradeToast");
   el.innerHTML = `${title}${sub ? `<small>${sub}</small>` : ""}`;
@@ -3838,8 +3851,11 @@ function announce(title, sub = "") {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove("show"), 1600);
 }
-function showCombo(text) {
-  const el = $("#comboToast");
+function showCombo(text, priority = 0) {
+  const el = $("#comboToast"), now = performance.now();
+  if (now < comboUntil && (priority < comboPriority || el.textContent === text)) return;
+  comboUntil = now + 950;
+  comboPriority = priority;
   el.textContent = text;
   el.classList.add("show");
   clearTimeout(comboTimer);
@@ -3987,6 +4003,7 @@ function resetRun() {
   state.gateSequence = 0;
   state.wave = 1;
   state.lastHud = -1;
+  comboUntil = comboPriority = 0;
   state.gateDamage = 1;
   state.stats = {
     lanes: 1,
@@ -4342,6 +4359,10 @@ if (new URLSearchParams(location.search).get("test") === "1")
     roadReward: spawnRoadReward,
     runModel: () => run,
     spriteAudit: () => sprites.audit(),
+    healthBarAudit: () => ({
+      count: worldObjects.enemyOverlay?.fill.count || 0,
+      ids: worldObjects.enemyOverlay?.visibleIds || [],
+    }),
     getPlayer: () => playerRig,
     spriteTrigger: (state) => sprites.trigger(playerRig, state),
     combatStats,

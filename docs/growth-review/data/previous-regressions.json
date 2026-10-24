@@ -1,0 +1,198 @@
+{
+  "results": [
+    {
+      "name": "Late sidestep retains exactly one gate choice",
+      "waiting": true,
+      "team": 1,
+      "damage": 1,
+      "resolved": true
+    },
+    {
+      "name": "Passed gate cannot be claimed later",
+      "team": 0,
+      "resolved": true
+    },
+    {
+      "name": "Recruitment honors profession",
+      "role": "heavy"
+    },
+    {
+      "name": "LOD reduces geometry without changing enemies, HP or Boss detail",
+      "tiers": [
+        {
+          "q": 0,
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "near": 130,
+          "far": 190,
+          "animationHz": 30,
+          "instances": 320,
+          "draws": 12,
+          "proxyPool": 0,
+          "triangles": 95474
+        },
+        {
+          "q": 1,
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "near": 100,
+          "far": 220,
+          "animationHz": 20,
+          "instances": 320,
+          "draws": 12,
+          "proxyPool": 0,
+          "triangles": 86694
+        },
+        {
+          "q": 2,
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "near": 70,
+          "far": 250,
+          "animationHz": 12,
+          "instances": 320,
+          "draws": 12,
+          "proxyPool": 0,
+          "triangles": 77914
+        },
+        {
+          "q": 0,
+          "technique": "GPU instanced articulated original meshes",
+          "families": 6,
+          "near": 110,
+          "far": 210,
+          "animationHz": 30,
+          "instances": 320,
+          "draws": 12,
+          "proxyPool": 0,
+          "triangles": 89558
+        }
+      ],
+      "idsRetained": true,
+      "model": {
+        "rigs": [
+          {
+            "key": "rig/hero",
+            "action": "run",
+            "hipAngle": 0,
+            "bones": 13,
+            "skinned": true,
+            "occlusionCue": true,
+            "handBound": true,
+            "gunChildren": 1
+          }
+        ],
+        "batches": [
+          {
+            "type": "grunt/near",
+            "count": 19,
+            "vertices": 1086,
+            "finite": true
+          },
+          {
+            "type": "runner/near",
+            "count": 19,
+            "vertices": 1170,
+            "finite": true
+          },
+          {
+            "type": "heavy/near",
+            "count": 18,
+            "vertices": 1446,
+            "finite": true
+          },
+          {
+            "type": "charger/near",
+            "count": 18,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged/near",
+            "count": 18,
+            "vertices": 1326,
+            "finite": true
+          },
+          {
+            "type": "elite/near",
+            "count": 18,
+            "vertices": 1290,
+            "finite": true
+          },
+          {
+            "type": "ranged/far",
+            "count": 35,
+            "vertices": 408,
+            "finite": true
+          },
+          {
+            "type": "elite/far",
+            "count": 35,
+            "vertices": 456,
+            "finite": true
+          },
+          {
+            "type": "grunt/far",
+            "count": 35,
+            "vertices": 300,
+            "finite": true
+          },
+          {
+            "type": "runner/far",
+            "count": 35,
+            "vertices": 384,
+            "finite": true
+          },
+          {
+            "type": "heavy/far",
+            "count": 35,
+            "vertices": 408,
+            "finite": true
+          },
+          {
+            "type": "charger/far",
+            "count": 35,
+            "vertices": 384,
+            "finite": true
+          }
+        ],
+        "sceneObjects": 69
+      }
+    },
+    {
+      "name": "Ranged volleys are spaced, not deleted or shot simultaneously",
+      "count": 9,
+      "before": 9,
+      "earliest": 240.7,
+      "latest": 243.57999999999998,
+      "alive": 24
+    },
+    {
+      "name": "Hero silhouette only activates near occluders and follows the same skeleton",
+      "clear": true,
+      "occluded": true,
+      "clearAgain": true,
+      "sharedSkeleton": true
+    },
+    {
+      "name": "Armor occlusion cue replaces the hidden hero cue",
+      "cues": [
+        {
+          "key": "rig/hero",
+          "visible": false
+        },
+        {
+          "key": "rig/armor/thunder",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "Reused enemies start without stale LOD history",
+      "wasFar": true,
+      "reused": true,
+      "detail": null
+    }
+  ],
+  "errors": []
+}

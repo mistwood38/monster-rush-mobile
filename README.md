@@ -6,7 +6,9 @@
 
 [上一轮实际截图、怪潮视频、逐阶段CSV与完整报告](docs/horde-review/REVIEW.md)。已改为骨骼3D人物、GPU关节实例怪潮及空间网格碰撞，普通敌人预算320。安卓真机和发行美术尚未验收。
 
-[最新优化：远景几何分级、主角遮挡提示、拾取与远程齐射修正](docs/optimization-review/REVIEW.md)。
+[上一轮优化：远景几何分级、主角遮挡提示、拾取与远程齐射修正](docs/optimization-review/REVIEW.md)。
+
+[最新优化：修复正常流程缺失的射速/弹丸奖励、减少血条遮挡、保护Boss警告](docs/growth-review/REVIEW.md)。
 
 本次已从 `codex-assets-v1.7/codex_delivery/v1.7/` 读取四包，并按正式设计替换此前的临时规则。来源、哈希、原包设计与美术限制保存于 [docs/v17](docs/v17/)。
 

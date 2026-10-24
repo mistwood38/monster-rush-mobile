@@ -1,0 +1,349 @@
+{
+  "results": [
+    {
+      "name": "Natural gate delivery affects actual rate",
+      "pick": "rate",
+      "base": {
+        "count": 1,
+        "avgSpeed": 32.00000000000001,
+        "totalDamage": 12,
+        "weapon": "rifle",
+        "interval": 0.25,
+        "lanes": 1,
+        "pellets": 1,
+        "damageMultiplier": 1,
+        "bulletSpeedMultiplier": 1,
+        "kinds": [
+          "bullet"
+        ],
+        "gunMeshes": 2,
+        "playerMeshes": 4,
+        "drawCalls": 25,
+        "memory": {
+          "geometries": 18,
+          "textures": 4
+        },
+        "triangles": 10714,
+        "heap": {
+          "used": 12047158,
+          "total": 19682534
+        },
+        "laser": false
+      },
+      "after": {
+        "count": 2,
+        "avgSpeed": 32,
+        "totalDamage": 34.5,
+        "weapon": "rifle",
+        "interval": 0.20833333333333334,
+        "lanes": 2,
+        "pellets": 1,
+        "damageMultiplier": 1.4375,
+        "bulletSpeedMultiplier": 1,
+        "kinds": [
+          "bullet"
+        ],
+        "gunMeshes": 2,
+        "playerMeshes": 4,
+        "drawCalls": 25,
+        "memory": {
+          "geometries": 18,
+          "textures": 4
+        },
+        "triangles": 10714,
+        "heap": {
+          "used": 14116924,
+          "total": 20993704
+        },
+        "laser": false
+      },
+      "stats": {
+        "lanes": 2,
+        "pellets": 1,
+        "fireRate": 1.2,
+        "bulletSpeed": 1,
+        "damage": 1.4375
+      },
+      "offers": [
+        {
+          "pair": 1,
+          "time": 7.000000000000032,
+          "types": [
+            "recruit",
+            "damage"
+          ]
+        },
+        {
+          "pair": 2,
+          "time": 17.500000000000075,
+          "types": [
+            "rate",
+            "pellets"
+          ]
+        },
+        {
+          "pair": 3,
+          "time": 27.999999999999478,
+          "types": [
+            "speed",
+            "damage"
+          ]
+        },
+        {
+          "pair": 4,
+          "time": 38.499999999998884,
+          "types": [
+            "lanes",
+            "damage"
+          ]
+        }
+      ],
+      "time": 45.99999999999846
+    },
+    {
+      "name": "Natural gate delivery affects actual pellets",
+      "pick": "pellets",
+      "base": {
+        "count": 1,
+        "avgSpeed": 32,
+        "totalDamage": 12,
+        "weapon": "rifle",
+        "interval": 0.25,
+        "lanes": 1,
+        "pellets": 1,
+        "damageMultiplier": 1,
+        "bulletSpeedMultiplier": 1,
+        "kinds": [
+          "bullet"
+        ],
+        "gunMeshes": 2,
+        "playerMeshes": 4,
+        "drawCalls": 26,
+        "memory": {
+          "geometries": 19,
+          "textures": 5
+        },
+        "triangles": 10716,
+        "heap": {
+          "used": 11686150,
+          "total": 20997722
+        },
+        "laser": false
+      },
+      "after": {
+        "count": 4,
+        "avgSpeed": 32,
+        "totalDamage": 46.575,
+        "weapon": "rifle",
+        "interval": 0.25,
+        "lanes": 2,
+        "pellets": 2,
+        "damageMultiplier": 1.4375,
+        "bulletSpeedMultiplier": 1,
+        "kinds": [
+          "bullet"
+        ],
+        "gunMeshes": 2,
+        "playerMeshes": 4,
+        "drawCalls": 26,
+        "memory": {
+          "geometries": 19,
+          "textures": 5
+        },
+        "triangles": 10716,
+        "heap": {
+          "used": 10528703,
+          "total": 20011723
+        },
+        "laser": false
+      },
+      "stats": {
+        "lanes": 2,
+        "pellets": 2,
+        "fireRate": 1,
+        "bulletSpeed": 1,
+        "damage": 1.4375
+      },
+      "offers": [
+        {
+          "pair": 1,
+          "time": 7.000000000000032,
+          "types": [
+            "recruit",
+            "damage"
+          ]
+        },
+        {
+          "pair": 2,
+          "time": 17.500000000000075,
+          "types": [
+            "rate",
+            "pellets"
+          ]
+        },
+        {
+          "pair": 3,
+          "time": 27.999999999999478,
+          "types": [
+            "speed",
+            "damage"
+          ]
+        },
+        {
+          "pair": 4,
+          "time": 38.499999999998884,
+          "types": [
+            "lanes",
+            "damage"
+          ]
+        }
+      ],
+      "time": 45.99999999999846
+    },
+    {
+      "name": "Squad recruitment, promotion and team buffs remain reachable",
+      "rotation": [
+        [
+          "recruit",
+          "damage"
+        ],
+        [
+          "rate",
+          "pellets"
+        ],
+        [
+          "speed",
+          "damage"
+        ],
+        [
+          "lanes",
+          "damage"
+        ],
+        [
+          "promote",
+          "promote"
+        ],
+        [
+          "rate",
+          "pellets"
+        ],
+        [
+          "speed",
+          "damage"
+        ],
+        [
+          "lanes",
+          "damage"
+        ],
+        [
+          "team",
+          "promote"
+        ],
+        [
+          "rate",
+          "pellets"
+        ],
+        [
+          "speed",
+          "damage"
+        ],
+        [
+          "lanes",
+          "damage"
+        ],
+        [
+          "recruit",
+          "damage"
+        ]
+      ]
+    },
+    {
+      "name": "Health bars prioritize nearby threats without deleting enemies",
+      "near": 201,
+      "rows": [
+        {
+          "q": 0,
+          "alive": 201,
+          "count": 24,
+          "ids": [
+            201,
+            5,
+            6,
+            4,
+            7,
+            15,
+            16,
+            3,
+            8,
+            14,
+            17,
+            25,
+            26,
+            2,
+            9,
+            13,
+            18,
+            24,
+            27,
+            35,
+            36,
+            1,
+            10,
+            12
+          ]
+        },
+        {
+          "q": 1,
+          "alive": 201,
+          "count": 18,
+          "ids": [
+            201,
+            5,
+            6,
+            4,
+            7,
+            15,
+            16,
+            3,
+            8,
+            14,
+            17,
+            25,
+            26,
+            2,
+            9,
+            13,
+            18,
+            24
+          ]
+        },
+        {
+          "q": 2,
+          "alive": 201,
+          "count": 12,
+          "ids": [
+            201,
+            5,
+            6,
+            4,
+            7,
+            15,
+            16,
+            3,
+            8,
+            14,
+            17,
+            25
+          ]
+        }
+      ]
+    },
+    {
+      "name": "A real breach cannot overwrite the Boss dodge warning",
+      "before": "巨像锁定 · 横向移出红区",
+      "after": "巨像锁定 · 横向移出红区",
+      "breached": 1
+    }
+  ],
+  "errors": []
+}

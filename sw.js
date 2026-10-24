@@ -1,5 +1,5 @@
 importScripts("./v17-cache.js");
-const CACHE = "monster-rush-horde-optimization-1";
+const CACHE = "monster-rush-growth-2";
 const FILES = [
   "./",
   "./index.html",

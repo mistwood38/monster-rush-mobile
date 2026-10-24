@@ -28,7 +28,10 @@ fs.mkdirSync(dir, { recursive: true });
         })),
       ),
     ];
-    for (const config of cases) {
+    const selectedCases = cases.filter(c => !process.env.HORDE_CASE_FILTER ||
+      `${c.loadout}:${c.build}` === process.env.HORDE_CASE_FILTER);
+    assert.ok(selectedCases.length, "Case filter must select at least one scenario");
+    for (const config of selectedCases) {
       for (let seed0 = 1; seed0 <= seeds; seed0++) {
         const row = await h.page.evaluate(
           async ({ config, seed0, seconds }) => {
@@ -111,7 +114,7 @@ fs.mkdirSync(dir, { recursive: true });
       );
     }
     assert.deepEqual(h.errors, []);
-    const summary = cases.map((c) => {
+    const summary = selectedCases.map((c) => {
       const rows = runs.filter(
         (r) =>
           r.skill === c.skill &&

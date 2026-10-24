@@ -109,9 +109,9 @@ export class SpatialGrid {
 }
 export function qualityProfile(level) {
   return [
-    { dpr: 1.15, particles: 64, animationHz: 30, shadows: true },
-    { dpr: 0.85, particles: 48, animationHz: 20, shadows: false },
-    { dpr: 0.65, particles: 28, animationHz: 12, shadows: false },
+    { dpr: 1.15, particles: 64, healthBars: 24, animationHz: 30, shadows: true },
+    { dpr: 0.85, particles: 48, healthBars: 18, animationHz: 20, shadows: false },
+    { dpr: 0.65, particles: 28, healthBars: 12, animationHz: 12, shadows: false },
   ][Math.min(2, Math.max(0, level))];
 }
 

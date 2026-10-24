@@ -1,0 +1,165 @@
+{
+  "note": "Sequential isolated software-WebGL frozen scenes; 25 measured frames after five warmup frames. Controlled captures, not Android FPS or natural survival.",
+  "runs": [
+    {
+      "label": "before",
+      "rows": [
+        {
+          "scenario": "200 damaged enemies, 4 crew, frozen rendering",
+          "bars": 125,
+          "frames": 25,
+          "meanFrameMs": 333.32399999999996,
+          "p95": 366.60000000000036,
+          "metrics": {
+            "count": 0,
+            "avgSpeed": 0,
+            "totalDamage": 0,
+            "weapon": "rifle",
+            "interval": 0.25,
+            "lanes": 1,
+            "pellets": 1,
+            "damageMultiplier": 1,
+            "bulletSpeedMultiplier": 1,
+            "kinds": [],
+            "gunMeshes": 2,
+            "playerMeshes": 4,
+            "drawCalls": 44,
+            "memory": {
+              "geometries": 31,
+              "textures": 8
+            },
+            "triangles": 109738,
+            "heap": {
+              "used": 26474411,
+              "total": 39717687
+            },
+            "laser": false
+          },
+          "horde": {
+            "spawned": 200,
+            "killed": 0,
+            "breached": 0,
+            "hits": 0,
+            "damageTaken": 0,
+            "damageDealt": 0,
+            "killSeconds": 0,
+            "engagementSeconds": 0,
+            "breachHits": 0,
+            "directHits": 0,
+            "peakAlive": 200,
+            "peakVisible": 200,
+            "collisionTests": 0,
+            "bossFights": [],
+            "stages": [],
+            "realSeconds": 0,
+            "time": 150.15000000000003,
+            "alive": 200,
+            "visible": 200,
+            "averageKillSeconds": 0,
+            "averageEngagementSeconds": 0,
+            "models": {
+              "technique": "GPU instanced articulated original meshes",
+              "families": 4,
+              "near": 180,
+              "far": 20,
+              "animationHz": 30,
+              "instances": 200,
+              "draws": 8,
+              "proxyPool": 0
+            },
+            "quality": 0,
+            "stats": {
+              "lanes": 1,
+              "pellets": 1,
+              "fireRate": 1,
+              "bulletSpeed": 1,
+              "damage": 1
+            },
+            "crew": 4
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "label": "after",
+      "rows": [
+        {
+          "scenario": "200 damaged enemies, 4 crew, frozen rendering",
+          "bars": 24,
+          "frames": 25,
+          "meanFrameMs": 319.324,
+          "p95": 600.0000000000009,
+          "metrics": {
+            "count": 0,
+            "avgSpeed": 0,
+            "totalDamage": 0,
+            "weapon": "rifle",
+            "interval": 0.25,
+            "lanes": 1,
+            "pellets": 1,
+            "damageMultiplier": 1,
+            "bulletSpeedMultiplier": 1,
+            "kinds": [],
+            "gunMeshes": 2,
+            "playerMeshes": 4,
+            "drawCalls": 44,
+            "memory": {
+              "geometries": 31,
+              "textures": 8
+            },
+            "triangles": 109334,
+            "heap": {
+              "used": 27671556,
+              "total": 40382464
+            },
+            "laser": false
+          },
+          "horde": {
+            "spawned": 200,
+            "killed": 0,
+            "breached": 0,
+            "hits": 0,
+            "damageTaken": 0,
+            "damageDealt": 0,
+            "killSeconds": 0,
+            "engagementSeconds": 0,
+            "breachHits": 0,
+            "directHits": 0,
+            "peakAlive": 200,
+            "peakVisible": 200,
+            "collisionTests": 0,
+            "bossFights": [],
+            "stages": [],
+            "realSeconds": 0,
+            "time": 150.15000000000003,
+            "alive": 200,
+            "visible": 200,
+            "averageKillSeconds": 0,
+            "averageEngagementSeconds": 0,
+            "models": {
+              "technique": "GPU instanced articulated original meshes",
+              "families": 4,
+              "near": 180,
+              "far": 20,
+              "animationHz": 30,
+              "instances": 200,
+              "draws": 8,
+              "proxyPool": 0
+            },
+            "quality": 0,
+            "stats": {
+              "lanes": 1,
+              "pellets": 1,
+              "fireRate": 1,
+              "bulletSpeed": 1,
+              "damage": 1
+            },
+            "crew": 4
+          }
+        }
+      ],
+      "errors": []
+    }
+  ]
+}
