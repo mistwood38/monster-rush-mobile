@@ -114,3 +114,10 @@ export function qualityProfile(level) {
     { dpr: 0.65, particles: 28, animationHz: 12, shadows: false },
   ][Math.min(2, Math.max(0, level))];
 }
+
+// Hysteresis prevents visible detail flicker around the boundary. Boss never simplifies.
+export function enemyDetail(z, quality = 0, previous = null, boss = false) {
+  if (boss) return "near";
+  const boundary = [-23, -17, -12][Math.max(0, Math.min(2, quality))];
+  return z < boundary + (previous === "far" ? 1.5 : -1.5) ? "far" : "near";
+}

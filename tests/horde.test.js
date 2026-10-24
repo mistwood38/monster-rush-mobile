@@ -6,6 +6,7 @@ import {
   enemyKind,
   SpatialGrid,
   qualityProfile,
+  enemyDetail,
 } from "../horde.js";
 test("0–300 s curve and endless growth are continuous, bounded and contain relief windows", () => {
   assert.equal(HORDE_LIMIT, 320);
@@ -86,4 +87,16 @@ test("quality tiers only reduce rendering, never simulation or live enemy budget
     assert.ok(!("damage" in q));
   }
   assert.ok(qualityProfile(2).animationHz < qualityProfile(0).animationHz);
+});
+
+test("distance detail preserves close silhouettes and uses hysteresis at every quality", () => {
+  for (const q of [0, 1, 2]) {
+    assert.equal(enemyDetail(-50, q), "far");
+    assert.equal(enemyDetail(-2, q), "near");
+    assert.equal(enemyDetail(-50, q, "far", true), "near");
+    const edge = [-23, -17, -12][q];
+    assert.equal(enemyDetail(edge, q, "near"), "near");
+    assert.equal(enemyDetail(edge, q, "far"), "far");
+    assert.equal(enemyDetail(edge + 2, q, "far"), "near");
+  }
 });

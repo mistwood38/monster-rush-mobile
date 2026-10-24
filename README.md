@@ -4,7 +4,9 @@
 
 **当前是 `codex/horde-combat-rework` 怪潮重做审查分支。回退点 `backup/final-road-squad-5b01820`；不合并 main、不正式发布。**
 
-[本轮实际截图、怪潮视频、逐阶段CSV与完整报告](docs/horde-review/REVIEW.md)。已改为骨骼3D人物、GPU关节实例怪潮及空间网格碰撞，普通敌人预算320。安卓真机和发行美术尚未验收。
+[上一轮实际截图、怪潮视频、逐阶段CSV与完整报告](docs/horde-review/REVIEW.md)。已改为骨骼3D人物、GPU关节实例怪潮及空间网格碰撞，普通敌人预算320。安卓真机和发行美术尚未验收。
+
+[最新优化：远景几何分级、主角遮挡提示、拾取与远程齐射修正](docs/optimization-review/REVIEW.md)。
 
 本次已从 `codex-assets-v1.7/codex_delivery/v1.7/` 读取四包，并按正式设计替换此前的临时规则。来源、哈希、原包设计与美术限制保存于 [docs/v17](docs/v17/)。
 

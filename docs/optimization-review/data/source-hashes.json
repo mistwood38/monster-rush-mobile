@@ -1,0 +1,15 @@
+{
+  "baseline": "952445463eb02dde43ea1abaa651faff1e8cd50b",
+  "note": "Final runtime source hashes; full functional suite and balance preceded final pooled-LOD reset only. Eight targeted regressions, performance, standalone cover final runtime.",
+  "sha256": {
+    "game.js": "2e8bfbdb64a39706a0f02dfc942b6d6a260bd4684c4c846bd0f3a5983e16786b",
+    "actors3d.js": "f99c52205e991b1208a6cffb5350fb88c0c49bb02926d2837ed4e8d27f49197c",
+    "horde.js": "7d2dbdf89698007aa6531e6b86fccf68dc0dd3911bb293c07fcb94f04b15dc8c",
+    "sw.js": "1b4f7c015937c810a9a8c73282b8ed9af0556be78824b22cf31a53a4c75e2f87",
+    "systems.js": "09ad16f65353ccac8e35752bf3ed858e84866e8de2860fb53c223c520b6716c4",
+    "config/catalog.js": "227b5b2642bcfe9e11970fbce98178ed3dd3dd769063e842677f5ffc17166801",
+    "config/balance-v17.js": "ec2df8fb213979a26b36eed229c112e89e8e6ddc761c4dfe9ecb423477a80a12",
+    "tests/optimization.cjs": "142e221a923d4a227b5b78f932bc0e91d5d4428bf6c045d664e105d6d0d5614a",
+    "tests/optimization-performance.cjs": "0af5abd44025c8366f7c6b43f3133de80f4c28dc8c69cab9e445cbc8d6398a4f"
+  }
+}

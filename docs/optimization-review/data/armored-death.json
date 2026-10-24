@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "state": "ended",
+  "model": {
+    "rigs": [
+      {
+        "key": "rig/hero",
+        "action": "down",
+        "hipAngle": -0.6094687499999996,
+        "bones": 13,
+        "skinned": true,
+        "occlusionCue": true,
+        "handBound": true,
+        "gunChildren": 1
+      },
+      {
+        "key": "rig/armor/thunder",
+        "action": "down",
+        "hipAngle": -0.6094687499999996,
+        "bones": 13,
+        "skinned": true,
+        "occlusionCue": true,
+        "handBound": true,
+        "gunChildren": 1
+      }
+    ],
+    "batches": [],
+    "sceneObjects": 77
+  }
+}

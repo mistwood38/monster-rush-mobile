@@ -14,7 +14,9 @@
     "test:horde-showcase": "node tests/horde-showcase.cjs",
     "test:balance:legacy-controller": "node tests/balance.cjs",
     "test:horde-fixtures": "node tests/horde-fixtures.cjs",
-    "test:horde-visual": "node tests/horde-visual-audit.cjs"
+    "test:horde-visual": "node tests/horde-visual-audit.cjs",
+    "test:optimization": "node tests/optimization.cjs",
+    "test:optimization-performance": "node tests/optimization-performance.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

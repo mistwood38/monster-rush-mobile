@@ -1288,7 +1288,7 @@ let browser;
         ),
       );
       assert.ok(r.audit.batches.every((x) => x.finite));
-      assert.ok(r.report.models.draws <= 7 && r.report.models.instances > 120);
+      assert.ok(r.report.models.draws <= 13 && r.report.models.instances > 120);
       return r;
     },
   );

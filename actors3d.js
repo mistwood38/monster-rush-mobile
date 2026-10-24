@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
+import { qualityProfile, enemyDetail } from "./horde.js";
 import { SpriteStateMachine } from "./sprite-state.mjs";
 // Original geometry. A single colored mesh per rig / enemy family; no commercial models.
 class ShapeBuilder {
@@ -178,6 +179,7 @@ export class CombatModels {
     this.dummy = new THREE.Object3D();
     this.color = new THREE.Color();
     this.uniform = { value: 0 };
+    this.animationHz = { value: 30 };
     this.geometries = new Map();
     this.guns = new Map();
   }
@@ -401,6 +403,20 @@ export class CombatModels {
     body.bind(new THREE.Skeleton(bones));
     body.castShadow = true;
     body.receiveShadow = true;
+    // A depth-tested silhouette reveals only occluded pixels, sharing the live skeleton.
+    // Crew remain normally occluded; only the controlled hero/armor gets this cue.
+    let silhouette = null;
+    if (role === "hero" || armored) {
+      const cue = new THREE.MeshBasicMaterial({ color: "#77f6ff", transparent: true,
+        opacity: 0.42, depthFunc: THREE.GreaterDepth, depthWrite: false,
+        polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
+      silhouette = new THREE.SkinnedMesh(geometry, cue);
+      silhouette.bind(body.skeleton, body.bindMatrix);
+      silhouette.visible = false;
+      silhouette.renderOrder = 12;
+      silhouette.frustumCulled = false;
+      root.add(silhouette);
+    }
     const gun = new THREE.Group();
     bones[9].add(gun);
     gun.position.z = -0.03;
@@ -449,7 +465,8 @@ export class CombatModels {
       armR: new THREE.Object3D(),
       rig: true,
       bones,
-      disposables: [geometry, material, body.skeleton],
+      silhouette,
+      disposables: [geometry, material, body.skeleton, ...(silhouette ? [silhouette.material] : [])],
       aim: 0,
     };
     this.sprites.active.add(actor);
@@ -472,7 +489,8 @@ export class CombatModels {
     root.removeFromParent();
     this.proxyPool.push(root);
   }
-  enemyGeometry(type) {
+  enemyGeometry(type, detail = "near") {
+    if (detail === "far") return this.distantEnemyGeometry(type);
     const s = new ShapeBuilder(),
       heavy = type === "heavy",
       spider = type === "ranged",
@@ -595,29 +613,50 @@ export class CombatModels {
     }
     return s.finish();
   }
-  batch(type) {
-    if (this.batches.has(type)) return this.batches.get(type);
-    const geometry = this.enemyGeometry(type),
+  distantEnemyGeometry(type) {
+    // Keep head/torso, articulated feet/arms and type silhouette; remove subpixel teeth/claws.
+    const s = new ShapeBuilder(), heavy = type === "heavy", elite = type === "elite",
+      runner = type === "runner", ranged = type === "ranged";
+    const color = heavy ? "#914c48" : ranged ? "#6c647f" : elite ? "#ad5145"
+      : runner ? "#e79539" : "#d96f56";
+    s.sphere([0, 0.96, 0], [heavy ? 0.66 : runner ? 0.32 : 0.47, 0.58, 0.4], color)
+      .sphere([0, 1.53, -0.04], [0.37, 0.35, 0.34], color)
+      .box([0, 1.62, -0.34], [0.39, 0.1, 0.04], "#fff58e");
+    for (const side of [-1, 1]) {
+      const lp = [side * 0.24, 0.65, 0], ap = [side * 0.42, 1.23, 0];
+      s.box([side * 0.25, 0.32, -0.04], [0.28, 0.58, 0.36], "#393347", side * 2, lp)
+        .box([side * 0.49, 0.94, -0.06], [0.28, 0.65, 0.3], color, side, ap);
+      if (heavy || elite) s.box([side * 0.48, 1.25, 0], [0.35, 0.28, 0.4], "#e7b77a", side, ap);
+      if (runner || type === "charger" || elite)
+        s.cone([side * 0.24, 1.92, 0.08], [0.12, 0.45, 0.14], "#e7b77a");
+      if (ranged) s.box([side * 0.6, 0.5, 0.12], [0.2, 0.2, 0.95], "#393347", side * 2, lp);
+    }
+    if (heavy) s.box([-0.38, 1.02, -0.5], [0.48, 0.7, 0.18], "#e7b77a");
+    if (ranged) s.box([0, 1.35, 0.27], [0.28, 0.28, 0.65], "#ac8cca");
+    return s.finish();
+  }
+  batch(type, detail = "near") {
+    const key = type + "/" + detail;
+    if (this.batches.has(key)) return this.batches.get(key);
+    const geometry = this.enemyGeometry(type, detail),
       motion = new THREE.InstancedBufferAttribute(
         new Float32Array(this.limit * 4),
         4,
       );
     geometry.setAttribute("aMotion", motion);
-    const material = new THREE.MeshStandardMaterial({
-      vertexColors: true,
-      roughness: 0.88,
-      metalness: 0.04,
-    });
+    // Diffuse cartoon lighting avoids per-fragment PBR work across the entire horde.
+    const material = new THREE.MeshLambertMaterial({ vertexColors: true });
     material.onBeforeCompile = (shader) => {
       shader.uniforms.uHordeTime = this.uniform;
+      shader.uniforms.uAnimationHz = this.animationHz;
       shader.vertexShader = shader.vertexShader
         .replace(
           "#include <common>",
-          `#include <common>\nattribute float aLimb; attribute vec3 aPivot; attribute vec4 aMotion; uniform float uHordeTime; varying float vHordeHit;\nmat3 limbRotation(float a){float c=cos(a),s=sin(a);return mat3(1.,0.,0.,0.,c,s,0.,-s,c);}`,
+          `#include <common>\nattribute float aLimb; attribute vec3 aPivot; attribute vec4 aMotion; uniform float uHordeTime; uniform float uAnimationHz; varying float vHordeHit;\nmat3 limbRotation(float a){float c=cos(a),s=sin(a);return mat3(1.,0.,0.,0.,c,s,0.,-s,c);}`,
         )
         .replace(
           "#include <beginnormal_vertex>",
-          `#include <beginnormal_vertex>\nfloat gaitTime=instanceMatrix[3].z < -25. ? floor(uHordeTime*10.)/10. : uHordeTime;float gait=sin(gaitTime*(6.+mod(aMotion.x,3.))+aMotion.x)*sign(aLimb)*(.42+step(1.5,abs(aLimb))*.16); if(abs(aLimb)>.1&&abs(aLimb)<1.5)gait+=aMotion.w; if(abs(aLimb)>.1)objectNormal=limbRotation(gait)*objectNormal;`,
+          `#include <beginnormal_vertex>\nfloat gaitTime=instanceMatrix[3].z < -25. ? floor(uHordeTime*uAnimationHz)/uAnimationHz : uHordeTime;float gait=sin(gaitTime*(6.+mod(aMotion.x,3.))+aMotion.x)*sign(aLimb)*(.42+step(1.5,abs(aLimb))*.16); if(abs(aLimb)>.1&&abs(aLimb)<1.5)gait+=aMotion.w; if(abs(aLimb)>.1)objectNormal=limbRotation(gait)*objectNormal;`,
         )
         .replace(
           "#include <begin_vertex>",
@@ -633,23 +672,24 @@ export class CombatModels {
           "#include <color_fragment>\ndiffuseColor.rgb=mix(diffuseColor.rgb,vec3(1.,.7,.42),vHordeHit*.8);",
         );
     };
-    material.customProgramCacheKey = () => "horde-rig-v1";
+    material.customProgramCacheKey = () => "horde-rig-lod-v2";
     const mesh = new THREE.InstancedMesh(geometry, material, this.limit);
     mesh.frustumCulled = false;
     mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
     mesh.count = 0;
     this.scene.add(mesh);
-    const b = { mesh, motion, count: 0 };
-    this.batches.set(type, b);
+    const b = { mesh, motion, count: 0, type, detail };
+    this.batches.set(key, b);
     return b;
   }
-  sync(enemies, boss, time) {
+  sync(enemies, boss, time, quality = 0) {
     this.uniform.value = time;
+    this.animationHz.value = qualityProfile(quality).animationHz;
     for (const b of this.batches.values()) b.count = 0;
     const list = boss ? [...enemies, boss] : enemies;
     for (const e of list) {
       const type = e === boss ? "boss" : e.type,
-        b = this.batch(type),
+        b = this.batch(type, e.renderDetail = enemyDetail(e.z, quality, e.renderDetail, type === "boss")),
         i = b.count++;
       if (i >= this.limit) {
         b.count--;
@@ -696,7 +736,10 @@ export class CombatModels {
   audit() {
     return {
       technique: "GPU instanced articulated original meshes",
-      families: this.batches.size,
+      families: new Set([...this.batches.values()].map(b => b.type)).size,
+      near: [...this.batches.values()].filter(b => b.detail === "near").reduce((n,b) => n+b.count,0),
+      far: [...this.batches.values()].filter(b => b.detail === "far").reduce((n,b) => n+b.count,0),
+      animationHz: this.animationHz.value,
       instances: [...this.batches.values()].reduce((n, b) => n + b.count, 0),
       draws: [...this.batches.values()].filter((b) => b.count > 0).length,
       proxyPool: this.proxyPool.length,

@@ -449,6 +449,17 @@ function buildWorld() {
   }
   worldObjects.enemyOverlay = overlay;
 }
+function syncHeroReadability() {
+  const obstructed = state.threats.some(e => !e.dead &&
+    e.z > playerZ - 3 && e.z < playerZ + 2.5 &&
+    Math.abs(e.x - state.playerX) < 1.8 * e.group.scale.x);
+  for (const rig of [playerRig, armorVisual])
+    if (rig?.userData.silhouette) {
+      rig.userData.silhouette.visible = obstructed && state.mode === "playing" &&
+        rig.userData.body.visible;
+      rig.userData.silhouette.material.opacity = 0.42 * rig.userData.body.material.opacity;
+    }
+}
 function syncEnemyOverlays() {
   const o = worldObjects.enemyOverlay;
   if (!o) return;
@@ -825,7 +836,7 @@ function buildPlayer() {
   };
   playerRig.position.set(0, -0.1, playerZ);
   playerRig.traverse((o) => {
-    if (o.isMesh) o.castShadow = true;
+    if (o.isMesh && o !== playerRig.userData.silhouette) o.castShadow = true;
   });
   playerShadow = mesh(
     new THREE.CircleGeometry(0.72, 24),
@@ -1198,7 +1209,7 @@ function acquireGate(g) {
   if (!testPickupsEnabled) return;
   const special = g.reward.type;
   if (["recruit", "team", "promote", "regroup"].includes(special)) {
-    if (special === "recruit") run.recruit("assault");
+    if (special === "recruit") run.recruit(g.reward.role || "assault");
     if (special === "team") run.teamPower = Math.min(0.3, run.teamPower + 0.1);
     if (special === "regroup") {
       state.hp = Math.min(run.maxHp, state.hp + 15);
@@ -1323,7 +1334,7 @@ function spawnEnemy(type = "grunt", x = rand(-4.4, 4.4), z = -46) {
   group.traverse((o) => {
     if (o.isMesh) o.castShadow = false;
   });
-  // No enemy mesh/group is inserted into the scene tree: six GPU batches render the entire horde.
+  // No enemy mesh/group is inserted into the scene tree: near/far GPU batches render the entire horde.
   // Public combat objects stay stable; actual bars/shadows render in three batches.
   const barGroup = new THREE.Object3D(),
     fill = new THREE.Object3D(),
@@ -1367,6 +1378,7 @@ function spawnEnemy(type = "grunt", x = rand(-4.4, 4.4), z = -46) {
     pack: 0,
     visualDebt: 0,
     visualStamp: -1,
+    renderDetail: null,
   });
   state.threats.push(e);
   telemetry.spawned++;
@@ -2271,8 +2283,16 @@ function damageBoss(dmg, procs = true) {
 }
 
 function spawnEnemyShot(enemy) {
+  // Stagger regular ranged volleys; retain all enemies and all already-fired shots.
+  // Boss attacks keep their independent, explicitly telegraphed pattern.
+  const budget = state.boss ? 4 : Math.min(12, 5 + Math.floor(state.time / 60));
+  if (state.enemyShots.length >= 60 ||
+      state.enemyShots.filter(s => !s.boss).length >= budget ||
+      state.enemyShots.some(s => !s.boss && !s.active && s.warningAt > state.time + 0.35)) {
+    enemy.fire = 0.35;
+    return;
+  }
   sprites.trigger(enemy.group, "attack");
-  if (state.enemyShots.length >= 60) return;
   const warning = mesh(
     new THREE.RingGeometry(0.16, 0.27, 24),
     new THREE.MeshBasicMaterial({
@@ -2287,7 +2307,7 @@ function spawnEnemyShot(enemy) {
   );
   warning.rotation.x = -Math.PI / 2;
   registerEffect(warning);
-  warning.userData.life = enemy.type === "ranged" ? 0.7 : 0.5;
+  warning.userData.life = 0.7;
   warning.userData.warning = true;
   const start = { x: enemy.x, z: enemy.z, y: 1.1 };
   state.enemyShots.push({
@@ -2298,7 +2318,7 @@ function spawnEnemyShot(enemy) {
     vz: 11,
     life: 6,
     damage: enemy.damage,
-    warningAt: state.time + 0.55,
+    warningAt: state.time + 0.7,
     active: false,
     mesh: null,
   });
@@ -2926,6 +2946,7 @@ function damageSupply(c, damage) {
 }
 function updateGatesCrates(dt) {
   for (const g of state.gates) {
+    g.previousZ = g.z;
     g.z += worldSpeed() * dt;
     g.group.position.z = g.z;
     g.phase += dt;
@@ -2940,8 +2961,11 @@ function updateGatesCrates(dt) {
             (other) => other.pairId === g.pairId && !other.resolved,
           );
     const chosen = pair.find(
-      (other) => Math.abs(state.playerX - other.x) < 1.72,
+      (other) => (other.previousZ ?? other.z) <= playerZ + 1.4 &&
+        Math.abs(state.playerX - other.x) < 1.72,
     );
+    // Keep a real pickup window, so a late sidestep still chooses a gate.
+    if (!chosen && g.z <= playerZ + 1.4) continue;
     for (const other of pair) {
       other.resolved = true;
       other.group.visible = false;
@@ -4179,7 +4203,8 @@ function frame(now) {
   syncHostileInstances();
   syncWarnings();
   syncEnemyOverlays();
-  models.sync(state.threats, state.boss, state.time);
+  syncHeroReadability();
+  models.sync(state.threats, state.boss, state.time, qualityLevel);
   renderer.render(scene, camera);
   camera.position.x = baseX;
   camera.position.y = baseY;
@@ -4233,6 +4258,7 @@ if (new URLSearchParams(location.search).get("test") === "1")
           hipAngle: r.userData.bones?.[0].rotation.x,
           bones: r.userData.bones?.length,
           skinned: !!r.userData.body.isSkinnedMesh,
+          occlusionCue: !!r.userData.silhouette,
           handBound: r.userData.gun.parent === r.userData.bones?.[9],
           gunChildren: r.userData.gun.children.length,
         })),
@@ -4267,7 +4293,8 @@ if (new URLSearchParams(location.search).get("test") === "1")
       syncHostileInstances();
       syncWarnings();
       syncEnemyOverlays();
-      models.sync(state.threats, state.boss, state.time);
+      syncHeroReadability();
+      models.sync(state.threats, state.boss, state.time, qualityLevel);
       renderer.render(scene, camera);
     },
     hordeReport() {
@@ -4413,6 +4440,7 @@ if (new URLSearchParams(location.search).get("test") === "1")
       return this.state();
     },
     spawnEnemy,
+    spawnEnemyShot,
     spawnGateEvent,
     previewGates(z = -12) {
       spawnGateEvent();
