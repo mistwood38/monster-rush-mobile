@@ -1,0 +1,22 @@
+[
+  {
+    "userFile": "1-9346.jpg",
+    "saved": "docs/art-direction/references/battle-target.jpg",
+    "sha256": "205b36530f582a8e08a11c9828d6b220736b99aca12e91e6e4853f1aa724fcc1"
+  },
+  {
+    "userFile": "2-9347.jpg",
+    "saved": "docs/art-direction/references/enemy-target.jpg",
+    "sha256": "1ea35c600c61edefbf3caf14da1b5945d0fab419e010098c42adc3b1fbd75f54"
+  },
+  {
+    "userFile": "3-9348.jpg",
+    "saved": "docs/art-direction/references/environment-and-effects-target.jpg",
+    "sha256": "a99317f5a66b1572e7a98032034d2e986ad2ed213031695f37d1d9dd95a31154"
+  },
+  {
+    "userFile": "4-9345.jpg",
+    "saved": "docs/art-direction/references/squad-target.jpg",
+    "sha256": "6594967dcb1c9c089ad55b55fb9059d47651a6bd86d98f01ada94cf91d91eac2"
+  }
+]

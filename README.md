@@ -2,6 +2,8 @@
 
 安卓竖屏 2.5D 公路编队射击游戏，Three.js r170、原生 JavaScript、离线 PWA，无后端或运行时 CDN。
 
+**最新美术方向已纠正为写实比例的末日科幻高架战场。当前卡通程序模型尚未达标；[四张用户参考与素材核对](docs/art-direction/ART_DIRECTION.md)是后续视觉验收基准。**
+
 **当前是 `codex/horde-combat-rework` 怪潮重做审查分支。回退点 `backup/final-road-squad-5b01820`；不合并 main、不正式发布。**
 
 [上一轮实际截图、怪潮视频、逐阶段CSV与完整报告](docs/horde-review/REVIEW.md)。已改为骨骼3D人物、GPU关节实例怪潮及空间网格碰撞，普通敌人预算320。安卓真机和发行美术尚未验收。
