@@ -1,5 +1,12 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { CombatModels, roadPropGeometry } from "./actors3d.js";
+const rebuiltMode = new URLSearchParams(location.search).get("art") === "rebuild" || !!window.__MR_REVIEW_ART__;
+let rebuiltModules, rebuiltBank, rebuiltMaps, rebuiltWorld, rebuiltView, artEffects;
+if (rebuiltMode) {
+  rebuiltModules = await Promise.all([import("./rebuild-models.js"), import("./rebuild-world.js"), import("./rebuild-view.js")]);
+  [rebuiltBank, rebuiltMaps] = await Promise.all([rebuiltModules[0].loadRebuiltAssets(), rebuiltModules[1].loadWorldTextures()]);
+  document.documentElement.classList.add("art-rebuild");
+}
 import {
   HORDE_LIMIT,
   hordeStage,
@@ -284,8 +291,16 @@ function init() {
     const roadLight = new THREE.PointLight("#1daeb9", 4, 25, 2);
     roadLight.position.set(0, 3, -10);
     scene.add(roadLight);
-    models = new CombatModels(scene, sprites, HORDE_LIMIT);
+    models = rebuiltMode ? new rebuiltModules[0].RebuiltCombatModels(scene, sprites, HORDE_LIMIT, rebuiltBank) : new CombatModels(scene, sprites, HORDE_LIMIT);
+    const beforeWorld = new Set(scene.children);
     buildWorld();
+    if (rebuiltMode) {
+      const overlay = Object.values(worldObjects.enemyOverlay);
+      for (const child of scene.children) if (!beforeWorld.has(child) && !overlay.includes(child)) child.visible = false;
+      rebuiltWorld = rebuiltModules[1].buildRebuiltWorld(scene, renderer, camera, rebuiltMaps);
+      rebuiltView = new rebuiltModules[2].RebuiltView(renderer, scene, camera);
+      artEffects = new rebuiltModules[2].ArtEffects(scene, camera);
+    }
     buildPlayer();
     setupUi();
     resize();
@@ -1729,6 +1744,7 @@ function createShot(type, target = aimTarget(), source = null) {
     lanes = stats.lanes;
   const pellets = (type === "shotgun" ? info.count : 1) + stats.pellets - 1;
   const origin = shotOrigin(source);
+  artEffects?.shot(type, origin);
   const muzzleX = origin.x,
     originZ = origin.z;
   const baseAngle = Math.atan2(
@@ -2124,6 +2140,7 @@ function processBulletCollisions(b, dt) {
 
 function damageEnemy(e, dmg, heavy, procs = true) {
   if (e.dead) return;
+  artEffects?.hit(e, heavy);
   if (e.firstHitAt < 0) e.firstHitAt = state.time;
   if (procs) {
     const hit = run.directHit(e.uid, dmg);
@@ -3582,6 +3599,7 @@ function nativeFlash(x, z, key, size = 1.8) {
   registerEffect(f);
 }
 function updateEffects(dt) {
+  artEffects?.update(dt);
   for (let i = state.effects.length - 1; i >= 0; i--) {
     const p = state.effects[i];
     p.userData.life -= dt;
@@ -3643,6 +3661,7 @@ function updateEffects(dt) {
   }
 }
 function updateDecor(dt) {
+  if (rebuiltWorld) { rebuiltWorld.update(dt, worldSpeed()); return; }
   worldTime += dt;
   if (roadTexture)
     roadTexture.offset.y =
@@ -3892,6 +3911,7 @@ function endGame() {
   $("#endPanel").classList.remove("hidden");
 }
 function clearDynamic() {
+  artEffects?.reset();
   for (const v of teamVisuals.values()) {
     disposeGroup(v);
     v.userData.body?.material.dispose();
@@ -4222,7 +4242,7 @@ function frame(now) {
   syncEnemyOverlays();
   syncHeroReadability();
   models.sync(state.threats, state.boss, state.time, qualityLevel);
-  renderer.render(scene, camera);
+  rebuiltView ? rebuiltView.render(qualityLevel) : renderer.render(scene, camera);
   camera.position.x = baseX;
   camera.position.y = baseY;
   camera.quaternion.copy(cameraBaseQ);
@@ -4258,6 +4278,7 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
 }
 if (new URLSearchParams(location.search).get("test") === "1")
   window.__MR_TEST__ = {
+    artMode: () => rebuiltMode,
     silence: () => audio.pause(),
     resumeAudio: () => audio.resume(),
     captureAudio: () => audio.captureStream(),
@@ -4276,7 +4297,7 @@ if (new URLSearchParams(location.search).get("test") === "1")
           bones: r.userData.bones?.length,
           skinned: !!r.userData.body.isSkinnedMesh,
           occlusionCue: !!r.userData.silhouette,
-          handBound: r.userData.gun.parent === r.userData.bones?.[9],
+          handBound: r.userData.gun.parent === (r.userData.hand || r.userData.bones?.[9]),
           gunChildren: r.userData.gun.children.length,
         })),
         batches: [...models.batches.entries()].map(([type, b]) => ({
@@ -4312,7 +4333,7 @@ if (new URLSearchParams(location.search).get("test") === "1")
       syncEnemyOverlays();
       syncHeroReadability();
       models.sync(state.threats, state.boss, state.time, qualityLevel);
-      renderer.render(scene, camera);
+      rebuiltView ? rebuiltView.render(qualityLevel) : renderer.render(scene, camera);
     },
     hordeReport() {
       camera.updateMatrixWorld();

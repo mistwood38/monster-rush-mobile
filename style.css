@@ -1,3 +1,4 @@
+@font-face{font-family:"Noto Sans SC";src:url("./assets/fonts/NotoSansSC-UI.woff") format("woff");font-style:normal;font-weight:100 900;font-display:swap;}
 :root {
   color-scheme: dark;
   --ice: #96fbff;
@@ -1175,3 +1176,8 @@ canvas {
   font-size: 9px;
   letter-spacing: 0;
 }
+
+.art-rebuild{--accent:#efb677;}
+.art-rebuild #game{background:#263540;}
+.art-rebuild .brand-mark{background:#b8793f;color:#fff3df;}
+.art-rebuild .health-card,.art-rebuild .score-card{background:linear-gradient(120deg,rgba(13,23,30,.88),rgba(27,39,45,.69));}

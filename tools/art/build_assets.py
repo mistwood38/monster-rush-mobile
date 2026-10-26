@@ -21,6 +21,8 @@ def material(name,diff=None,norm=None,color=(.15,.18,.20),metal=.5,rough=.6,emis
  if emission:bs.inputs['Emission Color'].default_value=(*emission,1);bs.inputs['Emission Strength'].default_value=3
  return m
 def export(name,objects):
+ for im in list(bpy.data.images):
+  if im.source=='FILE' and im.filepath and Path(bpy.path.abspath(im.filepath)).is_file():im.reload()
  bpy.ops.object.select_all(action='DESELECT')
  for o in objects:o.select_set(True)
  bpy.context.view_layer.objects.active=objects[0]
@@ -136,7 +138,7 @@ def boss():
  def bind(o,bone,m):
   o.data.materials.append(m)
   for p in o.data.polygons:p.use_smooth=True
-  world=o.matrix_world.copy();o.parent=arm;o.parent_type='BONE';o.parent_bone=bone;bpy.context.view_layer.update();o.matrix_world=world
+  bpy.context.view_layer.update();world=o.matrix_world.copy();o.parent=arm;o.parent_type='BONE';o.parent_bone=bone;bpy.context.view_layer.update();o.matrix_world=world
  for side in [-1,1]:
   bpy.ops.mesh.primitive_uv_sphere_add(segments=16,ring_count=10,location=(side*.41,0,1.54));o=bpy.context.object;o.scale=(.29,.31,.23);bind(o,'spine',shell)
   for i in range(4):
