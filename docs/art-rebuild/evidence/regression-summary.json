@@ -1,0 +1,30 @@
+[
+  {
+    "name": "baseline-death",
+    "command": "node tests/horde-armored-death.cjs",
+    "exit": 0,
+    "seconds": 3.86,
+    "log": "baseline-death.log"
+  },
+  {
+    "name": "growth",
+    "command": "npm run test:growth",
+    "exit": 0,
+    "seconds": 5.36,
+    "log": "growth.log"
+  },
+  {
+    "name": "legacy-offline",
+    "command": "npm run test:review",
+    "exit": 0,
+    "seconds": 3.93,
+    "log": "legacy-offline.log"
+  },
+  {
+    "name": "art-offline",
+    "command": "npm run test:art-review",
+    "exit": 0,
+    "seconds": 9.38,
+    "log": "art-offline.log"
+  }
+]

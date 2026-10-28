@@ -1,0 +1,7 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> monster-rush-mobile@3.0.0-review test:art-review
+> python3 tools/build-art-review.py && node tests/art-standalone.cjs
+
+{"path": "/workspace/scratch/ea0f74993116/monster-rush-mobile/test-results/art-rebuild/Monster-Rush-Art-Review.html", "bytes": 18144122, "modules": 27, "legacyAssets": 153, "rebuiltAssets": 21}
+{"passed":true,"artMode":true,"rigs":[{"key":"hero","action":"shoot","hipAngle":0.2152548663923484,"bones":63,"skinned":true,"occlusionCue":true,"handBound":true,"gunChildren":1},{"key":"heavy","action":"run","hipAngle":0.2152548663923484,"bones":63,"skinned":true,"occlusionCue":true,"handBound":true,"gunChildren":1},{"key":"guardian","action":"run","hipAngle":0.2152548663923484,"bones":63,"skinned":true,"occlusionCue":true,"handBound":true,"gunChildren":1}],"enemyBatches":[{"type":"grunt/near","count":1,"vertices":2310,"finite":true},{"type":"heavy/near","count":1,"vertices":1714,"finite":true}],"cars":3,"canvas":{"width":393,"height":873},"mode":"playing","external":[],"errors":[]}

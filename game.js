@@ -241,7 +241,9 @@ function init() {
   try {
     renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: true,
+      // Bloom already renders offscreen. Avoid costly default-framebuffer
+      // MSAA when the art candidate switches to its direct low-quality path.
+      antialias: !rebuiltMode,
       alpha: false,
       powerPreference: "high-performance",
     });
@@ -4422,7 +4424,7 @@ if (new URLSearchParams(location.search).get("test") === "1")
       errors: sprites.errors,
       loaded: sprites.audit().ready,
     }),
-    roadOffset: () => roadTexture.offset.y,
+    roadOffset: () => (rebuiltWorld?.road.material.map || roadTexture).offset.y,
     updateRunSystems,
 
     configure(values) {
@@ -4457,6 +4459,7 @@ if (new URLSearchParams(location.search).get("test") === "1")
     charge: addHeat,
     effects: () => ({
       active: state.effects.length,
+      artActive: artEffects?.pool.filter((effect) => effect.visible).length || 0,
       pooled: particlePool.length,
       floating: state.floating.map((f) => ({
         x: f.mesh.position.x,

@@ -29,6 +29,7 @@ const { open } = require("./horde-harness.cjs");
       r.model.rigs.every((x) => x.action === "down" && x.hipAngle < -0.5),
     );
     assert.deepEqual(h.errors, []);
+    fs.mkdirSync(path.resolve(__dirname, "../test-results/horde"), { recursive: true });
     fs.writeFileSync(
       path.resolve(__dirname, "../test-results/horde/armored-death.json"),
       JSON.stringify({ passed: true, ...r }, null, 2),

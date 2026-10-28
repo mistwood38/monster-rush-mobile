@@ -2,11 +2,11 @@
 
 安卓竖屏 2.5D 公路编队射击游戏，Three.js r170、原生 JavaScript、离线 PWA，无后端或运行时 CDN。
 
-**美术重建样板入口：**在此独立分支使用 `?art=rebuild`。它加载可动画的 CC0 模型、两族怪物、独立枪械、纹理道路与车辆，保留现有战斗逻辑。视觉仍未达到用户的写实参考，安卓真机未验证。查看 [资源和许可](docs/art-rebuild/ASSETS.md)、[视觉规范](docs/art-rebuild/VISUAL_SPEC.md) 与 [执行记录](docs/art-rebuild/PROGRESS.md)。
+**美术重建样板入口：**在此独立分支使用 `?art=rebuild`。它加载可动画的 CC0 模型、两族怪物、独立枪械、纹理道路与车辆，保留现有战斗逻辑。视觉仍未达到用户的写实参考，安卓真机未验证。查看 [资源和许可](docs/art-rebuild/ASSETS.md)、[视觉规范](docs/art-rebuild/VISUAL_SPEC.md) 、[审查报告](docs/art-rebuild/REVIEW.md) 与 [执行记录](docs/art-rebuild/PROGRESS.md)。
 
 **最新美术方向已纠正为写实比例的末日科幻高架战场。当前卡通程序模型尚未达标；[四张用户参考与素材核对](docs/art-direction/ART_DIRECTION.md)是后续视觉验收基准。**
 
-**当前是 `codex/horde-combat-rework` 怪潮重做审查分支。回退点 `backup/final-road-squad-5b01820`；不合并 main、不正式发布。**
+**当前是 `codex/art-rebuild-vertical-slice` 美术重建分支，基于 `codex/horde-combat-rework`；原分支与 `backup/final-road-squad-5b01820` 保留，不合并 main、不正式发布。**
 
 [上一轮实际截图、怪潮视频、逐阶段CSV与完整报告](docs/horde-review/REVIEW.md)。已改为骨骼3D人物、GPU关节实例怪潮及空间网格碰撞，普通敌人预算320。安卓真机和发行美术尚未验收。
 
@@ -33,6 +33,10 @@ python3 -m http.server 4173 --bind 0.0.0.0
 ```
 
 在运行服务器的机器打开 `http://localhost:4173/`。这不是公网地址。安卓 PWA 安装需 HTTPS；当前正式 Pages 地址仍是 main 的旧版本。
+
+美术样板打开 `http://localhost:4173/?art=rebuild`。`npm run build:art-review` 可生成 `test-results/art-rebuild/Monster-Rush-Art-Review.html`，单文件内包含模型、贴图、声音和字体；桌面 Chromium 本地文件已检查，安卓本地文件打开仍未实测。它不是 APK，也没有发布到正式站点。
+
+样板检查：`npm run test:art` 验证模型、武器、战甲和画质切换；`npm run test:art-review` 验证单文件试玩；`npm run test:art-performance` 必须单独运行，软件渲染结果不能当作安卓帧率。
 
 ```sh
 npm ci

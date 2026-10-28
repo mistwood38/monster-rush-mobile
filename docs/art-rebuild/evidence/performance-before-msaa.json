@@ -1,0 +1,381 @@
+{
+  "environment": "Desktop Chromium / ANGLE SwiftShader, 393x873, DPR 1; no Android hardware",
+  "context": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.204 Safari/537.36",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "width": 393,
+    "height": 873,
+    "dpr": 1
+  },
+  "method": "Five-member squad; frozen combat entities. Each workload: 10 warm-up + 30 samples of consecutive requestAnimationFrame timestamps in the ordinary render loop, including browser scheduling. No synthetic batch of render calls before the interval sample. Short static workloads; excludes combat simulation, input, audio, thermal and power costs. Not an Android frame-rate measurement.",
+  "rows": [
+    {
+      "count": 64,
+      "quality": 0,
+      "alive": 64,
+      "visible": 64,
+      "frozenFrameIntervalMs": {
+        "samples": 30,
+        "p50": 233.30000000000018,
+        "p95": 283.2999999999993
+      },
+      "metrics": {
+        "count": 0,
+        "avgSpeed": 0,
+        "totalDamage": 0,
+        "weapon": "rifle",
+        "interval": 0.25,
+        "lanes": 1,
+        "pellets": 1,
+        "damageMultiplier": 1,
+        "bulletSpeedMultiplier": 1,
+        "kinds": [],
+        "gunMeshes": 5,
+        "playerMeshes": 10,
+        "drawCalls": 136,
+        "memory": {
+          "geometries": 53,
+          "textures": 53
+        },
+        "triangles": 331480,
+        "heap": {
+          "used": 34371007,
+          "total": 41590615
+        },
+        "laser": false
+      },
+      "batches": [
+        {
+          "type": "heavy/near",
+          "count": 22,
+          "vertices": 1714,
+          "finite": true
+        },
+        {
+          "type": "grunt/near",
+          "count": 42,
+          "vertices": 2310,
+          "finite": true
+        }
+      ],
+      "contextLost": false
+    },
+    {
+      "count": 64,
+      "quality": 2,
+      "alive": 64,
+      "visible": 64,
+      "frozenFrameIntervalMs": {
+        "samples": 30,
+        "p50": 316.6000000000022,
+        "p95": 649.8999999999978
+      },
+      "metrics": {
+        "count": 0,
+        "avgSpeed": 0,
+        "totalDamage": 0,
+        "weapon": "rifle",
+        "interval": 0.25,
+        "lanes": 1,
+        "pellets": 1,
+        "damageMultiplier": 1,
+        "bulletSpeedMultiplier": 1,
+        "kinds": [],
+        "gunMeshes": 5,
+        "playerMeshes": 10,
+        "drawCalls": 83,
+        "memory": {
+          "geometries": 55,
+          "textures": 59
+        },
+        "triangles": 277780,
+        "heap": {
+          "used": 34435313,
+          "total": 45125109
+        },
+        "laser": false
+      },
+      "batches": [
+        {
+          "type": "heavy/near",
+          "count": 20,
+          "vertices": 1714,
+          "finite": true
+        },
+        {
+          "type": "grunt/near",
+          "count": 40,
+          "vertices": 2310,
+          "finite": true
+        },
+        {
+          "type": "heavy/far",
+          "count": 2,
+          "vertices": 703,
+          "finite": true
+        },
+        {
+          "type": "grunt/far",
+          "count": 2,
+          "vertices": 1154,
+          "finite": true
+        }
+      ],
+      "contextLost": false
+    },
+    {
+      "count": 160,
+      "quality": 0,
+      "alive": 160,
+      "visible": 160,
+      "frozenFrameIntervalMs": {
+        "samples": 30,
+        "p50": 316.6999999999971,
+        "p95": 350
+      },
+      "metrics": {
+        "count": 0,
+        "avgSpeed": 0,
+        "totalDamage": 0,
+        "weapon": "rifle",
+        "interval": 0.25,
+        "lanes": 1,
+        "pellets": 1,
+        "damageMultiplier": 1,
+        "bulletSpeedMultiplier": 1,
+        "kinds": [],
+        "gunMeshes": 5,
+        "playerMeshes": 10,
+        "drawCalls": 138,
+        "memory": {
+          "geometries": 55,
+          "textures": 59
+        },
+        "triangles": 611718,
+        "heap": {
+          "used": 33298497,
+          "total": 33915365
+        },
+        "laser": false
+      },
+      "batches": [
+        {
+          "type": "heavy/near",
+          "count": 50,
+          "vertices": 1714,
+          "finite": true
+        },
+        {
+          "type": "grunt/near",
+          "count": 100,
+          "vertices": 2310,
+          "finite": true
+        },
+        {
+          "type": "heavy/far",
+          "count": 4,
+          "vertices": 703,
+          "finite": true
+        },
+        {
+          "type": "grunt/far",
+          "count": 6,
+          "vertices": 1154,
+          "finite": true
+        }
+      ],
+      "contextLost": false
+    },
+    {
+      "count": 160,
+      "quality": 2,
+      "alive": 160,
+      "visible": 160,
+      "frozenFrameIntervalMs": {
+        "samples": 30,
+        "p50": 416.59999999999854,
+        "p95": 483.40000000000146
+      },
+      "metrics": {
+        "count": 0,
+        "avgSpeed": 0,
+        "totalDamage": 0,
+        "weapon": "rifle",
+        "interval": 0.25,
+        "lanes": 1,
+        "pellets": 1,
+        "damageMultiplier": 1,
+        "bulletSpeedMultiplier": 1,
+        "kinds": [],
+        "gunMeshes": 5,
+        "playerMeshes": 10,
+        "drawCalls": 83,
+        "memory": {
+          "geometries": 55,
+          "textures": 59
+        },
+        "triangles": 410068,
+        "heap": {
+          "used": 37136868,
+          "total": 38810044
+        },
+        "laser": false
+      },
+      "batches": [
+        {
+          "type": "heavy/near",
+          "count": 20,
+          "vertices": 1714,
+          "finite": true
+        },
+        {
+          "type": "grunt/near",
+          "count": 40,
+          "vertices": 2310,
+          "finite": true
+        },
+        {
+          "type": "heavy/far",
+          "count": 34,
+          "vertices": 703,
+          "finite": true
+        },
+        {
+          "type": "grunt/far",
+          "count": 66,
+          "vertices": 1154,
+          "finite": true
+        }
+      ],
+      "contextLost": false
+    },
+    {
+      "count": 320,
+      "quality": 0,
+      "alive": 320,
+      "visible": 320,
+      "frozenFrameIntervalMs": {
+        "samples": 30,
+        "p50": 366.6999999999971,
+        "p95": 400
+      },
+      "metrics": {
+        "count": 0,
+        "avgSpeed": 0,
+        "totalDamage": 0,
+        "weapon": "rifle",
+        "interval": 0.25,
+        "lanes": 1,
+        "pellets": 1,
+        "damageMultiplier": 1,
+        "bulletSpeedMultiplier": 1,
+        "kinds": [],
+        "gunMeshes": 5,
+        "playerMeshes": 10,
+        "drawCalls": 138,
+        "memory": {
+          "geometries": 55,
+          "textures": 59
+        },
+        "triangles": 832447,
+        "heap": {
+          "used": 35454264,
+          "total": 36802396
+        },
+        "laser": false
+      },
+      "batches": [
+        {
+          "type": "heavy/near",
+          "count": 50,
+          "vertices": 1714,
+          "finite": true
+        },
+        {
+          "type": "grunt/near",
+          "count": 100,
+          "vertices": 2310,
+          "finite": true
+        },
+        {
+          "type": "heavy/far",
+          "count": 57,
+          "vertices": 703,
+          "finite": true
+        },
+        {
+          "type": "grunt/far",
+          "count": 113,
+          "vertices": 1154,
+          "finite": true
+        }
+      ],
+      "contextLost": false
+    },
+    {
+      "count": 320,
+      "quality": 2,
+      "alive": 320,
+      "visible": 320,
+      "frozenFrameIntervalMs": {
+        "samples": 30,
+        "p50": 616.6000000000058,
+        "p95": 1283.300000000003
+      },
+      "metrics": {
+        "count": 0,
+        "avgSpeed": 0,
+        "totalDamage": 0,
+        "weapon": "rifle",
+        "interval": 0.25,
+        "lanes": 1,
+        "pellets": 1,
+        "damageMultiplier": 1,
+        "bulletSpeedMultiplier": 1,
+        "kinds": [],
+        "gunMeshes": 5,
+        "playerMeshes": 10,
+        "drawCalls": 83,
+        "memory": {
+          "geometries": 55,
+          "textures": 59
+        },
+        "triangles": 630797,
+        "heap": {
+          "used": 35576968,
+          "total": 44142428
+        },
+        "laser": false
+      },
+      "batches": [
+        {
+          "type": "heavy/near",
+          "count": 20,
+          "vertices": 1714,
+          "finite": true
+        },
+        {
+          "type": "grunt/near",
+          "count": 40,
+          "vertices": 2310,
+          "finite": true
+        },
+        {
+          "type": "heavy/far",
+          "count": 87,
+          "vertices": 703,
+          "finite": true
+        },
+        {
+          "type": "grunt/far",
+          "count": 173,
+          "vertices": 1154,
+          "finite": true
+        }
+      ],
+      "contextLost": false
+    }
+  ],
+  "errors": []
+}

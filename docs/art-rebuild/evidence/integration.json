@@ -6,7 +6,9 @@
     "All 3 quality levels preserve every enemy ID / HP / position; LOD alters rendering only",
     "Five independently loaded weapon meshes switch without detaching the socket",
     "Actual auto-fire -> swept bullet collision -> damage and hit effect executed",
+    "Real damage creates a pooled art impact; it expires without an enemy lifetime change",
     "Legs continue running during automatic fire",
+    "Lethal damage while armored plays down on both the underlying and armor skeletons",
     "Five-member squad at both phone viewports; no horizontal UI overflow",
     "Repeated battle reset keeps geometry / texture counts bounded"
   ],
@@ -653,10 +655,10 @@
             "geometries": 71,
             "textures": 58
           },
-          "triangles": 251949,
+          "triangles": 252109,
           "heap": {
-            "used": 31821198,
-            "total": 43781718
+            "used": 32973967,
+            "total": 41158895
           },
           "laser": false
         }
@@ -975,10 +977,10 @@
             "geometries": 71,
             "textures": 58
           },
-          "triangles": 189754,
+          "triangles": 189914,
           "heap": {
-            "used": 32193467,
-            "total": 43781175
+            "used": 33937905,
+            "total": 41420529
           },
           "laser": false
         }
@@ -1297,10 +1299,10 @@
             "geometries": 71,
             "textures": 58
           },
-          "triangles": 166012,
+          "triangles": 166172,
           "heap": {
-            "used": 32375599,
-            "total": 43781879
+            "used": 34131241,
+            "total": 41421233
           },
           "laser": false
         }
@@ -1348,6 +1350,12 @@
     "hp": 964,
     "hits": 0,
     "damageDealt": 36
+  },
+  "impact": {
+    "before": 964,
+    "hp": 954,
+    "active": 1,
+    "expired": 0
   },
   "runAndShoot": [
     {
@@ -1673,6 +1681,31 @@
       "active": false
     }
   ],
+  "armoredDeath": {
+    "mode": "ended",
+    "rigs": [
+      {
+        "key": "hero",
+        "action": "down",
+        "hipAngle": -0.5364753114060624,
+        "bones": 63,
+        "skinned": true,
+        "occlusionCue": true,
+        "handBound": true,
+        "gunChildren": 1
+      },
+      {
+        "key": "armor/thunder",
+        "action": "down",
+        "hipAngle": -0.5364753114060624,
+        "bones": 63,
+        "skinned": true,
+        "occlusionCue": true,
+        "handBound": true,
+        "gunChildren": 1
+      }
+    ]
+  },
   "viewports": [
     {
       "width": 360,

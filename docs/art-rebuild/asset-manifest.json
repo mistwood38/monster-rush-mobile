@@ -1,0 +1,382 @@
+{
+  "scope": "Shipped files, not upstream source archives. Sources and rights limitations: ASSETS.md.",
+  "assets": [
+    {
+      "path": "assets/rebuild/models/boss.glb",
+      "bytes": 410168,
+      "sha256": "041df4c893e89c65053d378dbb549f0fff044c27a0ac001e6404f4f846f49680",
+      "runtime": true,
+      "triangles": 3837,
+      "skinJointCounts": [
+        11
+      ],
+      "animations": [
+        {
+          "name": "attack",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "down",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "hit",
+          "durationSeconds": 0.3
+        },
+        {
+          "name": "idle",
+          "durationSeconds": 1.0333
+        },
+        {
+          "name": "run",
+          "durationSeconds": 0.8333
+        }
+      ],
+      "origin": "Third-party mesh with project conversion / edits",
+      "author": "Irondust; project-derived variant",
+      "source": "https://opengameart.org/content/evil-cyborg",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/models/covered-car.glb",
+      "bytes": 2345388,
+      "sha256": "0436fd88d3a2044be0d80dffe4b41574fc40a5c7209498b828a26bf7959def08",
+      "runtime": true,
+      "triangles": 12592,
+      "skinJointCounts": [],
+      "animations": [],
+      "origin": "Third-party mesh with project conversion / edits",
+      "author": "MP / Poly Haven",
+      "source": "https://polyhaven.com/a/covered_car",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/models/revenant-lod.glb",
+      "bytes": 289200,
+      "sha256": "4289c6471e2e8a60d7096e4d738f457fc7346860ecf075dc565f3a2a8010bf35",
+      "runtime": true,
+      "triangles": 864,
+      "skinJointCounts": [
+        11
+      ],
+      "animations": [
+        {
+          "name": "attack",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "down",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "hit",
+          "durationSeconds": 0.3
+        },
+        {
+          "name": "idle",
+          "durationSeconds": 1.0333
+        },
+        {
+          "name": "run",
+          "durationSeconds": 0.8333
+        }
+      ],
+      "origin": "Third-party mesh with project conversion / edits",
+      "author": "Irondust",
+      "source": "https://opengameart.org/content/evil-cyborg",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/models/revenant.glb",
+      "bytes": 348944,
+      "sha256": "25d206ea34256203b6a9cfae821bdeefceb3be4efd9ff764e5698d377610760b",
+      "runtime": true,
+      "triangles": 2061,
+      "skinJointCounts": [
+        11
+      ],
+      "animations": [
+        {
+          "name": "attack",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "down",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "hit",
+          "durationSeconds": 0.3
+        },
+        {
+          "name": "idle",
+          "durationSeconds": 1.0333
+        },
+        {
+          "name": "run",
+          "durationSeconds": 0.8333
+        }
+      ],
+      "origin": "Third-party mesh with project conversion / edits",
+      "author": "Irondust",
+      "source": "https://opengameart.org/content/evil-cyborg",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/models/sentinel.glb",
+      "bytes": 784756,
+      "sha256": "69faa5b2e0408eb0bf2c5ca781c045a30ee7595d90ae32b6e32fccd036c78a09",
+      "runtime": true,
+      "triangles": 5076,
+      "skinJointCounts": [
+        63
+      ],
+      "animations": [
+        {
+          "name": "activate",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "down",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "hit",
+          "durationSeconds": 0.3
+        },
+        {
+          "name": "idle",
+          "durationSeconds": 1.0333
+        },
+        {
+          "name": "run",
+          "durationSeconds": 0.8333
+        },
+        {
+          "name": "shoot",
+          "durationSeconds": 0.3
+        }
+      ],
+      "origin": "Third-party mesh with project conversion / edits",
+      "author": "Irondust",
+      "source": "https://opengameart.org/content/sci-fi-soldier",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/models/stalker-lod.glb",
+      "bytes": 644404,
+      "sha256": "cbbbb2b9034e39e2d4be114c9678a8fdadeda7ef92439ca90368eb274b3b456f",
+      "runtime": true,
+      "triangles": 1611,
+      "skinJointCounts": [
+        70
+      ],
+      "animations": [
+        {
+          "name": "attack",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "down",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "hit",
+          "durationSeconds": 0.3
+        },
+        {
+          "name": "idle",
+          "durationSeconds": 1.0333
+        },
+        {
+          "name": "run",
+          "durationSeconds": 1.3
+        }
+      ],
+      "origin": "Third-party mesh with project conversion / edits",
+      "author": "City Building Game Art",
+      "source": "https://opengameart.org/content/3d-horror-game-monster",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/models/stalker.glb",
+      "bytes": 716356,
+      "sha256": "30e3ba8e98fc308648f67cb830e5822ea37e0fa7e0e025d484c0eed14943740b",
+      "runtime": true,
+      "triangles": 3584,
+      "skinJointCounts": [
+        70
+      ],
+      "animations": [
+        {
+          "name": "attack",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "down",
+          "durationSeconds": 0.7
+        },
+        {
+          "name": "hit",
+          "durationSeconds": 0.3
+        },
+        {
+          "name": "idle",
+          "durationSeconds": 1.0333
+        },
+        {
+          "name": "run",
+          "durationSeconds": 1.3
+        }
+      ],
+      "origin": "Third-party mesh with project conversion / edits",
+      "author": "City Building Game Art",
+      "source": "https://opengameart.org/content/3d-horror-game-monster",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/models/weapon-laser.glb",
+      "bytes": 69104,
+      "sha256": "f656f21952951a06db642c9ee864862359c100acd7cd6b66cf712177d0169c24",
+      "runtime": true,
+      "triangles": 2204,
+      "skinJointCounts": [],
+      "animations": [],
+      "origin": "Project-authored mesh",
+      "thirdPartySource": null
+    },
+    {
+      "path": "assets/rebuild/models/weapon-machine.glb",
+      "bytes": 69572,
+      "sha256": "a19363c8961ab99a0b709238a8de032bdd35b07dbc1431eb009399675e40898d",
+      "runtime": true,
+      "triangles": 2080,
+      "skinJointCounts": [],
+      "animations": [],
+      "origin": "Project-authored mesh",
+      "thirdPartySource": null
+    },
+    {
+      "path": "assets/rebuild/models/weapon-plasma.glb",
+      "bytes": 69044,
+      "sha256": "be8d0c539b166647f2c49a9c55f924b4c5f8677fc73ac76781332068b42e41ab",
+      "runtime": true,
+      "triangles": 2100,
+      "skinJointCounts": [],
+      "animations": [],
+      "origin": "Project-authored mesh",
+      "thirdPartySource": null
+    },
+    {
+      "path": "assets/rebuild/models/weapon-rifle.glb",
+      "bytes": 58372,
+      "sha256": "802118776ff56d90dc1a690e591ae91d304f943b10ec233a2a8757bf7b21a117",
+      "runtime": true,
+      "triangles": 1816,
+      "skinJointCounts": [],
+      "animations": [],
+      "origin": "Project-authored mesh",
+      "thirdPartySource": null
+    },
+    {
+      "path": "assets/rebuild/models/weapon-shotgun.glb",
+      "bytes": 58368,
+      "sha256": "eeb6d44273680e753658f2f5ff46fe5c88141a2fab8f193308c102df085bf3ef",
+      "runtime": true,
+      "triangles": 1816,
+      "skinJointCounts": [],
+      "animations": [],
+      "origin": "Project-authored mesh",
+      "thirdPartySource": null
+    },
+    {
+      "path": "assets/rebuild/textures/asphalt_02_Diffuse.jpg",
+      "bytes": 434160,
+      "sha256": "d94403e128e516099989820d743a0daced5549e3438f047838042fd8b6520a6d",
+      "runtime": true,
+      "origin": "Poly Haven PBR texture",
+      "source": "https://polyhaven.com/a/asphalt_02",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/textures/asphalt_02_Rough.jpg",
+      "bytes": 79715,
+      "sha256": "ffd5251a65e68eb01c10e26e86cac336944ed61fc4568da4ab7d346172ea2c47",
+      "runtime": true,
+      "origin": "Poly Haven PBR texture",
+      "source": "https://polyhaven.com/a/asphalt_02",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/textures/asphalt_02_nor_gl.jpg",
+      "bytes": 59752,
+      "sha256": "05d1b4a8964034b77acd84c6e6df2bd3b873a2bd418cfc49d2d9e46052d0a0b6",
+      "runtime": true,
+      "origin": "Poly Haven PBR texture",
+      "source": "https://polyhaven.com/a/asphalt_02",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/textures/damaged_concrete_floor_Diffuse.jpg",
+      "bytes": 33817,
+      "sha256": "7065d0a13ea8e7cd9d185ef991394add8a91bddfda67e9fc188b4ceb22b45814",
+      "runtime": true,
+      "origin": "Poly Haven PBR texture",
+      "source": "https://polyhaven.com/a/damaged_concrete_floor",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/textures/damaged_concrete_floor_Rough.jpg",
+      "bytes": 38914,
+      "sha256": "47f2e3a5ed811640fcff81cb8a3b751add3427b01a732918bed82de827b029a2",
+      "runtime": true,
+      "origin": "Poly Haven PBR texture",
+      "source": "https://polyhaven.com/a/damaged_concrete_floor",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/textures/damaged_concrete_floor_nor_gl.jpg",
+      "bytes": 17656,
+      "sha256": "be625c45518ab8500ec65fa9d355ba480023c1b465398e0b46bec153cbafa473",
+      "runtime": true,
+      "origin": "Poly Haven PBR texture",
+      "source": "https://polyhaven.com/a/damaged_concrete_floor",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/textures/rusty_metal_02_Diffuse.jpg",
+      "bytes": 70024,
+      "sha256": "b1aaf2e765abcc4bc45184f889d4538656d0cab4544df36f2b610adefe0e608a",
+      "runtime": true,
+      "origin": "Poly Haven PBR texture",
+      "source": "https://polyhaven.com/a/rusty_metal_02",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/textures/rusty_metal_02_Rough.jpg",
+      "bytes": 30880,
+      "sha256": "106423aa7f13489bff277cd9ece35685c959031409af427ba4d53dddbb706538",
+      "runtime": true,
+      "origin": "Poly Haven PBR texture",
+      "source": "https://polyhaven.com/a/rusty_metal_02",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/textures/rusty_metal_02_nor_gl.jpg",
+      "bytes": 24757,
+      "sha256": "f35c42dcd59adcd21b55954d851ecc518edbde157e692c09b2dd9e00885b9e6a",
+      "runtime": true,
+      "origin": "Poly Haven PBR texture",
+      "source": "https://polyhaven.com/a/rusty_metal_02",
+      "sourceLicense": "CC0-1.0"
+    },
+    {
+      "path": "assets/rebuild/textures/soldier-base-ai.png",
+      "bytes": 2988562,
+      "sha256": "df3aee26cad04109996412c480c0c199454b52c980cad490dd2674cf5aa91d78",
+      "runtime": false,
+      "origin": "Project image-generation material edit; authoring source only",
+      "note": "Not a mesh or animation; incorporated as a candidate base color in sentinel.glb."
+    }
+  ]
+}

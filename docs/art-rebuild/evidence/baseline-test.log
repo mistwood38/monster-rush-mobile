@@ -1,0 +1,108 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> monster-rush-mobile@3.0.0-review test
+> node --test tests/systems.test.js tests/source-sprite-state.test.mjs tests/horde.test.js && node tests/browser.cjs && node tests/horde-armored-death.cjs
+
+✔ 0–300 s curve and endless growth are continuous, bounded and contain relief windows (3.994308ms)
+✔ mixed packs include flanks, armor cover, fast/ranged/elite roles (0.304971ms)
+✔ spatial broadphase never omits a swept collision candidate (500 seeded rays) (12.367915ms)
+✔ quality tiers only reduce rendering, never simulation or live enemy budget (0.29847ms)
+✔ distance detail preserves close silhouettes and uses hysteresis at every quality (0.239371ms)
+✔ run loops and can be interrupted by shot (1.234533ms)
+✔ hit overrides shooting; shoot cannot interrupt hit (0.301225ms)
+✔ down locks until reset (0.212801ms)
+✔ boss windup -> attack -> recover -> idle (0.233332ms)
+✔ invalid dt rejected (0.433364ms)
+✔ Official catalog is exactly the delivered 20 IDs with two levels and real icon paths (1.513635ms)
+✔ Numeric gate caps and 40-DPS starting rifle formula are independent (0.335476ms)
+✔ Four permanent teammates: role caps, true HP, death, no auto resurrection, refill (1.49051ms)
+✔ Promotion chooses one lowest eligible member and never lowers HP percentage (0.369157ms)
+✔ DPS example: each assault I inherits 50% damage/rate gate increment only (0.242195ms)
+✔ Pet dragon waits for a valid target and has official cooldown (0.207484ms)
+✔ Pet owl waits for a valid target and has official cooldown (0.110166ms)
+✔ Pet drone waits for a valid target and has official cooldown (0.092119ms)
+✔ Pet fairy waits for a valid target and has official cooldown (0.163988ms)
+✔ Pet swap preserves slot level and normalized cooldown; no reset exploit (0.287324ms)
+✔ Dragon buffs are temporary; owl mitigation is halved against bosses (0.2317ms)
+✔ Healer and shield target the most endangered unit; shields do not stack (0.162595ms)
+✔ Armor thunder expires in 12s, preserves baseline, cannot stack/refresh (0.164568ms)
+✔ Armor molten expires in 12s, preserves baseline, cannot stack/refresh (0.098579ms)
+✔ Armor phantom expires in 12s, preserves baseline, cannot stack/refresh (0.083226ms)
+✔ Armor roll: not eligible before 45s, three misses then fourth actual box guaranteed (0.161184ms)
+✔ Four slots, two levels, replacement, and prerequisite-filtered diverse three choices (0.456359ms)
+✔ Focus caps, crit is 1.5x, and direct hit accounting is per target (0.387485ms)
+✔ Lightning: every ten direct hits, 2/3 neighbors, cooldown; splash never self-counts (0.181504ms)
+✔ Explosive hits, frost caps and burn probability match the formal data (0.181554ms)
+✔ Command affects teammates only, reload is 4 seconds per 20, guard prerequisite works (0.161524ms)
+✔ Fallen counterattack only triggers on real death and has 25s cooldown (0.102124ms)
+✔ Defense ceiling 45%, emergency at most two and rearm, counter pulse bounded (0.34462ms)
+✔ Toughness adds only the delta HP, replacement decreases max HP without farming (0.13225ms)
+✔ Resonance, recycle, overclock and endurance all have bounded actual effects (0.522739ms)
+✔ Run reset clears all combat upgrades, armor pity and pet levels (0.126431ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 102.643998
+PASS Two phone layouts and real menu
+PASS User gesture audio, pause, resume and separate mixer
+PASS Relative touch drag and bounded movement
+PASS All five numeric gates independently affect real projectiles {"lanes":{"count":2,"damage":24,"interval":0.25,"speed":31.999999999999996},"pellets":{"count":3,"damage":20.4,"interval":0.25,"speed":31.999999999999996},"rate":{"count":1,"damage":12,"interval":0.2,"speed":31.999999999999996},"speed":{"count":1,"damage":12,"interval":0.25,"speed":43.2},"damage":{"count":1,"damage":18,"interval":0.25,"speed":31.999999999999996}}
+PASS Five distinct weapons kill actual off-center enemies {"rifle":{"kills":1,"metrics":{"count":7,"avgSpeed":32,"totalDamage":84,"weapon":"rifle","interval":0.25,"lanes":1,"pellets":1,"damageMultiplier":1,"bulletSpeedMultiplier":1,"kinds":["bullet"],"gunMeshes":2,"playerMeshes":4,"drawCalls":29,"memory":{"geometries":19,"textures":5},"triangles":15356,"heap":{"used":12700000,"total":21700000},"laser":false}},"machine":{"kills":1,"metrics":{"count":14,"avgSpeed":36,"totalDamage":114.80000000000003,"weapon":"machine","interval":0.12,"lanes":1,"pellets":1,"damageMultiplier":1,"bulletSpeedMultiplier":1,"kinds":["bullet"],"gunMeshes":2,"playerMeshes":4,"drawCalls":29,"memory":{"geometries":19,"textures":5},"triangles":15356,"heap":{"used":12700000,"total":21700000},"laser":false}},"shotgun":{"kills":1,"metrics":{"count":21,"avgSpeed":27,"totalDamage":184.80000000000004,"weapon":"shotgun","interval":0.72,"lanes":1,"pellets":1,"damageMultiplier":1,"bulletSpeedMultiplier":1,"kinds":["pellet"],"gunMeshes":2,"playerMeshes":4,"drawCalls":29,"memory":{"geometries":19,"textures":5},"triangles":15356,"heap":{"used":12700000,"total":21700000},"laser":false}},"plasma":{"kills":1,"metrics":{"count":3,"avgSpeed":17,"totalDamage":153,"weapon":"plasma","interval":0.86,"lanes":1,"pellets":1,"damageMultiplier":1,"bulletSpeedMultiplier":1,"kinds":["plasma"],"gunMeshes":2,"playerMeshes":4,"drawCalls":29,"memory":{"geometries":19,"textures":5},"triangles":15356,"heap":{"used":12700000,"total":21700000},"laser":false}},"laser":{"kills":1,"metrics":{"count":0,"avgSpeed":0,"totalDamage":0,"weapon":"laser","interval":0.12,"lanes":1,"pellets":1,"damageMultiplier":1,"bulletSpeedMultiplier":1,"kinds":[],"gunMeshes":2,"playerMeshes":4,"drawCalls":29,"memory":{"geometries":19,"textures":5},"triangles":15356,"heap":{"used":12700000,"total":21700000},"laser":true}}}
+PASS Swept projectile damage and target-positioned numbers
+PASS Plasma splash kills multiple neighbors
+PASS Gate charging is capped, shots pass, choices exclude each other {"team":1,"stats":{"lanes":1,"pellets":1,"fireRate":1,"bulletSpeed":1,"damage":1},"gates":[true,true]}
+PASS Laser upgrades widen beams and increase effective damage {"base":7.199999999999818,"upgraded":12.239999999999782,"lanes":3}
+PASS Breach on opposite flank hurts even during contact invulnerability
+PASS Generous swept crate pickup, healing, no lower-tier downgrade
+PASS Source atlas animation advances, hit takes priority, road scrolls {"before":0.10773086785714389,"after":0.4952199321428581,"frame":{"key":"rig/hero","state":"run","index":1},"hit":{"key":"rig/hero","state":"hit","index":0},"restored":{"key":"rig/hero","state":"run","index":4},"audit":{"ready":true,"atlases":25,"active":1,"errors":[],"loaded":31,"frames":[{"key":"rig/hero","state":"run","index":4}]},"projection":{"headY":633.4038061747422,"feetY":691.0637158045557,"headNdc":-0.4510969213625251,"feetNdc":-0.5831929342601506}}
+PASS Squad role weapons persist, promotion, damage, death and refill {"damage":109.92000000000075,"shots":4,"team":4}
+PASS Recruitment, promotion and team-rate gates apply formal caps
+PASS Squad inherits only gate damage, excluding main-weapon supply calibration {"base":4.84,"main":1.08,"calibrated":4.84,"gated":6.050000000000001}
+PASS Four pet skills affect real combat and wait on cooldown [{"kind":"dragon","stats":{"lanes":1,"pellets":1,"fireRate":1,"bulletSpeed":1,"damage":1.2},"shield":0,"hp":50,"after":40,"pet":{"kind":"dragon","level":3,"cooldown":20,"flash":0.7}},{"kind":"owl","stats":{"lanes":1,"pellets":1,"fireRate":1,"bulletSpeed":1,"damage":1},"shield":0,"hp":50,"after":42.5,"pet":{"kind":"owl","level":3,"cooldown":22,"flash":0.7}},{"kind":"drone","stats":{"lanes":1,"pellets":1,"fireRate":1,"bulletSpeed":1,"damage":1},"shield":32,"hp":50,"after":50,"pet":{"kind":"drone","level":3,"cooldown":26,"flash":0.7}},{"kind":"fairy","stats":{"lanes":1,"pellets":1,"fireRate":1,"bulletSpeed":1,"damage":1},"shield":0,"hp":68,"after":58,"pet":{"kind":"fairy","level":3,"cooldown":28,"flash":0.7}}]
+PASS Owl level III increases actual skill detection range {"level2":0,"level3":22,"buff":5}
+PASS Strict no-upgrade benchmark switch blocks all pickup effects and resets safely
+PASS Pet two-choice pickups exclude the other and preserve slot level
+PASS All three armor animations and multipliers expire and restore exact stats [{"kind":"thunder","state":"activate"},{"kind":"molten","state":"activate"},{"kind":"phantom","state":"activate"}]
+PASS Armor pulse and expiry on the same step do not access cleared equipment {"armor":null,"state":"playing","stats":{"lanes":1,"pellets":1,"fireRate":1,"bulletSpeed":1,"damage":1}}
+PASS Four ballistic traits change real spread, piercing and enemy HP {"base":[0.23594870240313776,-1.8640512975968624,2.335948702403138],"spread":[0.23594870240313776,-2.179051297596862,2.650948702403138],"first":18,"second":9,"combo":16.200000000000045,"hits":13}
+PASS Four squad traits affect team shots, timed rate, player damage and death buff {"base":4.84,"boosted":5.324000000000001,"interval":0.22,"fastInterval":0.19130434782608696,"hp":91,"beforeDeath":1.1,"afterDeath":1.2320000000000002,"fallen":6}
+PASS Four tech traits change real projectile damage, pet cooldown and armor lifetime {"base":13.98,"boosted":19.627920000000003,"before":20,"after":19,"duration":14}
+PASS Elemental direct hits proc bounded chain, explosion, frost and burn {"direct":{"a":9880,"b":9992,"c":9992,"burn":3,"slow":0.12},"after":9878,"counters":2,"arc":2.400000000000002,"blast":2.400000000000002}
+PASS Survival traits affect actual HP, repair and knockback {"hp":35.8,"max":115,"z":-2,"afterZ":-4,"repairs":1}
+PASS Three-choice UI pauses combat and supports four-slot replacement
+PASS Armed truck must be shot open; armor pity counts opened high crates {"initial":160,"hp":0,"opened":true,"lockedWeapon":"rifle","weapon":"plasma","eligible":1,"afterEligible":1}
+PASS Road events include pet choice, destructible truck, elite bounty and rescue [{"event":"伙伴信标 · 二选一","kinds":["pet","pet"],"bounty":false},{"event":"击破武装运输车","kinds":["truck"],"bounty":false},{"event":"悬赏精英 · 队员救援","kinds":["rescue"],"bounty":true}]
+PASS Boss arrival, native windup, attack, actual damage and death {"spawned":true,"warned":true,"anim":{"key":"boss","state":"windup","index":4},"shots":3,"hp":82,"cleared":true,"score":1620.6499999999967}
+PASS Boss late-phase wave leaves a dodge lane and summons real enemies {"target":2.6,"width":5.2,"dodged":true,"summons":18}
+PASS Boss schedule 95/180/270 and increasing HP [{"time":95,"hp":2500.15},{"time":180,"hp":3350.15},{"time":270,"hp":4250.15}]
+PASS Boss phase guards prevent one-shot deletion
+PASS Five weapons defeat Boss using actual capped firepower and phase transitions [{"weapon":"rifle","time":12.100000000000104,"dead":true,"phase":2},{"weapon":"machine","time":10.300000000000079,"dead":true,"phase":2},{"weapon":"shotgun","time":11.700000000000099,"dead":true,"phase":2},{"weapon":"plasma","time":9.200000000000063,"dead":true,"phase":2},{"weapon":"laser","time":13.100000000000119,"dead":true,"phase":2}]
+PASS Pooled particles are reused and capped {"before":12,"pooled":60,"after":48}
+PASS Death, record saving and restart reset run-only systems
+PASS Full formation remains inside both phone viewports at road edges
+PASS Enemy budget stops spawning without silently deleting existing threats {"before":320,"after":320,"retained":true,"hp":100}
+PASS Horde GPU transforms stay finite during Boss warnings; actors are hand-bound skinned rigs {"audit":{"rigs":[{"key":"rig/hero","action":"run","hipAngle":0,"bones":13,"skinned":true,"occlusionCue":true,"handBound":true,"gunChildren":1},{"key":"rig/heavy","action":"run","hipAngle":0,"bones":13,"skinned":true,"occlusionCue":false,"handBound":true,"gunChildren":1},{"key":"rig/armor/thunder","action":"recover","hipAngle":0,"bones":13,"skinned":true,"occlusionCue":true,"handBound":true,"gunChildren":2}],"batches":[{"type":"grunt/near","count":0,"vertices":1086,"finite":true},{"type":"boss/near","count":1,"vertices":1638,"finite":true},{"type":"heavy/near","count":0,"vertices":1446,"finite":true},{"type":"grunt/far","count":42,"vertices":300,"finite":true},{"type":"charger/far","count":47,"vertices":384,"finite":true},{"type":"runner/near","count":4,"vertices":1170,"finite":true},{"type":"runner/far","count":91,"vertices":384,"finite":true},{"type":"heavy/far","count":48,"vertices":408,"finite":true},{"type":"ranged/far","count":7,"vertices":408,"finite":true},{"type":"elite/far","count":1,"vertices":456,"finite":true}],"sceneObjects":116},"report":{"spawned":240,"killed":1,"breached":0,"hits":0,"damageTaken":0,"damageDealt":158.32,"killSeconds":2.225000000000506,"engagementSeconds":0.6000000000001364,"breachHits":0,"directHits":0,"peakAlive":240,"peakVisible":239,"collisionTests":999,"bossFights":[{"started":240,"maxHp":3950,"ended":null}],"stages":[],"realSeconds":0,"time":242.30000000000052,"alive":239,"visible":239,"averageKillSeconds":2.225000000000506,"averageEngagementSeconds":0.6000000000001364,"models":{"technique":"GPU instanced articulated original meshes","families":7,"near":5,"far":236,"animationHz":12,"instances":241,"draws":8,"proxyPool":79},"quality":2,"stats":{"lanes":1,"pellets":1,"fireRate":1.2,"bulletSpeed":1,"damage":1.3},"crew":1}}
+PASS Small breach penalties preserve existing contact invulnerability {"hp":99.6,"after":99.6,"report":{"spawned":1,"killed":0,"breached":1,"hits":1,"damageTaken":0.4000000000000057,"damageDealt":0,"killSeconds":0,"engagementSeconds":0,"breachHits":1,"directHits":0,"peakAlive":0,"peakVisible":0,"collisionTests":0,"bossFights":[],"stages":[],"realSeconds":0,"time":0.025,"alive":0,"visible":0,"averageKillSeconds":0,"averageEngagementSeconds":0,"models":{"technique":"GPU instanced articulated original meshes","families":7,"near":0,"far":0,"animationHz":12,"instances":0,"draws":0,"proxyPool":319},"quality":2,"stats":{"lanes":1,"pellets":1,"fireRate":1,"bulletSpeed":1,"damage":1},"crew":0}}
+PASS Pooled enemy records receive new collision identities {"reused":true,"uid":726,"newUid":727}
+PASS Integrated 300-second soak: objects, drafts, Boss and armor stay bounded {"time":299.7250000000013,"max":{"enemies":226,"bullets":18,"particles":56,"shots":14},"seen":{"drafts":6,"boss":true,"armor":true},"team":0,"affixes":4,"intervals":[1.7946608838704854,4.997397188964081]}
+PASS Maximum projectile pool uses instancing; repeated resets release actors {"stress":160,"drawCalls":29,"memories":[{"geometries":37,"textures":14,"actors":1},{"geometries":37,"textures":15,"actors":1},{"geometries":37,"textures":16,"actors":1},{"geometries":37,"textures":16,"actors":1},{"geometries":37,"textures":16,"actors":1},{"geometries":37,"textures":16,"actors":1}]}
+PASS Review screenshots: initial, gate, weapons, formation, armor, draft and Boss
+PASS Nested Pages path, manifest and all V1.7 files launch offline {"orientation":"portrait","missing":[],"count":192}
+All 45 browser checks passed. Artifacts: /workspace/scratch/ea0f74993116/monster-rush-mobile/test-results
+Error: ENOENT: no such file or directory, open '/workspace/scratch/ea0f74993116/monster-rush-mobile/test-results/horde/armored-death.json'
+    at Object.writeFileSync (node:fs:2482:20)
+    at /workspace/scratch/ea0f74993116/monster-rush-mobile/tests/horde-armored-death.cjs:32:8 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/workspace/scratch/ea0f74993116/monster-rush-mobile/test-results/horde/armored-death.json'
+}
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

@@ -18,6 +18,21 @@
 
 ## 重新制作
 
+逐文件 SHA-256、GLB 三角形、骨骼和动作由 `python3 tools/art/audit_assets.py` 从交付文件生成，见 [asset-manifest.json](asset-manifest.json)。上游原始文件与派生交付文件的哈希含义不同；不要把这里的派生文件哈希当成原作者下载包的哈希。
+
 `tools/art/fetch_sources.py` 下载原模型与 PBR 地图并输出哈希，`tools/art/build_assets.py` 和 `build_weapons.py` 使用 Blender 4.3 Python 接口、NumPy < 2 和 Pillow 导出 GLB。上游的 ASCII FBX 使用脚本读取网格及 UV，骨架与权重是项目重建。`fetch_covered_car.py` 校验 Poly Haven 返回的 MD5 并打包 GLB；使用其 API 时按要求注明 Powered by Poly Haven。运行游戏本身不需要联网下载模型或 Python。
 
 资源制作脚本采用 Python 3.11 和 `bpy==4.3.0`；导出结果应重新检查动作、UV、贴图、法线和许可证，不能仅凭生成成功视作可用。下载源文件是开发用途，下载源的服务可用性和原页面许可将来可能变化。
+
+```sh
+python3 tools/art/fetch_sources.py /absolute/source-workspace
+# 以下两个脚本使用装有 bpy==4.3.0、numpy<2、Pillow 的 Python 3.11 环境
+python tools/art/build_assets.py /absolute/source-workspace
+python tools/art/build_weapons.py
+python3 tools/art/fetch_covered_car.py
+python3 tools/art/audit_assets.py
+npm run test:art
+npm run test:art-review
+```
+
+重新下载的 PBR 图为上游 1K 版本；当前发行候选部分辅助图已缩至 512。若重新导出，需要重新执行贴图尺寸检查、实际模型截图检查和性能记录。`sentinel.glb` 使用仓库保留的 `soldier-base-ai.png` 候选涂装，不需要为复现额外调用图像生成。

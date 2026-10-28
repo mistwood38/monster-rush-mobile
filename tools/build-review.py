@@ -57,6 +57,7 @@ const entry=document.createElement('script');entry.type='module';entry.textConte
 html = (root / 'index.html').read_text()
 html = re.sub(r'<link[^>]*rel="(?:manifest|icon)"[^>]*>', '', html)
 css = (root / 'style.css').read_text().replace('url("./assets/backgrounds/highway_day.webp")', 'none')
+css = css.replace('./assets/fonts/NotoSansSC-UI.woff', 'data:font/woff;base64,' + base64.b64encode((root / 'assets/fonts/NotoSansSC-UI.woff').read_bytes()).decode())
 html = html.replace('<link rel="stylesheet" href="./style.css" />', '<style>' + css + '</style>')
 html = html.replace('<script type="module" src="./game.js"></script>', bootstrap)
 html = html.replace('<title>', '<title>离线审查 · ')

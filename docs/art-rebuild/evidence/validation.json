@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-28",
+  "sourceAssetsCheckpoint": "73f8babecedfdebcb6bff46ca12e320179fff790",
+  "mainUnchangedAtInspection": "abd994bdffb6e6eaac493e97bb213a73f1f3cd78",
+  "gameplayBase": "faf5225c86c2223cdcbf3a4f55c0a798813da6da",
+  "unchangedGameplayFiles": [
+    "systems.js",
+    "horde.js",
+    "config/"
+  ],
+  "baseline": {
+    "unitTests": 36,
+    "browserChecks": 45,
+    "assertionsPassed": true,
+    "initialCommandExit": 1,
+    "initialFailure": "Reporting-only ENOENT: missing test-results/horde directory in tests/horde-armored-death.cjs. The test now creates its own directory; corrected test rerun passed.",
+    "retest": "baseline-death.log",
+    "finalCommandExit": 0,
+    "finalLog": "baseline-final.log"
+  },
+  "followupChecks": [
+    {
+      "name": "baseline-death",
+      "command": "node tests/horde-armored-death.cjs",
+      "exit": 0,
+      "seconds": 3.86,
+      "log": "baseline-death.log"
+    },
+    {
+      "name": "growth",
+      "command": "npm run test:growth",
+      "exit": 0,
+      "seconds": 5.36,
+      "log": "growth.log"
+    },
+    {
+      "name": "legacy-offline",
+      "command": "npm run test:review",
+      "exit": 0,
+      "seconds": 3.93,
+      "log": "legacy-offline.log"
+    },
+    {
+      "name": "art-offline",
+      "command": "npm run test:art-review",
+      "exit": 0,
+      "seconds": 9.38,
+      "log": "art-offline.log"
+    }
+  ],
+  "artIntegration": "integration.json",
+  "standalone": "standalone.json",
+  "limitations": [
+    "Desktop Chromium with software WebGL only; no physical Android device",
+    "Injected visual fixture is not natural progression",
+    "Shared character mother mesh, two enemy families, derived Boss and basic city remain below target art quality"
+  ],
+  "finalChecks": [
+    {
+      "name": "baseline-final",
+      "command": "npm test",
+      "exit": 0,
+      "seconds": 38.74,
+      "log": "baseline-final.log"
+    },
+    {
+      "name": "art-final",
+      "command": "npm run test:art",
+      "exit": 0,
+      "seconds": 28.57,
+      "log": "art-final.log"
+    },
+    {
+      "name": "art-offline-final",
+      "command": "npm run test:art-review",
+      "exit": 0,
+      "seconds": 6.94,
+      "log": "art-offline-final.log"
+    }
+  ],
+  "performance": {
+    "before": "performance-before-msaa.json",
+    "after": "performance.json",
+    "afterScope": "320 enemies, quality 2 only; still has long frame intervals"
+  }
+}

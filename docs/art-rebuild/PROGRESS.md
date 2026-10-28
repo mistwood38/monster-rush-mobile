@@ -6,6 +6,8 @@
 
 ## 现有证据
 
+总审查见 [REVIEW.md](REVIEW.md)，性能测量范围见 [PERFORMANCE.md](PERFORMANCE.md)，逐文件骨骼/动作/哈希见 [asset-manifest.json](asset-manifest.json)。
+
 - [原版与样板对比](evidence/comparison.jpg)：两张均为浏览器实际画面；相同注入配置是 150 秒、44 名敌人、两名队员和 Boss，并非自然进度。
 - [连续战斗录像](evidence/battle-fixture.mp4)：真实页面持续运行约 10 秒，含实际游戏音频；注入 150 秒、40 名敌人、两名队员和 Boss，录像开始后未修改生命或伤害。
 - [集成检查记录](evidence/integration.json)：两类怪物、画质切换不删除敌人、五种武器、战甲启用及解除、两个手机比例和三次重启资源稳定；含“连续射击时腿部继续跑动”的检查。该记录针对受控场景，不代表完整游戏审美验收。

@@ -17,7 +17,11 @@
     "test:horde-visual": "node tests/horde-visual-audit.cjs",
     "test:optimization": "node tests/optimization.cjs",
     "test:optimization-performance": "node tests/optimization-performance.cjs",
-    "test:growth": "node tests/growth.cjs"
+    "test:growth": "node tests/growth.cjs",
+    "build:art-review": "python3 tools/build-art-review.py",
+    "test:art": "node tests/art-rebuild.cjs",
+    "test:art-review": "python3 tools/build-art-review.py && node tests/art-standalone.cjs",
+    "test:art-performance": "node tests/art-performance.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
