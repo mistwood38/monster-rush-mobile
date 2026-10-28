@@ -5,7 +5,7 @@ import {CombatModels} from './actors3d.js';
 import {enemyDetail,qualityProfile} from './horde.js';
 export const artURL=p=>window.__MR_ART_ASSETS__?.[p]||'./assets/rebuild/'+p;
 export async function loadRebuiltAssets(){
- const keys=['sentinel','stalker','stalker-lod','revenant','revenant-lod','boss',...['rifle','machine','shotgun','plasma','laser'].map(k=>'weapon-'+k)],loader=new GLTFLoader();
+ const keys=['sentinel','stalker','stalker-lod','revenant','revenant-lod','boss','covered-car',...['rifle','machine','shotgun','plasma','laser'].map(k=>'weapon-'+k)],loader=new GLTFLoader();
  const models=await Promise.all(keys.map(k=>loader.loadAsync(artURL('models/'+k+'.glb'))));return Object.fromEntries(keys.map((k,i)=>[k,models[i]]));
 }
 // Bake actual source skeleton matrices, including bind/world transforms. Only
@@ -34,11 +34,37 @@ export class RebuiltCombatModels extends CombatModels{
   const root=new THREE.Group(),visual=clone(this.bank.sentinel.scene);root.add(visual);visual.scale.setScalar(1.25);visual.rotation.y=Math.PI;let body;const meshes=[],disposables=[];
   visual.traverse(o=>{if(o.isMesh){o.userData.sharedGeometry=true;o.castShadow=true;o.frustumCulled=false;o.material=o.material.clone();o.userData.artColor=o.material.color.clone();meshes.push(o);disposables.push(o.material);if(o.isSkinnedMesh&&!disposables.includes(o.skeleton))disposables.push(o.skeleton);if(o.isSkinnedMesh&&!body)body=o;}});
   const bones=body.skeleton.bones,hand=bones.find(b=>/hand[_.]?R$/.test(b.name)),gun=new THREE.Group();(hand||root).add(gun);gun.scale.setScalar(hand ? .8 : 1);
-  const mixer=new THREE.AnimationMixer(visual),actions={};for(const a of this.bank.sentinel.animations)actions[a.name]=mixer.clipAction(a);actions.run.play();let elapsed=0;
-  const machine={state:'run',elapsed:0,reset(name='run'){mixer.stopAllAction();actions[name]?.reset().play();this.state=name;this.elapsed=elapsed=0;}};
+  const mixer=new THREE.AnimationMixer(visual),actions={},overlayNames=new Set(['shoot','hit']);
+  for(const source of this.bank.sentinel.animations){
+   let clip=source;
+   if(overlayNames.has(source.name)){
+    // Shooting and flinching affect the upper body only. The underlying run
+    // clip continues to animate both legs during automatic fire.
+    clip=source.clone();clip.tracks=clip.tracks.filter(track=>!/^(hips|thigh|shin|foot|heel|toe)/i.test(track.name));
+    THREE.AnimationUtils.makeClipAdditive(clip,0,clip,30);
+   }
+   actions[source.name]=mixer.clipAction(clip);
+  }
+  actions.run.play();let elapsed=0;
+  const machine={state:'run',elapsed:0,reset(name='run'){mixer.stopAllAction();actions[name]?.reset().setEffectiveWeight(1).play();this.state=name;this.elapsed=elapsed=0;}};
   const q=new THREE.Quaternion(),rq=new THREE.Quaternion();
-  const actor={key:role,machine,time:0,frame:0,trigger:name=>{if(!actions[name]||(name===machine.state&&elapsed<.14))return false;actions[machine.state]?.fadeOut(.07);const a=actions[name];a.reset().fadeIn(.07).setLoop(['run','idle'].includes(name)?THREE.LoopRepeat:THREE.LoopOnce,Infinity).play();a.clampWhenFinished=true;machine.state=name;machine.elapsed=elapsed=0;return true;},tick:dt=>{
-   actor.time+=dt;elapsed+=dt;machine.elapsed=elapsed*1000;if(!['run','idle','down'].includes(machine.state)&&elapsed>actions[machine.state]._clip.duration)actor.trigger('run');mixer.update(dt);visual.updateMatrixWorld(true);
+  const actor={key:role,machine,time:0,frame:0,trigger:name=>{
+   if(!actions[name]||(name===machine.state&&elapsed<.14)||(machine.state==='down'&&name!=='down'))return false;
+   const previous=machine.state;
+   if(overlayNames.has(name)){
+    if(overlayNames.has(previous))actions[previous]?.fadeOut(.04);
+    else if(previous!=='run'){actions[previous]?.fadeOut(.07);actions.run.reset().fadeIn(.07).play();}
+    actions.run.play();
+   }else{
+    actions[previous]?.fadeOut(.07);
+    if(overlayNames.has(previous))actions.run.fadeOut(.07);
+   }
+   const a=actions[name];a.reset().setEffectiveWeight(1).fadeIn(.07).setLoop(['run','idle'].includes(name)?THREE.LoopRepeat:THREE.LoopOnce,['run','idle'].includes(name)?Infinity:1).play();a.clampWhenFinished=true;machine.state=name;machine.elapsed=elapsed=0;return true;
+  },tick:dt=>{
+   actor.time+=dt;elapsed+=dt;machine.elapsed=elapsed*1000;
+   if(overlayNames.has(machine.state)&&elapsed>actions[machine.state]._clip.duration){actions[machine.state].fadeOut(.07);machine.state='run';machine.elapsed=elapsed=0;}
+   else if(!['run','idle','down',...overlayNames].includes(machine.state)&&elapsed>actions[machine.state]._clip.duration)actor.trigger('run');
+   mixer.update(dt);visual.updateMatrixWorld(true);
    if(hand){hand.getWorldQuaternion(q);root.getWorldQuaternion(rq);gun.quaternion.copy(q.invert().multiply(rq));gun.rotateY(root.userData.aim||0);}
    for(const mesh of meshes){mesh.material.transparent=body.material.opacity<1;if(mesh!==body){mesh.visible=body.visible;mesh.material.opacity=body.material.opacity;mesh.material.color.copy(mesh.userData.artColor).multiply(body.material.color);}}
   }};

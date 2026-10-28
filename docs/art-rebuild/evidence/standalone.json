@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "environment": "Chromium 131 headless shell, desktop local file, software WebGL; Android not tested",
+  "external": [],
+  "errors": [],
+  "result": {
+    "artMode": true,
+    "rigs": [
+      {
+        "key": "hero",
+        "action": "shoot",
+        "hipAngle": 0.2152548663923484,
+        "bones": 63,
+        "skinned": true,
+        "occlusionCue": true,
+        "handBound": true,
+        "gunChildren": 1
+      },
+      {
+        "key": "heavy",
+        "action": "run",
+        "hipAngle": 0.2152548663923484,
+        "bones": 63,
+        "skinned": true,
+        "occlusionCue": true,
+        "handBound": true,
+        "gunChildren": 1
+      },
+      {
+        "key": "guardian",
+        "action": "run",
+        "hipAngle": 0.2152548663923484,
+        "bones": 63,
+        "skinned": true,
+        "occlusionCue": true,
+        "handBound": true,
+        "gunChildren": 1
+      }
+    ],
+    "enemyBatches": [
+      {
+        "type": "grunt/near",
+        "count": 1,
+        "vertices": 2310,
+        "finite": true
+      },
+      {
+        "type": "heavy/near",
+        "count": 1,
+        "vertices": 1714,
+        "finite": true
+      }
+    ],
+    "cars": 3,
+    "canvas": {
+      "width": 393,
+      "height": 873
+    },
+    "mode": "playing"
+  }
+}

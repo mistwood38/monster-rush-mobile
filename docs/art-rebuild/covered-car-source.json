@@ -1,0 +1,40 @@
+{
+  "author": "MP",
+  "asset": "Covered Car",
+  "license": "CC0-1.0",
+  "source": "https://polyhaven.com/a/covered_car",
+  "version": "1k glTF; packaged into GLB without changing mesh or maps",
+  "files": [
+    {
+      "name": "covered_car_1k.gltf",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/covered_car/covered_car_1k.gltf",
+      "md5": "c38cd2ddf3fe2abe7ed8df2fd6020b84",
+      "sha256": "80b210b08673833a8085812b9ee71286213b2af92654886e5a1a368977265aa7"
+    },
+    {
+      "name": "covered_car.bin",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/covered_car/covered_car.bin",
+      "md5": "38f16c2c092dff1191ac5383acaf2ca0",
+      "sha256": "dcbd7bf82d415e30d02c3e7056013b44729de7b712868b5ab9bf29f2b3b8bc57"
+    },
+    {
+      "name": "textures/covered_car_nor_gl_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/covered_car/covered_car_nor_gl_1k.jpg",
+      "md5": "afc43e8dd74213483a454cdb00f0f541",
+      "sha256": "6769694abe28c53e5c35ad1cefdd462b56416e7d89a6bcf5a9d9f6c922b46d05"
+    },
+    {
+      "name": "textures/covered_car_arm_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/covered_car/covered_car_arm_1k.jpg",
+      "md5": "62f9a8c8719ce46ee5464462ec6ed6fc",
+      "sha256": "e77f73234311701dd8088ec572e61d4ec7838bd28e9ea13ffe5e28f79da8e085"
+    },
+    {
+      "name": "textures/covered_car_diff_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/covered_car/covered_car_diff_1k.jpg",
+      "md5": "61c107225ca1cbd523d6d6e9c1775f22",
+      "sha256": "c4616a5c7c1327e4bc127b600e59d9dcb2123f8926f1570a1ca4a068d97f4d34"
+    }
+  ],
+  "glb_sha256": "0436fd88d3a2044be0d80dffe4b41574fc40a5c7209498b828a26bf7959def08"
+}

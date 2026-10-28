@@ -1,0 +1,146 @@
+{
+  "environment": "Actual Chromium page + real frame loop; ANGLE SwiftShader; not Android",
+  "setup": "Debug fixture: 150 s, 40 enemies, Boss, two recruited roles, machine gun; no healing or damage override after recording starts",
+  "wallSeconds": 10.966,
+  "videoStartOffset": 4.2,
+  "errors": [],
+  "state": {
+    "mode": "playing",
+    "time": 159.21630000000138,
+    "overdrive": 0,
+    "heat": 9,
+    "wave": 7,
+    "hp": 87.39999999999992,
+    "score": 100.59874500000016,
+    "kills": 9,
+    "weapon": "machine",
+    "playerX": -1.791517628150165,
+    "targetX": -1.7915264076353443,
+    "stats": {
+      "lanes": 1,
+      "pellets": 1,
+      "fireRate": 1,
+      "bulletSpeed": 1,
+      "damage": 1
+    },
+    "enemies": 19,
+    "gates": 0,
+    "crates": 0,
+    "boss": true,
+    "bossHp": 3050,
+    "enemyShots": 0,
+    "bullets": 0,
+    "audio": {
+      "samples": 15,
+      "sampleErrors": [],
+      "loop": "boss_loop",
+      "voices": 5,
+      "initialized": true,
+      "playing": true,
+      "music": 0.55,
+      "sfx": 0.75,
+      "bossTrack": true
+    }
+  },
+  "report": {
+    "spawned": 40,
+    "killed": 9,
+    "breached": 12,
+    "hits": 14,
+    "damageTaken": 12.60000000000008,
+    "damageDealt": 796.1200000000007,
+    "killSeconds": 38.93380779221252,
+    "engagementSeconds": 16.383392932069455,
+    "breachHits": 12,
+    "directHits": 2,
+    "peakAlive": 40,
+    "peakVisible": 18,
+    "collisionTests": 2134,
+    "bossFights": [
+      {
+        "started": 150,
+        "maxHp": 3050,
+        "ended": null
+      }
+    ],
+    "stages": [],
+    "realSeconds": 9.166299999999998,
+    "time": 159.21630000000138,
+    "alive": 19,
+    "visible": 18,
+    "averageKillSeconds": 4.325978643579169,
+    "averageEngagementSeconds": 1.8203769924521618,
+    "models": {
+      "technique": "CC0 textured skinned GLB + shared GPU bone-pose atlas",
+      "families": 2,
+      "near": 19,
+      "far": 0,
+      "animationHz": 30,
+      "instances": 19,
+      "draws": 2,
+      "proxyPool": 21,
+      "sourceMeshes": 4,
+      "poseTextures": 4
+    },
+    "quality": 1,
+    "stats": {
+      "lanes": 1,
+      "pellets": 1,
+      "fireRate": 1,
+      "bulletSpeed": 1,
+      "damage": 1
+    },
+    "crew": 1
+  },
+  "audit": {
+    "rigs": [
+      {
+        "key": "hero",
+        "action": "shoot",
+        "hipAngle": 0.2152548663923484,
+        "bones": 63,
+        "skinned": true,
+        "occlusionCue": true,
+        "handBound": true,
+        "gunChildren": 1
+      },
+      {
+        "key": "guardian",
+        "action": "hit",
+        "hipAngle": 0.2152548663923484,
+        "bones": 63,
+        "skinned": true,
+        "occlusionCue": true,
+        "handBound": true,
+        "gunChildren": 1
+      }
+    ],
+    "batches": [
+      {
+        "type": "heavy/near",
+        "count": 12,
+        "vertices": 1714,
+        "finite": true
+      },
+      {
+        "type": "grunt/near",
+        "count": 7,
+        "vertices": 2310,
+        "finite": true
+      },
+      {
+        "type": "grunt/far",
+        "count": 0,
+        "vertices": 1154,
+        "finite": true
+      },
+      {
+        "type": "heavy/far",
+        "count": 0,
+        "vertices": 703,
+        "finite": true
+      }
+    ],
+    "sceneObjects": 332
+  }
+}

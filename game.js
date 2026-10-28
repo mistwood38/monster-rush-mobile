@@ -297,7 +297,7 @@ function init() {
     if (rebuiltMode) {
       const overlay = Object.values(worldObjects.enemyOverlay);
       for (const child of scene.children) if (!beforeWorld.has(child) && !overlay.includes(child)) child.visible = false;
-      rebuiltWorld = rebuiltModules[1].buildRebuiltWorld(scene, renderer, camera, rebuiltMaps);
+      rebuiltWorld = rebuiltModules[1].buildRebuiltWorld(scene, renderer, camera, rebuiltMaps, rebuiltBank);
       rebuiltView = new rebuiltModules[2].RebuiltView(renderer, scene, camera);
       artEffects = new rebuiltModules[2].ArtEffects(scene, camera);
     }

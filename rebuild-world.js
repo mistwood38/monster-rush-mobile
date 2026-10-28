@@ -11,7 +11,7 @@ export async function loadWorldTextures(){
 }
 // Reusable, metre-scale modules. No illustration or reference image is placed
 // behind the game. Every highway/vehicle/building component has depth.
-export function buildRebuiltWorld(scene,renderer,camera,maps){
+export function buildRebuiltWorld(scene,renderer,camera,maps,bank){
  const root=new T.Group();root.name='Rebuilt elevated highway';scene.add(root);
  let seed=1729;const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
  const solidCache=new Map();const solid=(color,metalness=0,roughness=.75)=>{const k=[color,metalness,roughness].join('/');if(!solidCache.has(k))solidCache.set(k,new T.MeshStandardMaterial({color,metalness,roughness}));return solidCache.get(k);};
@@ -39,15 +39,13 @@ export function buildRebuiltWorld(scene,renderer,camera,maps){
  }
  flush(buckets,root);
  const movers=[];
- function vehicle(x,z,angle,color){
-  const g=new T.Group(),b=new Map(),body=solid(color,.5,.65);g.position.set(x,0,z);g.rotation.y=angle;
-  box([0,.56,0],[1.75,.58,3.5],body,[0,0,0],b);box([0,1.02,.1],[1.52,.58,1.65],body,[.05,0,0],b);
-  box([0,1.04,-.75],[1.37,.48,.035],glass,[-.3,0,0],b);box([0,1.04,.96],[1.35,.39,.04],glass,[.25,0,0],b);
-  for(const s of [-1,1]){box([s*.77,1.07,.1],[.025,.34,1.35],glass,[0,0,0],b);box([s*.8,1.07,.1],[.04,.44,.05],steel,[0,0,0],b);box([s*.91,.9,-.68],[.16,.09,.18],body,[0,0,0],b);
-   for(const zz of [-1.12,1.12]){add(new T.CylinderGeometry(.35,.35,.23,14),rubber,[s*.84,.35,zz],[0,0,Math.PI/2],[1,1,1],b);add(new T.CylinderGeometry(.19,.19,.25,10),steel,[s*.86,.35,zz],[0,0,Math.PI/2],[1,1,1],b);}
-   box([s*.57,.64,-1.77],[.38,.13,.035],paint,[0,0,0],b);
-  }
-  box([0,.43,-1.79],[1.5,.13,.05],steel,[0,0,0],b);box([0,.65,-1.8],[.6,.18,.03],dark,[0,0,0],b);box([.3,.94,-1.14],[.8,.07,.86],body,[.22,.1,.07],b);flush(b,g);root.add(g);movers.push(g);return g;
+ function vehicle(x,z,angle){
+  // Poly Haven's CC0 1k glTF, with genuine geometry, normal map and PBR maps.
+  const g=new T.Group(),model=bank['covered-car'].scene.clone(true),bb=new T.Box3().setFromObject(model),size=bb.getSize(new T.Vector3()),center=bb.getCenter(new T.Vector3()),orientation=new T.Group();
+  model.position.x-=center.x;model.position.y-=bb.min.y;model.position.z-=center.z;
+  model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});
+  orientation.add(model);orientation.scale.setScalar(3.65/Math.max(size.x,size.z));if(size.x>size.z)orientation.rotation.y=Math.PI/2;
+  g.position.set(x,0,z);g.rotation.y=angle;g.userData.sourceAsset='covered-car.glb';g.add(orientation);root.add(g);movers.push(g);return g;
  }
  const burningCar=vehicle(-4.95,-17,.17,'#626d68');vehicle(5.15,-45,-.24,'#645453');vehicle(-5.2,-81,.08,'#626975');
  const fireUniforms={uTime:{value:0}},fire=new T.Mesh(new T.PlaneGeometry(1.5,2.4),new T.ShaderMaterial({uniforms:fireUniforms,transparent:true,depthWrite:false,side:T.DoubleSide,vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:`varying vec2 vUv;uniform float uTime;

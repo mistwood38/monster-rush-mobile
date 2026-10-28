@@ -2,6 +2,8 @@
 
 安卓竖屏 2.5D 公路编队射击游戏，Three.js r170、原生 JavaScript、离线 PWA，无后端或运行时 CDN。
 
+**美术重建样板入口：**在此独立分支使用 `?art=rebuild`。它加载可动画的 CC0 模型、两族怪物、独立枪械、纹理道路与车辆，保留现有战斗逻辑。视觉仍未达到用户的写实参考，安卓真机未验证。查看 [资源和许可](docs/art-rebuild/ASSETS.md)、[视觉规范](docs/art-rebuild/VISUAL_SPEC.md) 与 [执行记录](docs/art-rebuild/PROGRESS.md)。
+
 **最新美术方向已纠正为写实比例的末日科幻高架战场。当前卡通程序模型尚未达标；[四张用户参考与素材核对](docs/art-direction/ART_DIRECTION.md)是后续视觉验收基准。**
 
 **当前是 `codex/horde-combat-rework` 怪潮重做审查分支。回退点 `backup/final-road-squad-5b01820`；不合并 main、不正式发布。**
