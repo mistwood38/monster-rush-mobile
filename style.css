@@ -1,11 +1,11 @@
 :root {
   color-scheme: dark;
-  --ice: #96fbff;
-  --cyan: #4ee8f6;
+  --ice: #ffb089;
+  --cyan: #ff7a3c;
   --amber: #ffd38b;
   --red: #ff5268;
-  --panel: #091720d9;
-  --line: #a5e9f42b;
+  --panel: #140e0cd9;
+  --line: #ffb08933;
 }
 * {
   box-sizing: border-box;
@@ -16,8 +16,8 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #08131c;
-  color: #f3fcff;
+  background: #120c0a;
+  color: #fff6ee;
   font-family:
     Inter,
     ui-sans-serif,
@@ -45,7 +45,7 @@ button {
   max-width: 600px;
   margin: auto;
   overflow: hidden;
-  background: #08131c;
+  background: #120c0a;
   isolation: isolate;
 }
 canvas {
@@ -88,16 +88,16 @@ canvas {
 .modal-kicker {
   font-size: 9px;
   letter-spacing: 0.2em;
-  color: #a9ced5;
+  color: #d7c2b2;
 }
 .season i {
   font-style: normal;
-  color: #53d8e9;
+  color: #ff8a4a;
   margin: 0 5px;
 }
 .version {
   padding: 6px 9px;
-  border: 1px solid #91d9e442;
+  border: 1px solid #ffb08944;
   border-radius: 7px;
 }
 .hero-title {
@@ -126,16 +126,16 @@ canvas {
   font-weight: 1000;
   text-shadow:
     0 3px #223847,
-    0 0 35px #42d5e666;
+    0 0 35px #ff6a322e;
 }
 .hero-title h1 span {
-  color: #9af7ff;
+  color: #ffb089;
 }
 .hero-title p {
   margin: 0;
   font-size: 10px;
   letter-spacing: 0.4em;
-  color: #b3cdd4;
+  color: #d9c3b4;
 }
 .hero-title p b {
   color: #f9ad61;
@@ -156,7 +156,7 @@ canvas {
 }
 .menu-desc span {
   font-size: 11px;
-  color: #b3c7ce;
+  color: #cbb5a6;
 }
 .start-btn {
   width: 100%;
@@ -166,7 +166,7 @@ canvas {
   justify-content: space-between;
   padding: 0 20px;
   border-radius: 13px;
-  background: linear-gradient(105deg, #f6ba72, #ffdc9f 42%, #84f2ec);
+  background: linear-gradient(105deg, #f6ba72, #ffdc9f 42%, #ff8a4a);
   color: #12212a;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -180,8 +180,8 @@ canvas {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: #102b34;
-  color: #a5f8f7;
+  background: #2a140e;
+  color: #ffd0b0;
   font-size: 20px;
 }
 .menu-footer {
@@ -189,7 +189,7 @@ canvas {
   justify-content: space-between;
   align-items: center;
   margin-top: 16px;
-  color: #acc0c5;
+  color: #cbb5a6;
   font-size: 10px;
 }
 .menu-footer strong {
@@ -197,19 +197,19 @@ canvas {
   margin-left: 4px;
 }
 .menu-footer span {
-  color: #718b94;
+  color: #8a7368;
 }
 .menu-footer span i {
-  color: #52e4e9;
+  color: #ff8a4a;
   font-style: normal;
 }
 .small-icon {
-  color: #a9e6eb;
-  background: #10232dbb;
+  color: #ffc39a;
+  background: #241610bb;
   padding: 8px 10px;
   border-radius: 8px;
   font-size: 10px;
-  border: 1px solid #92e0e32d;
+  border: 1px solid #ffb0892e;
 }
 .hud-top {
   display: flex;
@@ -227,9 +227,9 @@ canvas {
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background: linear-gradient(145deg, #183d4a, #11232e);
-  border: 1px solid #6ef6f363;
-  color: #9dffff;
+  background: linear-gradient(145deg, #3a241c, #1a100e);
+  border: 1px solid #ff8a4a66;
+  color: #ffd0b0;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -245,15 +245,15 @@ canvas {
 }
 .brand-mini small {
   font-size: 9px;
-  color: #a2bac0;
+  color: #cbb5a6;
 }
 .pause-btn {
   width: 40px;
   height: 40px;
-  border: 1px solid #d5f6f44d;
+  border: 1px solid #ffd0b04d;
   border-radius: 12px;
-  background: #0a1825b8;
-  color: #c2f3f2;
+  background: #1a100eb8;
+  color: #ffe6d2;
   font-size: 17px;
 }
 .hud-stats {
@@ -265,7 +265,7 @@ canvas {
 .health-card {
   flex: 1;
   padding: 10px 12px;
-  background: #07141ec7;
+  background: #1a100ec7;
   border: 1px solid var(--line);
   border-radius: 12px;
 }
@@ -275,21 +275,21 @@ canvas {
   align-items: center;
   margin-bottom: 7px;
   font-size: 10px;
-  color: #b1cbd0;
+  color: #d7c2b2;
 }
 .health-label b {
-  color: #dffeff;
+  color: #fff1e4;
   font-size: 12px;
 }
 .health-label small {
   font-size: 9px;
-  color: #809ca4;
+  color: #8a7368;
   font-style: normal;
 }
 .bar,
 .boss-bar {
   height: 7px;
-  background: #18323a;
+  background: #3a241c;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -299,8 +299,8 @@ canvas {
   width: 100%;
   height: 100%;
   border-radius: 8px;
-  background: linear-gradient(90deg, #ff8e6c, #ffd287, #73fff0);
-  box-shadow: 0 0 10px #6ef4e8;
+  background: linear-gradient(90deg, #ff3b32, #ff8a3a, #ffd08a);
+  box-shadow: 0 0 10px #ff7a3a;
   transition: width 0.14s;
 }
 .score-card {
@@ -313,7 +313,7 @@ canvas {
 .score-card small,
 .clock-card span {
   font-size: 9px;
-  color: #a5bdc2;
+  color: #cbb5a6;
 }
 .score-card b {
   font-size: 20px;
@@ -334,12 +334,12 @@ canvas {
   max-width: 73%;
   padding: 8px 10px;
   border-radius: 11px;
-  background: #07141edb;
-  border: 1px solid #d8f0ed2b;
+  background: #1a100edb;
+  border: 1px solid #ffd0b02e;
 }
 .weapon-card > span:first-child {
   font-size: 19px;
-  color: #8bffff;
+  color: #ffb089;
 }
 .weapon-card div {
   display: flex;
@@ -353,7 +353,7 @@ canvas {
 }
 .weapon-card div small {
   font-size: 9px;
-  color: #9db8bf;
+  color: #cbb5a6;
   white-space: nowrap;
 }
 .weapon-rank {
@@ -370,7 +370,7 @@ canvas {
 }
 .clock-card b {
   font-size: 14px;
-  color: #e9f5f3;
+  color: #fff1e4;
 }
 .boss-hud {
   position: absolute;
@@ -456,21 +456,21 @@ canvas {
   left: 0;
   right: 0;
   text-align: center;
-  color: #e5ffffa3;
+  color: #ffe6d2a3;
   font-size: 9px;
   letter-spacing: 0.1em;
   text-shadow: 0 1px 4px #001;
 }
 .touch-hint span {
   font-size: 15px;
-  color: #83ffff;
+  color: #ffb089;
   margin: 0 8px;
 }
 .modal {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: #06131ddc;
+  background: #140e0cdc;
   backdrop-filter: blur(10px);
   padding-top: calc(30px + env(safe-area-inset-top));
 }
@@ -484,7 +484,7 @@ canvas {
 }
 .modal-copy {
   font-size: 11px;
-  color: #9bb5bb;
+  color: #cbb5a6;
   margin: 0 0 24px;
 }
 .audio-controls {
@@ -492,8 +492,8 @@ canvas {
   padding: 16px 15px;
   margin-bottom: 20px;
   border-radius: 13px;
-  background: #10212ac9;
-  border: 1px solid #c5f3ed28;
+  background: #241610c9;
+  border: 1px solid #ffd0b028;
 }
 .audio-controls label {
   display: grid;
@@ -502,16 +502,16 @@ canvas {
   gap: 9px;
   text-align: left;
   margin: 7px 0;
-  color: #bfd4d8;
+  color: #e6d0c0;
   font-size: 10px;
 }
 .audio-controls input {
   width: 100%;
-  accent-color: #70ece6;
+  accent-color: #ff8a3a;
 }
 .audio-controls b {
   font-size: 9px;
-  color: #a4ffff;
+  color: #ffd0b0;
   text-align: right;
 }
 .modal .start-btn {
@@ -519,7 +519,7 @@ canvas {
 }
 .flat-btn {
   background: transparent;
-  color: #bdd1d4;
+  color: #d7c2b2;
   padding: 12px;
   font-size: 11px;
 }
@@ -535,13 +535,13 @@ canvas {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background: #12262f;
-  border: 1px solid #e5f6f324;
+  background: #2a1c16;
+  border: 1px solid #ffd0b024;
   border-radius: 11px;
 }
 .report small {
   font-size: 9px;
-  color: #a8c2c7;
+  color: #cbb5a6;
 }
 .report b {
   font-size: 21px;
@@ -562,7 +562,7 @@ canvas {
     z-index: 10;
     display: grid;
     place-items: center;
-    background: #07131d;
+    background: #120c0a;
     color: #fff;
     font-weight: 700;
   }
@@ -610,7 +610,7 @@ canvas {
   pointer-events: none;
 }
 
-/* V2.1: compact combat UI and a brighter dawn palette. */
+/* Dusk highway UI: smoke, ember and tracer accents over the same layout. */
 #app::after {
   content: "";
   position: absolute;
@@ -620,23 +620,23 @@ canvas {
   background: radial-gradient(
     ellipse at 50% 38%,
     transparent 40%,
-    #081f3438 100%
+    #1a0c0838 100%
   );
 }
 .menu-overlay {
   background: linear-gradient(
     180deg,
-    #071b31d9 0%,
-    #0d243050 34%,
-    #102a3940 58%,
-    #061827f2 100%
+    #1a0c0cd9 0%,
+    #2a140c50 34%,
+    #3a1c1240 58%,
+    #120c0af2 100%
   );
 }
 .hero-title h1 {
   font-size: clamp(48px, 15vw, 65px);
   text-shadow:
-    0 4px #132a47,
-    0 10px 24px #0a152c80;
+    0 4px #2a140e,
+    0 10px 24px #1a0c0c80;
   letter-spacing: 0.025em;
 }
 .hero-title {
@@ -646,7 +646,7 @@ canvas {
   color: #ffd39e;
 }
 .hero-title h1 span {
-  color: #86f2e8;
+  color: #ffb089;
 }
 .menu-desc strong {
   font-size: 17px;
@@ -693,7 +693,7 @@ canvas {
   padding: 6px 8px;
   max-width: 80%;
   gap: 6px;
-  background: #10273bef;
+  background: #2a1812ef;
 }
 .weapon-card div small {
   font-size: 8px;
@@ -714,9 +714,9 @@ canvas {
   position: absolute;
   top: calc(164px + env(safe-area-inset-top));
   left: 14px;
-  color: #d8f7f1;
-  background: #142c41c9;
-  border: 1px solid #a5dce72b;
+  color: #ffe6d2;
+  background: #2a1812c9;
+  border: 1px solid #ffb0892e;
   border-radius: 7px;
   padding: 5px 8px;
   font-size: 9px;
@@ -738,8 +738,8 @@ canvas {
   right: 20%;
   bottom: calc(39px + env(safe-area-inset-bottom));
   padding: 7px 10px 8px;
-  border: 1px solid #86e5e63d;
-  background: #10283ad9;
+  border: 1px solid #ffb0893d;
+  background: #241610d9;
   border-radius: 9px;
 }
 .overdrive-meter > div:first-child {
@@ -747,34 +747,34 @@ canvas {
   justify-content: space-between;
   gap: 5px;
   font-size: 9px;
-  color: #b6dedf;
+  color: #e6d0c0;
 }
 .overdrive-meter b {
   font-size: 7px;
   letter-spacing: 0.12em;
-  color: #78e9e0;
+  color: #ffb089;
 }
 .overdrive-track {
   height: 4px;
   margin-top: 5px;
   border-radius: 4px;
-  background: #54727b69;
+  background: #6a403469;
   overflow: hidden;
 }
 .overdrive-track i {
   display: block;
   height: 100%;
   width: 0;
-  background: linear-gradient(90deg, #58c4ee, #b4ffe3);
+  background: linear-gradient(90deg, #ff5a32, #ffc56a);
   transition: width 0.1s;
-  box-shadow: 0 0 8px #7affee;
+  box-shadow: 0 0 8px #ff8a3a;
 }
 .overdrive .overdrive-meter {
-  border-color: #9cffe6;
-  box-shadow: 0 0 22px #61ffe366;
+  border-color: #ffb089;
+  box-shadow: 0 0 22px #ff6a3266;
 }
 .overdrive::after {
-  background: radial-gradient(ellipse at 50% 40%, transparent 60%, #47dbd448);
+  background: radial-gradient(ellipse at 50% 40%, transparent 60%, #ff5a3248);
 }
 #reticle {
   position: absolute;
@@ -792,15 +792,15 @@ canvas {
   height: 21px;
   left: -10px;
   top: -10px;
-  border: 1px solid #b1fff0;
+  border: 1px solid #ffd0b0;
   border-radius: 50%;
-  box-shadow: 0 0 6px #104958;
+  box-shadow: 0 0 6px #4a2418;
 }
 #reticle i::before,
 #reticle i::after {
   content: "";
   position: absolute;
-  background: #e2ffea;
+  background: #fff1e4;
   left: 9px;
   top: 5px;
   width: 1px;
@@ -814,9 +814,9 @@ canvas {
   font-size: 19px;
   left: 7%;
   right: 7%;
-  background: linear-gradient(90deg, transparent, #0e2944db, transparent);
+  background: linear-gradient(90deg, transparent, #3a1c12db, transparent);
   padding: 12px 4px;
-  color: #c0fff2;
+  color: #ffe6d2;
 }
 .upgrade-toast small {
   font-size: 9px;
@@ -891,8 +891,8 @@ canvas {
   margin: 0 0 17px;
 }
 .build-stats div {
-  background: #173349;
-  border: 1px solid #88dee834;
+  background: #3a241c;
+  border: 1px solid #ffb08934;
   border-radius: 8px;
   padding: 10px 2px;
   display: flex;
@@ -901,11 +901,11 @@ canvas {
 }
 .build-stats small {
   font-size: 9px;
-  color: #a7cdd8;
+  color: #e6d0c0;
 }
 .build-stats b {
   font-size: 13px;
-  color: #b5fff0;
+  color: #ffd8b0;
 }
 
 .boss-hud.shielded {

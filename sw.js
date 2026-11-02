@@ -1,4 +1,4 @@
-const CACHE = "monster-rush-v2.1.0";
+const CACHE = "monster-rush-v2.3.0";
 const FILES = [
   "./",
   "./index.html",
@@ -11,6 +11,13 @@ const FILES = [
   "./icons/icon-512.png",
   "./vendor/three/three.module.min.js",
   "./vendor/three/LICENSE",
+  "./sprites.js",
+  "./assets/art/atlas.json",
+  "./assets/art/actors.png",
+  "./assets/art/props.png",
+  "./assets/art/fx.png",
+  "./assets/art/backdrop.png",
+  "./assets/art/road.jpg",
 ];
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)));

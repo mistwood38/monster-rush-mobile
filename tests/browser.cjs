@@ -16,6 +16,8 @@ const mime = {
   ".webmanifest": "application/manifest+json",
   ".svg": "image/svg+xml",
   ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".json": "application/json",
 };
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, "http://localhost");
@@ -716,7 +718,7 @@ let browser;
           manifest.icons.some((i) => i.sizes === "512x512"),
       );
       const cached = await page.evaluate(async () => {
-        const cache = await caches.open("monster-rush-v2.1.0");
+        const cache = await caches.open("monster-rush-v2.3.0");
         return Promise.all(
           [
             "./",
