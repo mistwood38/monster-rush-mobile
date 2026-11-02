@@ -1,5 +1,6 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { BattleAudio } from "./audio.js";
+import { art, loadArt, painted, applyFrame } from "./sprites.js";
 
 const $ = (s) => document.querySelector(s),
   clamp = (x, a, b) => Math.max(a, Math.min(b, x)),
@@ -161,9 +162,8 @@ function init() {
     renderer.setSize(app.clientWidth, app.clientHeight, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.08;
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMappingExposure = 1.18;
+    renderer.shadowMap.enabled = false;
     scene = new THREE.Scene();
     const sky = document.createElement("canvas");
     sky.width = 2;
@@ -179,7 +179,7 @@ function init() {
     sk.fillRect(0, 0, 2, 512);
     scene.background = new THREE.CanvasTexture(sky);
     scene.background.colorSpace = THREE.SRGBColorSpace;
-    scene.fog = new THREE.FogExp2("#5a342c", 0.011);
+    scene.fog = new THREE.FogExp2("#5c3a30", 0.0035);
     camera = new THREE.PerspectiveCamera(
       48,
       innerWidth / innerHeight,
@@ -191,7 +191,7 @@ function init() {
     scene.add(new THREE.HemisphereLight("#ffc7a2", "#2a1612", 0.95));
     const sun = new THREE.DirectionalLight("#ffb06a", 2.65);
     sun.position.set(12, 22, -28);
-    sun.castShadow = true;
+    sun.castShadow = false;
     sun.shadow.mapSize.set(512, 512);
     sun.shadow.camera.left = -15;
     sun.shadow.camera.right = 15;
@@ -216,7 +216,48 @@ function init() {
       "此浏览器未能启动 WebGL，请更新 Chrome 后重试。";
   }
 }
+function buildPaintedScene() {
+  const backdrop = art.tex.backdrop;
+  scene.background = new THREE.Color("#140c0a");
+  const wall = new THREE.Mesh(
+    new THREE.PlaneGeometry(150, 86),
+    new THREE.MeshBasicMaterial({
+      map: backdrop,
+      transparent: true,
+      depthWrite: false,
+      fog: false,
+    }),
+  );
+  wall.position.set(0, 14, -78);
+  scene.add(wall);
+  worldObjects.props = [];
+  const props = [
+    ["prop_barrier", -5.55, 6, 1.45],
+    ["prop_barrier", 5.55, -2, 1.45],
+    ["prop_crate", -5.15, -12, 1.05],
+    ["prop_truck", 6.15, -20, 2.5],
+    ["prop_barrier", -5.6, -32, 1.45],
+    ["prop_crate", 5.2, -42, 1.05],
+    ["prop_truck", -6.2, -54, 2.5],
+    ["prop_barrier", 5.65, -68, 1.45],
+  ];
+  for (const [name, x, z, h] of props) {
+    const card = painted("props", name, h);
+    card.position.set(x, 0, z);
+    scene.add(card);
+    worldObjects.props.push({ group: card, z, x });
+  }
+  worldObjects.smokes = [];
+  for (let i = 0; i < 7; i++) {
+    const smoke = painted("fx", "fx_smoke", rand(3.2, 6.5));
+    smoke.material.opacity = 0.18;
+    smoke.position.set((i % 2 ? 1 : -1) * rand(1.5, 7), rand(1.4, 5), -8 - i * 8);
+    scene.add(smoke);
+    worldObjects.smokes.push({ mesh: smoke, phase: rand(0, 6) });
+  }
+}
 function makeRoadTexture() {
+  if (art.tex.road) return art.tex.road;
   const c = document.createElement("canvas");
   c.width = 512;
   c.height = 1024;
@@ -310,6 +351,8 @@ function buildWorld() {
   );
   road.rotation.x = -Math.PI / 2;
   road.receiveShadow = true;
+  buildPaintedScene();
+  return;
   for (const side of [-1, 1]) {
     const shoulder = mesh(
       new THREE.BoxGeometry(0.42, 0.07, 125),
@@ -924,346 +967,52 @@ function armorGeometry() {
   G.armor.translate(0, 0, -0.4);
   return G.armor;
 }
+function bindFlash(card) {
+  const flash = { intensity: 0 };
+  return {
+    emissive: {
+      set() {},
+    },
+    get emissiveIntensity() {
+      return flash.intensity;
+    },
+    set emissiveIntensity(v) {
+      flash.intensity = v;
+      const t = Math.max(0, Math.min(1, (v - 0.5) / 0.55));
+      const gain = 1 + t * 1.5;
+      card.material.color.setRGB(gain, gain * (1 - t * 0.08), gain * (1 - t * 0.2));
+    },
+    dispose() {},
+  };
+}
+const actorArt = {
+  player: ["hero_leader", 2.35],
+  "ally-heavy": ["hero_heavy", 2.2],
+  "ally-blue": ["hero_blue", 2.28],
+  "ally-red": ["hero_red", 2.22],
+  "ally-green": ["hero_green", 2.15],
+  scout: ["enemy_crawler", 1.35],
+  runner: ["enemy_bladed", 2.25],
+  heavy: ["enemy_brute", 2.55],
+  ranged: ["enemy_bloated", 2.35],
+  elite: ["enemy_tank", 2.85],
+  boss: ["enemy_boss", 8.4],
+};
 function createSoldier(kind = "player") {
-  const root = new THREE.Group(),
-    human = kind === "player" || String(kind).startsWith("ally"),
-    enemy = !human,
-    boss = kind === "boss";
-  const palettes = {
-    player: ["#2c3138", "#6e624f", "#ff7a2a", "#1c1814"],
-    "ally-heavy": ["#2a2624", "#8a5a32", "#ff6a1c", "#141210"],
-    "ally-blue": ["#243044", "#9eb4c4", "#3ec6ff", "#101820"],
-    "ally-red": ["#3a2428", "#6e3032", "#ff2d3a", "#140c0e"],
-    "ally-green": ["#243028", "#4e6a48", "#3ef08a", "#101612"],
-    scout: ["#d8d2c6", "#b7b0a4", "#ff2a18", "#5c564e"],
-    runner: ["#e6dfd4", "#c9b8b0", "#ff1c14", "#5a3834"],
-    heavy: ["#8d939a", "#4e555c", "#ff2c1c", "#23272c"],
-    ranged: ["#efe6d8", "#d5c8b8", "#ff3a18", "#6a4038"],
-    elite: ["#a0a6ac", "#3a4148", "#ff2418", "#161a1e"],
-    boss: ["#e8e2d8", "#f4eee6", "#ff140e", "#6a403c"],
-  };
-  const [base, armor, accent, secondary] = palettes[kind] || palettes.scout;
-  const suit = mat("actorSuit" + kind, base, enemy ? 0.72 : 0.62, enemy ? 0.06 : 0.22),
-    plate = mat("actorArmor" + kind, armor, 0.48, enemy ? 0.16 : 0.34),
-    dark = mat("actorDark" + kind, enemy ? "#2a2624" : "#161412", 0.7, 0.25),
-    trim = mat("actorTrim" + kind, secondary, 0.5, 0.18),
-    glow = mat("actorGlow" + kind, accent, 0.28, 0.08, enemy ? 1.45 : 1.05);
-  const box = (parent, p, s, m = plate) => {
-    const o = mesh(armorGeometry(), m, parent, p, s);
-    o.castShadow = !enemy;
-    o.receiveShadow = true;
-    return o;
-  };
-  const part = (geometry, parent, p, s, m = plate) => {
-    const o = mesh(geometry, m, parent, p, s);
-    o.castShadow = !enemy;
-    return o;
-  };
-  const body = part(
-    G.body,
-    root,
-    [0, 1.18, 0],
-    [boss ? 1.65 : enemy ? 1.27 : 1.12, 1, boss ? 1.35 : 1],
-    suit.clone(),
-  );
-  if (enemy) {
-    body.material.emissive.set(accent);
-    body.material.emissiveIntensity = boss ? 0.48 : 0.24;
-    body.material.roughness = kind === "heavy" || kind === "elite" ? 0.4 : 0.74;
-    body.material.metalness = kind === "heavy" || kind === "elite" ? 0.42 : 0.04;
-  }
-  const chest = box(
-    root,
-    [0, 1.39, -0.035],
-    [boss ? 1.1 : enemy ? 0.79 : 0.69, 0.52, 0.46],
-  );
-  chest.rotation.x = -0.06;
-  box(root, [0, 0.88, 0], [boss ? 0.9 : 0.55, 0.24, 0.35], dark);
-  box(root, [0, 0.96, -0.23], [0.49, 0.09, 0.07], trim);
-  if (!enemy) {
-    // An angular combat suit, helmet stripe and a compact two-cell power pack.
-    box(root, [0, 1.42, -0.29], [0.49, 0.3, 0.08]);
-    box(root, [0, 1.55, -0.34], [0.33, 0.055, 0.04], glow);
-    box(root, [0, 1.29, 0.3], [0.46, 0.55, 0.23], dark);
-    for (const s of [-1, 1]) {
-      box(root, [s * 0.155, 1.31, 0.43], [0.12, 0.37, 0.08], plate);
-      box(root, [s * 0.155, 1.38, 0.48], [0.075, 0.15, 0.035], glow);
-    }
-    for (let i = 0; i < 3; i++)
-      box(root, [0, 1.13 + i * 0.055, 0.465], [0.1, 0.022, 0.025], trim);
-    box(root, [-0.3, 1.15, -0.19], [0.16, 0.22, 0.16], trim);
-  } else {
-    box(root, [0, 1.37, -0.29], [boss ? 0.71 : 0.51, 0.4, 0.14], trim);
-    const reactor = part(
-      G.sphere,
-      root,
-      [0, 1.43, -0.42],
-      [boss ? 0.21 : 0.105, boss ? 0.21 : 0.105, 0.075],
-      glow,
-    );
-    if (boss) {
-      const ring = part(G.torus, root, [0, 1.43, -0.43], [0.3, 0.3, 0.3], dark);
-      for (const s of [-1, 1]) {
-        const chimney = box(
-          root,
-          [s * 0.43, 1.68, 0.22],
-          [0.2, 0.63, 0.25],
-          dark,
-        );
-        chimney.rotation.z = s * 0.18;
-        box(root, [s * 0.49, 1.98, 0.22], [0.19, 0.12, 0.25], glow);
-      }
-    }
-    for (const s of [-1, 1]) {
-      const spine = part(
-        G.cone,
-        root,
-        [s * 0.29, 1.71, 0.2],
-        [0.7, kind === "runner" ? 1.8 : 1, 0.8],
-        trim,
-      );
-      spine.rotation.z = -s * 0.55;
-    }
-  }
+  const root = new THREE.Group();
+  const spec = actorArt[kind] || actorArt.scout;
+  const card = painted("actors", spec[0], spec[1]);
+  root.add(card);
+  const body = new THREE.Object3D();
+  body.material = bindFlash(card);
+  const legL = new THREE.Group();
+  const legR = new THREE.Group();
+  const armL = new THREE.Group();
+  const armR = new THREE.Group();
   const head = new THREE.Group();
-  head.position.set(0, 1.9, enemy ? -0.055 : 0);
-  root.add(head);
-  if (!enemy) {
-    box(head, [0, 0, 0], [0.49, 0.4, 0.46], plate);
-    box(head, [0, 0.16, 0.015], [0.42, 0.1, 0.4], suit);
-    box(head, [0, 0.213, 0.015], [0.085, 0.018, 0.41], trim);
-    box(head, [0, -0.035, -0.244], [0.46, 0.17, 0.04], dark);
-    box(head, [0, -0.028, -0.269], [0.38, 0.075, 0.02], glow);
-    box(head, [0, -0.17, -0.18], [0.32, 0.12, 0.16], suit);
-    for (const s of [-1, 1])
-      box(head, [s * 0.263, -0.04, 0], [0.055, 0.17, 0.2], dark);
-    box(head, [0, 0.02, 0.243], [0.28, 0.06, 0.025], trim);
-  } else {
-    part(G.sphere, head, [0, 0, 0], [boss ? 0.39 : 0.32, 0.3, 0.32], plate);
-    box(head, [0, -0.17, -0.25], [0.43, 0.16, 0.18], dark);
-    for (const s of [-1, 1]) {
-      const brow = box(
-        head,
-        [s * 0.155, 0.025, -0.285],
-        [0.25, 0.1, 0.12],
-        suit,
-      );
-      brow.rotation.z = s * 0.22;
-      part(
-        G.smallSphere,
-        head,
-        [s * 0.15, -0.025, -0.35],
-        [0.068, 0.052, 0.032],
-        glow,
-      );
-      const fang = part(
-        G.cone,
-        head,
-        [s * 0.135, -0.185, -0.37],
-        [0.22, 0.34, 0.25],
-        mat("ivory", "#fff0c3", 0.65),
-      );
-      fang.rotation.z = Math.PI;
-      const horn = part(
-        G.cone,
-        head,
-        [s * 0.29, 0.26, 0.02],
-        [
-          0.55,
-          boss ? 2.15 : kind === "runner" ? 1.55 : kind === "scout" ? 0.42 : kind === "heavy" || kind === "elite" ? 1.2 : 0.72,
-          0.55,
-        ],
-        boss ? plate : kind === "runner" ? glow : trim,
-      );
-      horn.rotation.z = -s * 0.42;
-    }
-    if (kind === "ranged")
-      for (const s of [-1, 1])
-        part(G.sphere, root, [s * 0.35, 1.54, 0.25], [0.23, 0.3, 0.2], glow);
-  }
-  const legL = new THREE.Group(),
-    legR = new THREE.Group(),
-    armL = new THREE.Group(),
-    armR = new THREE.Group();
-  for (const [s, leg, arm] of [
-    [-1, legL, armL],
-    [1, legR, armR],
-  ]) {
-    leg.position.set(s * (boss ? 0.28 : 0.2), 0.83, 0);
-    root.add(leg);
-    part(G.limb, leg, [0, -0.18, 0], [1.05, 0.64, 1], suit);
-    box(leg, [0, -0.3, -0.105], [0.23, 0.18, 0.14]);
-    const lower = new THREE.Group();
-    lower.position.set(0, -0.38, 0);
-    leg.add(lower);
-    part(G.smallLimb, lower, [0, -0.14, 0], [1.2, 0.55, 1.15], dark);
-    box(lower, [0, -0.15, -0.105], [0.19, 0.22, 0.09], plate);
-    box(lower, [0, -0.35, -0.095], [0.28, 0.17, 0.4], dark);
-    box(lower, [0, -0.3, -0.23], [0.23, 0.08, 0.1], trim);
-    leg.userData.lower = lower;
-    arm.position.set(s * (boss ? 0.67 : enemy ? 0.53 : 0.45), 1.51, 0);
-    root.add(arm);
-    const shoulder = box(arm, [0, -0.03, 0], [boss ? 0.49 : 0.31, 0.23, 0.37]);
-    shoulder.rotation.z = -s * 0.18;
-    if (enemy) {
-      const spike = part(
-        G.cone,
-        arm,
-        [s * 0.12, 0.16, 0.03],
-        [0.8, boss ? 1.5 : 0.9, 0.8],
-        trim,
-      );
-      spike.rotation.z = -s * 0.65;
-    }
-    part(G.smallLimb, arm, [0, -0.24, 0], [enemy ? 1.35 : 1, 0.69, 1.2], suit);
-    const fore = new THREE.Group();
-    fore.position.set(0, -0.39, 0);
-    fore.rotation.x = enemy ? -0.18 : 1.15;
-    arm.add(fore);
-    box(fore, [0, -0.14, 0], [enemy ? 0.25 : 0.21, 0.28, 0.24], plate);
-    box(fore, [0, -0.31, -0.025], [enemy ? 0.23 : 0.17, 0.13, 0.18], dark);
-    if (enemy)
-      for (let finger = -1; finger <= 1; finger++) {
-        const claw = part(
-          G.cone,
-          fore,
-          [finger * 0.07, -0.42, -0.07],
-          [0.25, 0.55, 0.28],
-          glow,
-        );
-        claw.rotation.z = Math.PI;
-      }
-    arm.userData.fore = fore;
-  }
-  let gun = new THREE.Group();
-  gun.position.set(0.63, 1.34, -0.25);
-  root.add(gun);
-  if (enemy) {
-    gun.visible = false;
-    if (boss) {
-      box(armR, [0, -0.42, -0.23], [0.43, 0.5, 0.67], dark);
-      const barrel = part(
-        G.cylinder,
-        armR,
-        [0, -0.42, -0.68],
-        [2.6, 0.65, 2.6],
-        trim,
-      );
-      barrel.rotation.x = Math.PI / 2;
-      part(G.sphere, armR, [0, -0.42, -1.02], [0.12, 0.12, 0.045], glow);
-    }
-  } else {
-    armL.rotation.set(0.36, 0, -0.22);
-    armR.rotation.set(0.5, 0, 0.1);
-  }
-  let core = null;
-  if (!enemy) {
-    const coreMat = glow.clone();
-    core = box(root, [0, 1.48, 0.52], [0.18, 0.16, 0.045], coreMat);
-    box(root, [0, 1.35, 0.52], [0.3, 0.07, 0.04], glow);
-    if (kind === "ally-heavy") {
-      box(root, [0, 1.22, 0.5], [0.64, 0.4, 0.34], dark);
-      box(root, [0.22, 1.58, 0.64], [0.14, 0.1, 0.05], glow);
-    }
-    if (kind === "ally-blue") {
-      box(
-        head,
-        [0, 0.04, 0.3],
-        [0.42, 0.48, 0.1],
-        mat("hairWhite", "#f4f1ea", 0.55, 0.02),
-      );
-      box(root, [0, 1.3, 0.56], [0.14, 0.32, 0.05], glow);
-    }
-    if (kind === "ally-red") {
-      const scarf = mesh(
-        G.plane,
-        mat("scarf", "#c41628", 0.7, 0.05, 0.25),
-        root,
-        [0.22, 1.02, 0.44],
-        [0.58, 0.98, 1],
-      );
-      scarf.rotation.x = 0.22;
-      scarf.rotation.z = -0.18;
-    }
-    if (kind === "ally-green") {
-      box(head, [0, 0.16, 0.06], [0.64, 0.34, 0.58], dark);
-      box(head, [0, 0.02, -0.3], [0.16, 0.05, 0.04], glow);
-    }
-  } else if (!boss) {
-    if (kind === "scout") {
-      body.rotation.x = 0.32;
-      box(root, [0, 1.12, -0.38], [0.07, 0.46, 0.04], glow);
-      box(root, [0.18, 1.38, -0.36], [0.045, 0.24, 0.035], glow);
-    }
-    if (kind === "runner") {
-      const blade = part(
-        G.cone,
-        root,
-        [0.46, 1.22, -0.58],
-        [0.5, 1.85, 0.22],
-        glow,
-      );
-      blade.rotation.x = Math.PI / 2.25;
-      blade.rotation.z = -0.35;
-      const blade2 = part(
-        G.cone,
-        root,
-        [-0.4, 1.28, -0.42],
-        [0.36, 1.35, 0.2],
-        trim,
-      );
-      blade2.rotation.x = Math.PI / 2.4;
-      blade2.rotation.z = 0.5;
-    }
-    if (kind === "heavy") {
-      box(root, [0, 1.5, -0.42], [0.82, 0.52, 0.16], dark);
-      box(root, [0, 1.2, -0.46], [0.52, 0.08, 0.045], glow);
-      for (const s of [-1, 1])
-        box(root, [s * 0.5, 1.64, 0.02], [0.34, 0.22, 0.44], plate);
-    }
-    if (kind === "ranged") {
-      part(G.sphere, root, [0, 0.98, -0.22], [0.66, 0.58, 0.52], glow);
-      part(G.sphere, root, [0, 0.92, 0.28], [0.42, 0.36, 0.34], suit);
-    }
-    if (kind === "elite") {
-      box(root, [0, 1.55, -0.44], [0.95, 0.6, 0.2], dark);
-      part(G.sphere, root, [0, 1.5, -0.58], [0.26, 0.26, 0.16], glow);
-      for (const s of [-1, 1]) {
-        const cannon = part(
-          G.cylinder,
-          root,
-          [s * 0.62, 1.32, -0.45],
-          [1.7, 0.9, 1.7],
-          dark,
-        );
-        cannon.rotation.x = Math.PI / 2;
-        box(root, [s * 0.52, 1.78, 0.04], [0.36, 0.2, 0.5], plate);
-      }
-    }
-  } else {
-    part(G.sphere, root, [0, 1.9, -0.2], [0.46, 0.5, 0.38], glow);
-    for (const [x, y, z, s, rz] of [
-      [0, 2.45, 0.02, 1.05, 0],
-      [-0.62, 2.1, 0.08, 0.78, 0.5],
-      [0.66, 2.16, -0.02, 0.82, -0.42],
-      [-0.28, 2.2, -0.4, 0.6, 0.22],
-      [0.34, 1.95, -0.5, 0.55, -0.3],
-      [0.05, 2.7, -0.1, 0.7, 0.08],
-    ]) {
-      const shard = part(
-        G.cone,
-        root,
-        [x, y, z],
-        [s, s * 2.5, s],
-        x === 0 ? glow : plate,
-      );
-      shard.rotation.z = rz;
-    }
-  }
-  for (const group of [head, legL, legR, armL, armR]) compactGroup(group);
-  compactGroup(root, true, core ? [body, core] : [body]);
-  root.scale.setScalar(boss ? 3.05 : 1);
-  if (enemy) root.rotation.y = Math.PI;
+  const gun = new THREE.Group();
+  gun.position.set(0.05, spec[1] * 0.62, 0);
+  root.add(body, legL, legR, armL, armR, head, gun);
   root.userData = {
     kind,
     body,
@@ -1273,14 +1022,16 @@ function createSoldier(kind = "player") {
     armL,
     armR,
     gun,
-    core,
-    scale: root.scale.x,
+    sprite: card,
+    core: null,
+    scale: 1,
   };
   return root;
 }
 
 function buildGun(type, glowHex) {
-  const glowColor =
+  const g = new THREE.Group();
+  const color =
     glowHex ||
     {
       rifle: "#ff8a3d",
@@ -1289,95 +1040,21 @@ function buildGun(type, glowHex) {
       plasma: "#4db7ff",
       laser: "#ff2d3a",
     }[type];
-  const g = new THREE.Group(),
-    metal = mat("gunMetal" + type + glowColor, "#2a2826", 0.36, 0.72),
-    shell = mat(
-      "gunShell" + type + glowColor,
-      {
-        rifle: "#4a463f",
-        machine: "#3a342e",
-        shotgun: "#4a3028",
-        plasma: "#2a3648",
-        laser: "#3a2428",
-      }[type],
-      0.38,
-      0.62,
-    ),
-    glow = mat("gunGlow" + type + glowColor, glowColor, 0.22, 0.2, 1.8),
-    dark = mat("gunDark" + type + glowColor, "#141210", 0.48, 0.4);
-  const box = (p, s, m = shell) => mesh(armorGeometry(), m, g, p, s);
-  const barrel = (x, z, r, len, m = metal) => {
-    const b = mesh(new THREE.CylinderGeometry(r * 0.74, r, len, 10), m, g, [
-      x,
-      0.025,
-      z,
-    ]);
-    b.rotation.x = -Math.PI / 2;
-    return b;
-  };
-  if (type === "rifle") {
-    box([0, 0, 0], [0.25, 0.23, 0.64]);
-    box([0, -0.14, 0.18], [0.2, 0.18, 0.25], dark);
-    box([0, 0.11, 0.02], [0.12, 0.08, 0.28], glow);
-    box([0, 0.18, -0.1], [0.24, 0.07, 0.13], metal);
-    barrel(0, -0.43, 0.048, 0.55);
-    box([0, 0.015, -0.28], [0.3, 0.08, 0.2], dark);
-    box([0, -0.07, -0.03], [0.09, 0.19, 0.12], metal);
-  }
-  if (type === "machine") {
-    box([0, 0, 0], [0.39, 0.31, 0.75]);
-    box([0, 0.23, -0.04], [0.43, 0.11, 0.26], metal);
-    box([0, -0.22, 0.13], [0.3, 0.18, 0.26], dark);
-    box([0, 0.13, 0.08], [0.23, 0.07, 0.32], glow);
-    for (let i = -1; i <= 1; i++)
-      barrel(i * 0.13, -0.59, 0.046, 0.54, i === 0 ? glow : metal);
-    for (let z = -0.16; z < 0.18; z += 0.075)
-      box([-0.205, 0.01, z], [0.035, 0.1, 0.035], dark);
-  }
-  if (type === "shotgun") {
-    box([0, 0, 0.04], [0.29, 0.25, 0.55]);
-    box([0, -0.1, 0.29], [0.19, 0.2, 0.3], dark);
-    box([0, 0.11, 0.02], [0.24, 0.09, 0.18], glow);
-    for (const x of [-0.09, 0.09]) barrel(x, -0.49, 0.065, 0.6, metal);
-    box([0, -0.14, -0.3], [0.35, 0.11, 0.18], shell);
-  }
-  if (type === "plasma") {
-    box([0, 0, 0], [0.43, 0.36, 0.56]);
-    box([0, 0.02, -0.4], [0.36, 0.32, 0.46], dark);
-    const orb = mesh(
-      new THREE.SphereGeometry(0.16, 12, 10),
-      glow,
-      g,
-      [0, 0.06, -0.56],
-    );
-    const ring = mesh(G.torus, glow, g, [0, 0.04, -0.5]);
-    ring.scale.set(0.25, 0.25, 0.4);
-    ring.rotation.x = Math.PI / 2;
-    barrel(0, -0.82, 0.105, 0.42, glow);
-    for (const s of [-1, 1]) {
-      box([s * 0.24, 0.02, -0.31], [0.08, 0.11, 0.35], shell);
-      box([s * 0.24, 0.02, -0.16], [0.1, 0.08, 0.05], glow);
-    }
-  }
-  if (type === "laser") {
-    box([0, 0, 0.06], [0.32, 0.3, 0.73]);
-    box([0, 0.04, -0.36], [0.22, 0.22, 0.43], dark);
-    box([0, 0.08, 0.1], [0.22, 0.14, 0.34], glow);
-    barrel(0, -0.72, 0.06, 0.45, glow);
-    for (const s of [-1, 1]) {
-      const coil = mesh(G.torus, glow, g, [s * 0.14, 0.02, -0.4]);
-      coil.scale.set(0.14, 0.14, 0.3);
-      coil.rotation.x = Math.PI / 2;
-    }
-    box([0, -0.17, 0.25], [0.25, 0.15, 0.23], metal);
-  }
-  g.traverse((o) => {
-    if (o.isMesh) {
-      o.castShadow = true;
-      o.receiveShadow = true;
-    }
-  });
-  compactGroup(g);
+  const frame =
+    {
+      rifle: "fx_rifle",
+      machine: "fx_minigun",
+      shotgun: "fx_shot",
+      plasma: "fx_plasma",
+      laser: "fx_laser",
+    }[type] || "fx_flash";
+  const flash = painted("fx", "fx_flash", 0.55);
+  flash.material.color.set(color);
+  flash.visible = false;
+  flash.position.set(0, 0.15, -0.2);
+  g.add(flash);
+  g.userData.muzzle = flash;
+  g.userData.frame = frame;
   return g;
 }
 function setWeapon(type, quiet = false) {
@@ -1388,27 +1065,8 @@ function setWeapon(type, quiet = false) {
   if (weaponRoot) playerParts.gun.remove(weaponRoot);
   let visual = weaponModels[type];
   if (!visual) {
-    const root = buildGun(type),
-      flash = mesh(
-        new THREE.ConeGeometry(0.09, 0.32, 8),
-        mat(
-          "muzzle" + type,
-          type === "plasma"
-            ? "#8fd4ff"
-            : type === "laser"
-              ? "#ff5a4a"
-              : "#ffd2a4",
-          0.18,
-          0.05,
-          2,
-        ),
-        root,
-        [0, 0, -0.91],
-        [0.42, 1, 0.65],
-      );
-    flash.rotation.x = -Math.PI / 2;
-    flash.visible = false;
-    visual = weaponModels[type] = { root, muzzle: flash };
+    const root = buildGun(type);
+    visual = weaponModels[type] = { root, muzzle: root.userData.muzzle };
   }
   weaponRoot = visual.root;
   muzzle = visual.muzzle;
@@ -1523,17 +1181,8 @@ function buildPlayer() {
 const squad = [];
 function attachSquadGun(rig, type, glowHex) {
   const gun = buildGun(type, glowHex);
-  const flash = mesh(
-    new THREE.ConeGeometry(0.09, 0.32, 8),
-    mat("squadMuzzle" + type + (glowHex || ""), glowHex || weaponInfo[type].color, 0.18, 0.05, 2),
-    gun,
-    [0, 0, -0.91],
-    [0.42, 1, 0.65],
-  );
-  flash.rotation.x = -Math.PI / 2;
-  flash.visible = false;
   rig.userData.gun.add(gun);
-  rig.userData.muzzle = flash;
+  rig.userData.muzzle = gun.userData.muzzle;
 }
 function sealSquad(rig) {
   const gun = rig.userData.gun;
@@ -1544,14 +1193,13 @@ function sealSquad(rig) {
 }
 function buildSquad() {
   const specs = [
-    { kind: "ally-heavy", ox: -0.82, oz: 0.08, gun: "machine", scale: 0.9 },
-    { kind: "ally-blue", ox: -1.42, oz: 0.42, gun: "plasma", scale: 0.74 },
-    { kind: "ally-red", ox: 0.82, oz: 0.12, gun: "shotgun", scale: 0.8 },
-    { kind: "ally-green", ox: 1.4, oz: 0.48, gun: "rifle", glow: "#3ef08a", scale: 0.72 },
+    { kind: "ally-heavy", ox: -0.92, oz: 0.02, gun: "machine", scale: 0.9 },
+    { kind: "ally-blue", ox: -0.46, oz: -0.04, gun: "plasma", scale: 0.9 },
+    { kind: "ally-red", ox: 0.48, oz: -0.02, gun: "shotgun", scale: 0.9 },
+    { kind: "ally-green", ox: 0.96, oz: 0.06, gun: "rifle", glow: "#3ef08a", scale: 0.88 },
   ];
   for (const spec of specs) {
     const rig = createSoldier(spec.kind);
-    sealSquad(rig);
     rig.scale.setScalar(spec.scale);
     attachSquadGun(rig, spec.gun, spec.glow);
     rig.traverse((o) => {
@@ -1782,57 +1430,34 @@ function buildGate(reward, x, z) {
   group.position.set(x, 0, z);
   scene.add(group);
   const color = reward.color;
-  const glow = mat("gateGlow" + color, color, 0.23, 0.1, 1.5);
-  const frame = mat("gateFrame" + color, "#2a2624", 0.4, 0.65);
-  const w = 2.85,
-    h = 4.35;
-  for (const s of [-1, 1]) {
-    addBox(group, [(s * w) / 2, h / 2, 0], [0.14, h, 0.17], undefined, frame);
-    addBox(
-      group,
-      [(s * w) / 2, h / 2, 0.11],
-      [0.09, h - 0.1, 0.09],
-      undefined,
-      glow,
-    );
-  }
-  addBox(group, [0, h, 0], [w, 0.16, 0.2], undefined, frame);
-  addBox(group, [0, h, 0.015], [w - 0.12, 0.06, 0.08], undefined, glow);
-  const holo = mesh(
-    new THREE.PlaneGeometry(w - 0.22, h - 0.32),
-    new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 0.18,
-      side: THREE.DoubleSide,
-      depthWrite: false,
-    }),
-    group,
-    [0, h / 2, 0.1],
-  );
+  const gateArt =
+    {
+      lanes: "gate_blue",
+      pellets: "gate_amber",
+      rate: "gate_amber",
+      speed: "gate_green",
+      damage: "gate_red",
+      repair: "gate_green",
+    }[reward.type] || "gate_blue";
+  const gateCard = painted("props", gateArt, 3.6);
+  group.add(gateCard);
+  const w = 2.85;
   const scan = mesh(
-    new THREE.PlaneGeometry(w - 0.3, 0.035),
+    new THREE.PlaneGeometry(w - 0.3, 0.05),
     new THREE.MeshBasicMaterial({
       color,
       transparent: true,
-      opacity: 0.62,
+      opacity: 0.0,
       depthWrite: false,
     }),
     group,
-    [0, 1.2, 0.11],
+    [0, 1.6, 0.2],
   );
-  const chevron = mesh(
-    new THREE.PlaneGeometry(2.15, 3.1),
-    chevronMaterial(color),
-    group,
-    [0, 0.04, 1.85],
-  );
-  chevron.rotation.x = -Math.PI / 2;
-  chevron.renderOrder = 2;
   const lbl = labelSprite(
     { value: reward.value, name: reward.name, hint: "射击增幅 · 迎面穿越" },
     color,
   );
+  lbl.sprite.position.y = 4.05;
   group.add(lbl.sprite);
   group.traverse((o) => {
     if (o.isMesh) {
@@ -2051,12 +1676,13 @@ function removeShadow(shadow) {
 }
 function disposeSoldier(g) {
   scene.remove(g);
+  const shared = new Set(Object.values(art.mat || {}));
   g.traverse?.((o) => {
     if (o.geometry && !Object.values(G).includes(o.geometry))
       o.geometry.dispose();
+    if (o.material && !shared.has(o.material)) o.material.dispose();
   });
-  g.userData.body?.material?.dispose();
-  g.userData.shieldMaterial?.dispose();
+  g.userData.body?.material?.dispose?.();
 }
 function spawnEnemy(type = "grunt", x = rand(-4.4, 4.4), z = -46) {
   if (state.threats.length >= 20) return;
@@ -2175,15 +1801,10 @@ function burst3D(x, y, z, color, count = 12) {
   for (let i = 0; i < n; i++) {
     let p = particlePool.pop();
     if (!p) {
-      p = new THREE.Mesh(
-        G.smallSphere,
-        new THREE.MeshBasicMaterial({
-          color,
-          transparent: true,
-          opacity: 1,
-          depthWrite: false,
-        }),
-      );
+      p = painted("fx", "fx_burst", 0.45);
+      p.material.blending = THREE.AdditiveBlending;
+      p.material.depthWrite = false;
+      p.material.transparent = true;
       scene.add(p);
       p.userData.v = new THREE.Vector3();
     }
@@ -2192,7 +1813,7 @@ function burst3D(x, y, z, color, count = 12) {
     p.material.color.set(color);
     p.material.opacity = 1;
     p.position.set(x + rand(-0.18, 0.18), y + rand(-0.2, 0.2), z);
-    p.scale.setScalar(rand(0.035, 0.095));
+    p.scale.set(rand(0.35, 0.85), rand(0.35, 0.85), 1);
     p.userData.v.set(rand(-5, 5), rand(-1, 5), rand(-6, 4));
     p.userData.life = p.userData.max = rand(0.22, 0.54);
     state.effects.push(p);
@@ -2204,7 +1825,8 @@ function muzzleFlash() {
   for (const current of flashes) {
     if (!current) continue;
     current.visible = true;
-    current.scale.y = rand(0.65, 1.5);
+    const h = current.userData.baseHeight || 0.55;
+    current.scale.set(h * 1.4 * rand(0.8, 1.3), h * rand(0.8, 1.35), 1);
     setTimeout(() => {
       current.visible = false;
     }, 55);
@@ -2215,20 +1837,13 @@ function acquireBullet() {
   if (!b) {
     if (state.bullets.length >= 260) return null;
     const group = new THREE.Group(),
-      core = mesh(
-        G.smallSphere,
-        mat("bulletCore", "#d7ffff", 0.2, 0.05, 2),
-        group,
-        [0, 0, 0],
-        [0.08, 0.08, 0.2],
-      ),
-      tail = mesh(
-        G.smallSphere,
-        basic("#60eff0", 0.72),
-        group,
-        [0, 0, 0.18],
-        [0.05, 0.05, 0.2],
-      );
+      core = painted("fx", "fx_rifle", 0.42);
+    core.position.y = 0;
+    group.add(core);
+    const tail = {
+      material: { color: { set() {} }, opacity: 1 },
+      scale: { set() {} },
+    };
     scene.add(group);
     b = {
       group,
@@ -2293,26 +1908,17 @@ function createShot(type, target = aimTarget()) {
       b.radius = type === "plasma" ? 0.4 : type === "pellet" ? 0.12 : 0.14;
       b.group.position.set(b.x, 1.27, b.z);
       b.group.rotation.y = -angle;
-      b.core.material = mat("bullet" + type, info.color, 0.2, 0.05, 1.4);
-      b.tail.material = mat(
-        "trail" + type,
-        info.color,
-        0.25,
-        0,
-        0.8,
-        true,
-        0.65,
-      );
-      b.core.scale.set(
-        type === "plasma" ? 0.32 : type === "shotgun" ? 0.14 : 0.055,
-        type === "plasma" ? 0.32 : type === "shotgun" ? 0.07 : 0.055,
-        type === "plasma" ? 0.32 : type === "shotgun" ? 0.42 : 0.28,
-      );
-      b.tail.scale.set(
-        type === "plasma" ? 0.16 : type === "shotgun" ? 0.1 : 0.035,
-        type === "plasma" ? 0.16 : type === "shotgun" ? 0.045 : 0.035,
-        type === "plasma" ? 0.7 : type === "shotgun" ? 0.85 : 0.62,
-      );
+      const fxName =
+        { rifle: "fx_rifle", machine: "fx_minigun", shotgun: "fx_shot", plasma: "fx_plasma" }[
+          type
+        ] || "fx_rifle";
+      applyFrame(b.core, "fx", fxName);
+      b.core.material.color.set("#ffffff");
+      const span = type === "plasma" ? 0.72 : type === "shotgun" ? 0.9 : 1.25;
+      const thick = type === "plasma" ? 0.72 : 0.22;
+      b.core.scale.set(span, thick, 1);
+      b.core.position.y = 0;
+      b.tail.scale.set(1, 1, 1);
       emitted++;
     }
 }
@@ -2363,8 +1969,28 @@ function doLaser() {
     const geometry = new THREE.CylinderGeometry(1, 1, 1, 6);
     for (let i = 0; i < 5; i++) {
       const ray = new THREE.Group();
-      const outer = mesh(geometry, basic("#ff2a2a", 0.55, false), ray),
-        inner = mesh(geometry, basic("#fff2e4", 0.95, false), ray);
+      const outer = mesh(
+          geometry,
+          new THREE.MeshBasicMaterial({
+            color: "#ff2a2a",
+            transparent: true,
+            opacity: 0.65,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+          }),
+          ray,
+        ),
+        inner = mesh(
+          geometry,
+          new THREE.MeshBasicMaterial({
+            color: "#fff4e6",
+            transparent: true,
+            opacity: 0.9,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+          }),
+          ray,
+        );
       group.add(ray);
       beams.push({ ray, outer, inner });
     }
@@ -2694,20 +2320,11 @@ function buildBoss() {
   group.position.set(0, 0, -30);
   scene.add(group);
   const hp = 650 + Math.min(350, state.time * 2);
-  const shieldMaterial = new THREE.MeshBasicMaterial({
-    color: "#3ec4ff",
-    transparent: true,
-    opacity: 0.22,
-    depthWrite: false,
-    side: THREE.DoubleSide,
-  });
-  const shieldMesh = mesh(
-    new THREE.SphereGeometry(1.05, 18, 14),
-    shieldMaterial,
-    group,
-    [0, 1.25, 0],
-    [1.2, 1.45, 1.05],
-  );
+  const shieldMesh = painted("fx", "fx_shield", 6.2);
+  shieldMesh.material.opacity = 0.72;
+  shieldMesh.position.y = 3.1;
+  group.add(shieldMesh);
+  const shieldMaterial = shieldMesh.material;
   group.userData.shieldMaterial = shieldMaterial;
   state.boss = {
     shield: 1.8,
@@ -2936,7 +2553,7 @@ function updateBoss(dt) {
   b.shield = Math.max(0, b.shield - dt);
   b.shieldMesh.visible = b.shield > 0;
   b.shieldMesh.rotation.y += dt * 0.5;
-  b.shieldMesh.material.opacity = 0.16 + Math.sin(b.move * 8) * 0.06;
+  b.shieldMesh.material.opacity = 0.62 + Math.sin(b.move * 8) * 0.12;
   $("#bossHud").classList.toggle("shielded", b.shield > 0);
   $("#bossLabel").textContent = b.shield > 0 ? "巨像 · 护盾" : "灾厄巨像";
   b.flash = Math.max(0, b.flash - dt);
@@ -2996,13 +2613,10 @@ function spawnBossShot(b, i) {
     z = b.z + 1,
     targetX = clamp(b.targetX + i * 0.7, -5.3, 5.3),
     travel = 1.35;
-  const meshObj = mesh(
-    G.sphere,
-    mat("bossShot", "#ff5667", 0.25, 0.1, 1.5),
-    scene,
-    [x, 1.3, z],
-    [0.26, 0.26, 0.5],
-  );
+  const meshObj = painted("fx", "fx_burst", 0.7);
+  meshObj.material.color.set("#ff3a28");
+  meshObj.position.set(x, 1.3, z);
+  scene.add(meshObj);
   state.enemyShots.push({
     mesh: meshObj,
     x,
@@ -3041,13 +2655,10 @@ function updateShots(dt) {
     if (!s.active) {
       if (state.time < s.warningAt) continue;
       s.active = true;
-      s.mesh = mesh(
-        G.sphere,
-        mat("enemyShot", "#ff624d", 0.26, 0.2, 1.4),
-        scene,
-        [s.x, s.y, s.z],
-        [0.16, 0.16, 0.16],
-      );
+      s.mesh = painted("fx", "fx_burst", 0.42);
+      s.mesh.material.color.set("#ff3a28");
+      s.mesh.position.set(s.x, s.y, s.z);
+      scene.add(s.mesh);
     }
     s.x += s.vx * dt;
     s.z += s.vz * dt;
@@ -3238,6 +2849,11 @@ function updateDecor(dt) {
     p.z += worldSpeed() * dt;
     if (p.z > 16) p.z -= 96;
     p.group.position.z = p.z;
+  }
+  for (const s of worldObjects.smokes || []) {
+    s.phase += dt;
+    s.mesh.position.y += Math.sin(s.phase) * dt * 0.15;
+    s.mesh.position.x += Math.cos(s.phase * 0.7) * dt * 0.2;
   }
   for (const h of worldObjects.helis || []) {
     h.z += worldSpeed() * dt * 0.35;
@@ -3638,6 +3254,111 @@ function movePointer(e) {
   );
 }
 
+let bloom = null;
+function ensureBloom() {
+  const w = Math.max(2, renderer.domElement.width);
+  const h = Math.max(2, renderer.domElement.height);
+  if (bloom && bloom.w === w && bloom.h === h) return bloom;
+  if (bloom) {
+    bloom.sceneRT.dispose();
+    bloom.rtA.dispose();
+    bloom.rtB.dispose();
+  }
+  const sceneRT = new THREE.WebGLRenderTarget(w, h, { depthBuffer: true });
+  sceneRT.texture.colorSpace = THREE.SRGBColorSpace;
+  const hw = Math.max(2, w >> 1);
+  const hh = Math.max(2, h >> 1);
+  const rt = () =>
+    new THREE.WebGLRenderTarget(hw, hh, { depthBuffer: false });
+  const rtA = rt();
+  const rtB = rt();
+  const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
+  const fs = new THREE.Scene();
+  fs.add(quad);
+  const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const bright = new THREE.ShaderMaterial({
+    uniforms: {
+      tDiffuse: { value: null },
+      threshold: { value: 0.58 },
+    },
+    vertexShader:
+      "varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.0,1.0); }",
+    fragmentShader: `
+      uniform sampler2D tDiffuse; uniform float threshold; varying vec2 vUv;
+      void main(){
+        vec4 c = texture2D(tDiffuse, vUv);
+        float l = dot(c.rgb, vec3(0.299, 0.587, 0.114));
+        gl_FragColor = vec4(c.rgb * smoothstep(threshold, threshold + 0.45, l), 1.0);
+      }`,
+  });
+  const blur = new THREE.ShaderMaterial({
+    uniforms: {
+      tDiffuse: { value: null },
+      direction: { value: new THREE.Vector2(1, 0) },
+      resolution: { value: new THREE.Vector2(hw, hh) },
+    },
+    vertexShader:
+      "varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.0,1.0); }",
+    fragmentShader: `
+      uniform sampler2D tDiffuse; uniform vec2 direction; uniform vec2 resolution; varying vec2 vUv;
+      void main(){
+        vec2 px = direction / resolution;
+        vec4 sum = texture2D(tDiffuse, vUv) * 0.227;
+        sum += texture2D(tDiffuse, vUv + px * 1.4) * 0.316;
+        sum += texture2D(tDiffuse, vUv - px * 1.4) * 0.316;
+        sum += texture2D(tDiffuse, vUv + px * 3.2) * 0.07;
+        sum += texture2D(tDiffuse, vUv - px * 3.2) * 0.07;
+        gl_FragColor = sum;
+      }`,
+  });
+  const composite = new THREE.ShaderMaterial({
+    uniforms: {
+      tDiffuse: { value: null },
+      tBloom: { value: null },
+      strength: { value: 0.72 },
+    },
+    vertexShader:
+      "varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.0,1.0); }",
+    fragmentShader: `
+      uniform sampler2D tDiffuse; uniform sampler2D tBloom; uniform float strength; varying vec2 vUv;
+      void main(){
+        vec4 base = texture2D(tDiffuse, vUv);
+        vec4 glow = texture2D(tBloom, vUv);
+        gl_FragColor = vec4(base.rgb + glow.rgb * strength, 1.0);
+      }`,
+  });
+  for (const m of [bright, blur, composite]) m.toneMapped = false;
+  bloom = { w, h, sceneRT, rtA, rtB, quad, fs, cam, bright, blur, composite };
+  return bloom;
+}
+function renderFrame() {
+  if (!renderer || !scene || !camera) return;
+  const pass = ensureBloom();
+  const prev = renderer.toneMapping;
+  renderer.setRenderTarget(pass.sceneRT);
+  renderer.render(scene, camera);
+  renderer.toneMapping = THREE.NoToneMapping;
+  pass.quad.material = pass.bright;
+  pass.bright.uniforms.tDiffuse.value = pass.sceneRT.texture;
+  renderer.setRenderTarget(pass.rtA);
+  renderer.render(pass.fs, pass.cam);
+  pass.quad.material = pass.blur;
+  pass.blur.uniforms.resolution.value.set(pass.rtA.width, pass.rtA.height);
+  pass.blur.uniforms.tDiffuse.value = pass.rtA.texture;
+  pass.blur.uniforms.direction.value.set(1, 0);
+  renderer.setRenderTarget(pass.rtB);
+  renderer.render(pass.fs, pass.cam);
+  pass.blur.uniforms.tDiffuse.value = pass.rtB.texture;
+  pass.blur.uniforms.direction.value.set(0, 1);
+  renderer.setRenderTarget(pass.rtA);
+  renderer.render(pass.fs, pass.cam);
+  pass.quad.material = pass.composite;
+  pass.composite.uniforms.tDiffuse.value = pass.sceneRT.texture;
+  pass.composite.uniforms.tBloom.value = pass.rtA.texture;
+  renderer.setRenderTarget(null);
+  renderer.render(pass.fs, pass.cam);
+  renderer.toneMapping = prev;
+}
 function resize() {
   if (!renderer) return;
   W = app.clientWidth;
@@ -3675,7 +3396,7 @@ function frame(now) {
     $("#reticle").style.transform =
       `translate(${((p.x + 1) * W) / 2}px,${((1 - p.y) * H) / 2}px)`;
   }
-  renderer.render(scene, camera);
+  renderFrame();
   camera.position.x = baseX;
   camera.position.y = baseY;
   camera.quaternion.copy(cameraBaseQ);
@@ -3693,13 +3414,11 @@ function frame(now) {
 }
 addEventListener("resize", resize, { passive: true });
 document.addEventListener("contextmenu", (e) => e.preventDefault());
-init();
 if ("serviceWorker" in navigator && location.protocol.startsWith("http"))
   addEventListener("load", () =>
     navigator.serviceWorker.register("./sw.js").catch(() => {}),
   );
-if (new URLSearchParams(location.search).has("test"))
-  window.__MR_TEST__ = {
+const __testHook = new URLSearchParams(location.search).has("test") ? {
     silence: () => audio.pause(),
     configure(values) {
       for (const key of [
@@ -3913,4 +3632,15 @@ if (new URLSearchParams(location.search).has("test"))
       return state.gates[0];
     },
     getAudio: () => audio.status(),
-  };
+  }
+: null;
+loadArt()
+  .then(() => {
+    init();
+    if (__testHook) window.__MR_TEST__ = __testHook;
+  })
+  .catch((error) => {
+    console.error(error);
+    const note = document.querySelector("#menu .menu-desc span");
+    if (note) note.textContent = "画面资源加载失败，请刷新后重试。";
+  });
