@@ -716,7 +716,7 @@ let browser;
           manifest.icons.some((i) => i.sizes === "512x512"),
       );
       const cached = await page.evaluate(async () => {
-        const cache = await caches.open("monster-rush-v2.1.0");
+        const cache = await caches.open("monster-rush-v2.2.0");
         return Promise.all(
           [
             "./",

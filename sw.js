@@ -1,4 +1,4 @@
-const CACHE = "monster-rush-v2.1.0";
+const CACHE = "monster-rush-v2.2.0";
 const FILES = [
   "./",
   "./index.html",

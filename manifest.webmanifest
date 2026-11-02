@@ -1,13 +1,13 @@
 {
-  "name": "怪潮突围 V2.1 · Monster Rush",
+  "name": "怪潮突围 · Monster Rush",
   "short_name": "怪潮突围",
   "description": "第三人称 3D 怪潮生存射击：选择强化路线、进化武器、迎战 Boss。",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#08131c",
-  "theme_color": "#08131c",
+  "background_color": "#120c0a",
+  "theme_color": "#120c0a",
   "icons": [
     {
       "src": "./icons/icon-192.png",

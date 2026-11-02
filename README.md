@@ -1,12 +1,14 @@
 # 怪潮突围 · Monster Rush 2.1
 
-原创第三人称竖屏 3D 生存射击。沿曙光中的废城公路突围，选择强化路线，把单兵火力逐步推进到穿透光束与等离子弹幕。
+原创第三人称竖屏 3D 生存射击。沿黄昏废城公路突围，选择强化路线，把单兵火力逐步推进到穿透光束与等离子弹幕。
 
 实际 WebGL 战斗画面（自动化测试场景）：
 
-<img src="docs/battle-2.1.png" width="260" alt="V2.1 战斗画面：持枪战士、不同怪物、穿透激光和击杀过载条">
+<img src="docs/after-wave.png" width="260" alt="黄昏公路战斗画面：五人小队、苍白红核怪物与红色激光">
 
-[查看 Boss 战预览](docs/boss-2.1.png)
+[Boss 战](docs/after-boss.png) · [强化门](docs/after-gates.png)
+
+上一版青白黎明画面仍保留在 [docs/battle-2.1.png](docs/battle-2.1.png) 与 [docs/boss-2.1.png](docs/boss-2.1.png)。
 
 ## 怎么玩
 
